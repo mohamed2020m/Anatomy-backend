@@ -304,3 +304,90 @@ export const fakeProducts = {
 
 // Initialize sample products
 fakeProducts.initialize();
+
+
+
+// Mock user data store
+export const fakeCategories = {
+  records: [] as { id: number; name: string; description: string; image: string }[], // Holds the list of category objects
+
+  // Initialize with sample data
+  initialize() {
+    const sampleCategories: { id: number; name: string; description: string; image: string }[] = [];
+    function generateRandomCategoryData(id: number) {
+      const categoryNames = [
+        'Electronics',
+        'Furniture',
+        'Clothing',
+        'Toys',
+        'Groceries',
+        'Books',
+        'Jewelry',
+        'Beauty Products'
+      ];
+
+      return {
+        id,
+        name: faker.helpers.arrayElement(categoryNames),
+        description: faker.commerce.productDescription(),
+        image: `https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg`
+      };
+    }
+
+    // Generate remaining records
+    for (let i = 1; i <= 20; i++) {
+      sampleCategories.push(generateRandomCategoryData(i));
+    }
+
+    this.records = sampleCategories;
+  },
+
+  // Get all categories with optional search
+  async getAll({ search }: { search?: string }) {
+    let categories = [...this.records];
+
+    // Search functionality across multiple fields
+    if (search) {
+      categories = matchSorter(categories, search, {
+        keys: ['name', 'description']
+      });
+    }
+
+    return categories;
+  },
+
+  // Get paginated results with optional search
+  async getCategories({
+    page = 1,
+    limit = 10,
+    search
+  }: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }) {
+    const allCategories = await this.getAll({ search });
+    const totalCategories = allCategories.length;
+
+    // Pagination logic
+    const offset = (page - 1) * limit;
+    const paginatedCategories = allCategories.slice(offset, offset + limit);
+
+    // Mock current time
+    const currentTime = new Date().toISOString();
+
+    // Return paginated response
+    return {
+      success: true,
+      time: currentTime,
+      message: 'Sample data for testing and learning purposes',
+      total_categories: totalCategories,
+      offset,
+      limit,
+      categories: paginatedCategories
+    };
+  }
+};
+
+// Initialize sample categories
+fakeCategories.initialize();

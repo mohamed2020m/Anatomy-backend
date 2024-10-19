@@ -2,7 +2,7 @@ import { OverViewPageView } from '@/sections/overview/view';
 
 export const metadata = {
   title: 'AnatoLearn | Dashboard',
-  icons: 'logo2.png'
+  icons: 'logo.png'
 };
 
 export default function page() {

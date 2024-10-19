@@ -5,6 +5,7 @@ import { useSidebar } from '@/hooks/useSidebar';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type SidebarProps = {
   className?: string;
@@ -27,10 +28,9 @@ export default function Sidebar({ className }: SidebarProps) {
     >
       <div className="hidden p-5 pt-10 lg:block">
         <Link
-          href={'https://github.com/Kiranism/next-shadcn-dashboard-starter'}
-          target="_blank"
+          href={'/dashboard'}
         >
-          <svg
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -41,7 +41,17 @@ export default function Sidebar({ className }: SidebarProps) {
             className="mr-2 h-6 w-6"
           >
             <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-          </svg>
+          </svg> */}
+          <div className="relative z-20 flex items-center text-lg font-medium">
+            <Image
+              src="/logo.png"
+              alt="AnatoLearn Logo"
+              width={24}
+              height={24}
+              className="mr-2 h-6 w-6"
+            />
+            {!isMinimized && <span>AnatoLearn</span>}
+          </div>
         </Link>
       </div>
       <ChevronLeft

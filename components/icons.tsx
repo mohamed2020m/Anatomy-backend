@@ -31,12 +31,14 @@ import {
   UserPen,
   UserX2Icon,
   ShieldX,
-  X
+  X,
+  Folder
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  folder: Folder,
   shieldX: ShieldX,
   dashboard: LayoutDashboardIcon,
   logo: Command,

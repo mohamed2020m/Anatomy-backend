@@ -8,6 +8,7 @@ export type User = {
   verified: boolean;
   status: string;
 };
+
 export const users: User[] = [
   {
     id: 1,
@@ -129,6 +130,12 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
+    title: 'Categories',
+    href: '/dashboard/categories',
+    icon: 'folder',
+    label: 'Categories'
+  },
+  {
     title: 'Employee',
     href: '/dashboard/employee',
     icon: 'user',
@@ -166,3 +173,11 @@ export const navItems: NavItem[] = [
     label: 'kanban'
   }
 ];
+
+
+export type Category = {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+};

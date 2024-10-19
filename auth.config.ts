@@ -84,7 +84,7 @@ const authConfig = {
           email: user.email,
           role: user.role,
           access_token: authData.access_token,
-          refresh_token: authData.refresh_token
+          refresh_token: authData.refresh_token,
         };
       }
     })
