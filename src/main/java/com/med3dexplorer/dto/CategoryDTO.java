@@ -1,6 +1,7 @@
 package com.med3dexplorer.dto;
 
 
+import com.med3dexplorer.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +21,5 @@ public class CategoryDTO {
     private String description;
     private String image;
     private LocalDateTime createdAt;
-
+    private Long parentCategoryId;
 }

@@ -9,6 +9,8 @@ import com.med3dexplorer.repositories.ThreeDObjectRepository;
 import com.med3dexplorer.services.interfaces.ThreeDObjectService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,20 +33,14 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
     @Override
     public ThreeDObjectDTO saveThreeDObject(ThreeDObjectDTO threeDObjectDTO) {
-        System.out.println("Received DTO: " + threeDObjectDTO); // Log DTO reçu
-
-        // Convertir le DTO en entité
+        System.out.println("Received DTO: " + threeDObjectDTO);
         ThreeDObject threeDObject = threeDObjectDTOConverter.toEntity(threeDObjectDTO);
-        System.out.println("Converted to Entity: " + threeDObject); // Log entité convertie
-
-        // Enregistrer l'entité
+        threeDObject.setCreatedAt(LocalDateTime.now());
+        System.out.println("Converted to Entity: " + threeDObject);
         ThreeDObject savedObject = threeDObjectRepository.save(threeDObject);
-        System.out.println("Saved Entity: " + savedObject); // Log entité enregistrée
-
-        // Convertir l'entité enregistrée en DTO et la retourner
+        System.out.println("Saved Entity: " + savedObject);
         ThreeDObjectDTO resultDTO = threeDObjectDTOConverter.toDto(savedObject);
-        System.out.println("Returned DTO: " + resultDTO); // Log DTO retourné
-
+        System.out.println("Returned DTO: " + resultDTO);
         return resultDTO;
     }
 

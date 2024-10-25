@@ -9,6 +9,7 @@ import com.med3dexplorer.services.interfaces.FavouriteService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class FavouriteServiceImpl implements FavouriteService {
     @Override
     public FavouriteDTO saveFavourite(FavouriteDTO favouriteDTO){
         Favourite favourite=favouriteDTOConverter.toEntity(favouriteDTO);
+        favourite.setCreatedAt(LocalDateTime.now());
         FavouriteDTO savedFavourite =favouriteDTOConverter.toDto(favouriteRepository.save(favourite));
         return savedFavourite;
     }
