@@ -2,6 +2,7 @@ package com.med3dexplorer.models;
 
 
 import jakarta.persistence.*;
+import jdk.jfr.Description;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Role", length = 5)
 @Table(name = "users")
 public abstract class User {
 

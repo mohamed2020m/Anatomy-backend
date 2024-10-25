@@ -19,13 +19,11 @@ public class Favourite {
 
     private LocalDateTime createdAt;
 
+
     @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "object_id", nullable = false)
     private ThreeDObject threeDObject;
-
 
 }

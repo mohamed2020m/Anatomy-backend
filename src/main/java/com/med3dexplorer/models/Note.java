@@ -21,11 +21,19 @@ public class Note {
     private String content;
     private LocalDateTime createdAt;
 
+
     @ManyToOne
+    private ThreeDObject threeDObject;
+
+
+    @ManyToOne
+    private Student student;
+
+    /*    @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
     @ManyToOne
     @JoinColumn(name = "object_id", nullable = false)
-    private ThreeDObject threeDObject;
+    private ThreeDObject threeDObject;*/
 }

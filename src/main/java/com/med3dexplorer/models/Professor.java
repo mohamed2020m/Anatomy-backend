@@ -1,5 +1,6 @@
 package com.med3dexplorer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,13 +8,18 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "professors")
+@DiscriminatorValue("PROF")
 public class Professor extends User {
 
+
+    @OneToMany(mappedBy="professor",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @JsonIgnore
+    private List<ThreeDObject> threeDObjects;
+
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
-    private List<ThreeDObject> threeDObjects;
+
+
+
 }

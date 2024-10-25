@@ -1,5 +1,6 @@
 package com.med3dexplorer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +10,21 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "students")
+@DiscriminatorValue("STUD")
 public class Student extends User{
 
+
+    @OneToMany(mappedBy="student",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @JsonIgnore
+    private List<Note> notes;
+
+    @OneToMany(mappedBy="student",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @JsonIgnore
+    private List<Favourite> favourites;
+
+
+
+    /*
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Note> notes;
 
@@ -19,5 +32,5 @@ public class Student extends User{
     private List<Favourite> favourites;
 
     @ManyToMany
-    private List<Category> categories;
+    private List<Category> categories;*/
 }

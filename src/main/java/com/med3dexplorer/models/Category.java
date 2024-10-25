@@ -2,6 +2,7 @@ package com.med3dexplorer.models;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,16 +31,18 @@ public class Category {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "parent_id")
-    private Category parentCategory;
-
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Category> subCategories;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="category",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @JsonIgnore
     private List<ThreeDObject> threeDObjects;
+
+    @OneToMany(mappedBy="category",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @JsonIgnore
+    private List<Professor> professors;
+
+
+
+
+
+
 
 }

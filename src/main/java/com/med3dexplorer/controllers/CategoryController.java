@@ -2,46 +2,56 @@ package com.med3dexplorer.controllers;
 
 
 import com.med3dexplorer.dto.CategoryDTO;
-import com.med3dexplorer.models.Category;
-import com.med3dexplorer.services.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.med3dexplorer.services.implementations.CategoryServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/v1/categories")
+@CrossOrigin("*")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
 
-    @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+
+    private CategoryServiceImpl categoryService;
+
+    public  CategoryController( CategoryServiceImpl  categoryService) {
+        this. categoryService =  categoryService;
+    }
+
+
+    @PostMapping
+    public ResponseEntity<CategoryDTO> saveCategory(@RequestBody CategoryDTO categoryDTO) {
+        return ResponseEntity.ok(categoryService.saveCategory(categoryDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id);
-        return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
-    @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.createCategory(category);
+
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getAllCategorys() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
+
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        Category updatedCategory = categoryService.updateCategory(id, category);
-        return updatedCategory != null ? ResponseEntity.ok(updatedCategory) : ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO.setId(id);
+        CategoryDTO updatedCategory = categoryService.updateCategory(categoryDTO);
+        return ResponseEntity.ok(updatedCategory);
     }
 
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id){
         categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity("Category deleted successfully", HttpStatus.OK);
     }
 }

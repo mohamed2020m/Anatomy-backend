@@ -1,6 +1,6 @@
 package com.med3dexplorer.dto;
-
-
+import com.med3dexplorer.models.Note;
+import com.med3dexplorer.models.Professor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +13,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
+public class ThreeDObjectDTO {
 
     private Long id;
     private String name;
     private String description;
+    private String descriptionAudio;
     private String image;
     private LocalDateTime createdAt;
+    private List<Note> notes;
+    private Professor professor;
 
 }
