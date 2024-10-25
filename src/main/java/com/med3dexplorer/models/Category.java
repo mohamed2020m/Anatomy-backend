@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -39,9 +41,17 @@ public class Category {
     @JsonIgnore
     private List<Professor> professors;
 
+    @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Category> subCategories;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_category_id")
+    private Category parentCategory;
 
-
+    @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Collection<Student> students=new ArrayList<>();
 
 
 

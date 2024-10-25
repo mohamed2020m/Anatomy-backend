@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -21,6 +23,12 @@ public class Student extends User{
     @OneToMany(mappedBy="student",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Favourite> favourites;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Collection<Category> categories=new ArrayList<>();
+
 
 
 
