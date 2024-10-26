@@ -15,4 +15,5 @@ public class FavouriteDTO {
 
     private Long id;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

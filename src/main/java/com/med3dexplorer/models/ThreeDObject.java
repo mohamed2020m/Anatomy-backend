@@ -26,6 +26,7 @@ public class ThreeDObject {
     private String description;
     private String descriptionAudio;
     private String image;
+    private String object;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

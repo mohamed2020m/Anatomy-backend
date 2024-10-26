@@ -59,9 +59,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     public ProfessorDTO getProfessorInfo(String username)  throws UserNotFoundException{
-        Professor administrator = professorRepository.findByEmail(username)
+        Professor prof = professorRepository.findByEmail(username)
                 .orElseThrow(() -> new UserNotFoundException("Professor not found"));
 
-        return professorDTOConverter.toDto(administrator);
+        return professorDTOConverter.toDto(prof);
     }
 }

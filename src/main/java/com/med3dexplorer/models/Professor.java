@@ -11,14 +11,10 @@ import java.util.List;
 @DiscriminatorValue("PROF")
 public class Professor extends User {
 
-    @OneToMany(mappedBy="professor",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    @JsonIgnore
-    private List<ThreeDObject> threeDObjects;
+//    @OneToMany(mappedBy="professor",fetch=FetchType.LAZY)
+//    @JsonIgnore
+//    private List<ThreeDObject> threeDObjects;
 
     @ManyToOne
     private Category category;
-
-
-
-
 }

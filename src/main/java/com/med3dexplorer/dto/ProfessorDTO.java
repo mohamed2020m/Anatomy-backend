@@ -1,5 +1,6 @@
 package com.med3dexplorer.dto;
 
+import com.med3dexplorer.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class ProfessorDTO {
     private String firstName;
     private String lastName;
     private String password;
-    private String role;
+    private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

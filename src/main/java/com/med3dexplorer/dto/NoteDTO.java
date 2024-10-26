@@ -16,4 +16,5 @@ public class NoteDTO {
     private Long id;
     private String content;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

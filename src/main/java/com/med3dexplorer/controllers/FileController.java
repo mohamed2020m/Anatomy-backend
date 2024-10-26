@@ -35,7 +35,7 @@ public class FileController {
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) {
         try {
-            byte[] fileData = fileService.downloadFile(fileName);
+            byte[] fileData = fileService.downloadFile(fileName.replaceFirst("-", "/"));
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)

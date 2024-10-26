@@ -1,5 +1,6 @@
 package com.med3dexplorer.dto;
 
+import com.med3dexplorer.models.Category;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,5 +12,7 @@ public class RegisterUserDTO {
     private String firstName;
     private String lastName;
     private String role;
+    private Category category;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

@@ -24,25 +24,25 @@ public class Med3DExplorerApplication {
         SpringApplication.run(Med3DExplorerApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner createAdminUser() {
-        return args -> {
-            String adminEmail = "admin@admin.com";
-            String adminPassword = "123456";
-
-            if (!userRepository.existsByEmail(adminEmail)){
-                RegisterUserDTO admin = new RegisterUserDTO();
-                admin.setEmail(adminEmail);
-                admin.setFirstName("Admin");
-                admin.setLastName("Admin");
-                admin.setPassword(adminPassword);
-                admin.setRole("ADMIN");
-
-                authenticationService.signup(admin);
-                System.out.println("Admin user created.");
-            } else {
-                System.out.println("Admin user already exists.");
-            }
-        };
-    }
+//    @Bean
+//    public CommandLineRunner createAdminUser() {
+//        return args -> {
+//            String adminEmail = "admin@admin.com";
+//            String adminPassword = "123456";
+//
+//            if (!userRepository.existsByEmail(adminEmail)){
+//                RegisterUserDTO admin = new RegisterUserDTO();
+//                admin.setEmail(adminEmail);
+//                admin.setFirstName("Admin");
+//                admin.setLastName("Admin");
+//                admin.setPassword(adminPassword);
+//                admin.setRole("ADMIN");
+//
+//                authenticationService.signup(admin);
+//                System.out.println("Admin user created.");
+//            } else {
+//                System.out.println("Admin user already exists.");
+//            }
+//        };
+//    }
 }

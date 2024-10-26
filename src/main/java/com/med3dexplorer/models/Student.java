@@ -14,20 +14,15 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("STUD")
 public class Student extends User{
-
-
-    @OneToMany(mappedBy="student",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="student", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Note> notes;
 
-    @OneToMany(mappedBy="student",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="student", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Favourite> favourites;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<Category> categories=new ArrayList<>();
-
-
 }

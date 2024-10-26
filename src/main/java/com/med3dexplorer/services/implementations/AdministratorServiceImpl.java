@@ -55,7 +55,6 @@ public class AdministratorServiceImpl implements AdministratorService {
         return administratorDTOConverter.toDto(updatedAdministrator);
     }
 
-
     @Override
     public void deleteAdministrator(Long administratorId) throws UserNotFoundException {
         Administrator administrator=administratorRepository.findById(administratorId).orElseThrow(() -> new UserNotFoundException("Administrator not found"));

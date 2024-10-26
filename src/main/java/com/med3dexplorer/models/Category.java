@@ -41,7 +41,7 @@ public class Category {
     @JsonIgnore
     private List<ThreeDObject> threeDObjects;
 
-    @OneToMany(mappedBy="category",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="category", fetch=FetchType.LAZY,cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Professor> professors;
 
@@ -56,7 +56,4 @@ public class Category {
     @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<Student> students=new ArrayList<>();
-
-
-
 }
