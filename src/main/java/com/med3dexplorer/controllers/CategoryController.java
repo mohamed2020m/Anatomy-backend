@@ -31,6 +31,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
+    @GetMapping("/{id}/sub_categories")
+    public ResponseEntity<List<CategoryDTO>> getSubCategoryByCategoryId(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.getSubCategoryByCategoryId(id));
+    }
+
 
     @GetMapping
     public ResponseEntity<List<CategoryDTO>> getAllCategorys() {

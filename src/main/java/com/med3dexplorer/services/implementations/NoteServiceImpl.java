@@ -10,6 +10,7 @@ import com.med3dexplorer.services.interfaces.NoteService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public NoteDTO saveNote(NoteDTO noteDTO){
         Note note=noteDTOConverter.toEntity(noteDTO);
+        note.setCreatedAt(LocalDateTime.now());
         NoteDTO savedNote =noteDTOConverter.toDto(noteRepository.save(note));
         return savedNote;
     }

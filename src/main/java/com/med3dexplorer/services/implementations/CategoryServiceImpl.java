@@ -9,6 +9,7 @@ import com.med3dexplorer.services.interfaces.CategoryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +28,26 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public CategoryDTO saveCategory(CategoryDTO categoryDTO){
-        Category category=categoryDTOConverter.toEntity(categoryDTO);
-        CategoryDTO savedCategory =categoryDTOConverter.toDto(categoryRepository.save(category));
+    public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
+
+        Category parentCategory = null;
+        if (categoryDTO.getParentCategoryId() != null) {
+            parentCategory = categoryRepository.findById(categoryDTO.getParentCategoryId())
+                    .orElse(null);
+        }
+
+        Category category = Category.builder()
+                .name(categoryDTO.getName())
+                .description(categoryDTO.getDescription())
+                .image(categoryDTO.getImage())
+                .createdAt(LocalDateTime.now())
+                .parentCategory(parentCategory)
+                .build();
+
+        CategoryDTO savedCategory = categoryDTOConverter.toDto(categoryRepository.save(category));
         return savedCategory;
     }
+
 
     @Override
     public CategoryDTO getCategoryById(Long categoryId) throws UserNotFoundException {
@@ -39,6 +55,17 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryDTO categoryDTO = categoryDTOConverter.toDto(category);
         return categoryDTO;
     }
+
+    @Override
+    public List<CategoryDTO> getSubCategoryByCategoryId(Long categoryId) throws UserNotFoundException {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new UserNotFoundException("Category not found"));
+        List<Category> subcategories = categoryRepository.findByParentCategoryId(categoryId);
+        return subcategories.stream()
+                .map(categoryDTOConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<CategoryDTO> getAllCategories() {
