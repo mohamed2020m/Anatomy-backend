@@ -14,11 +14,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class CategoryController {
 
-
-
     private CategoryServiceImpl categoryService;
 
-    public  CategoryController( CategoryServiceImpl  categoryService) {
+    public  CategoryController( CategoryServiceImpl categoryService) {
         this. categoryService =  categoryService;
     }
 

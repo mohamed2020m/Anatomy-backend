@@ -17,4 +17,6 @@ public interface ProfessorService {
     ProfessorDTO updateProfessor(ProfessorDTO professorDTO)throws UserNotFoundException;
 
     void deleteProfessor(Long professorId) throws UserNotFoundException;
+
+    ProfessorDTO getProfessorInfo(String username);
 }

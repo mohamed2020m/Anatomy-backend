@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:14-alpine
-    container_name: postgres_med3DExplorer
+    container_name: med3DExplorer
     ports:
       - 5432:5432
     volumes:

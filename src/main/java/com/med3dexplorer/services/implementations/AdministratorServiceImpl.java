@@ -62,4 +62,11 @@ public class AdministratorServiceImpl implements AdministratorService {
         administratorRepository.delete(administrator);
     }
 
+    @Override
+    public AdministratorDTO getAdminInfo(String username) throws UserNotFoundException {
+        Administrator administrator = administratorRepository.findByEmail(username)
+            .orElseThrow(() -> new UserNotFoundException("Admin not found"));
+
+        return administratorDTOConverter.toDto(administrator);
+    }
 }

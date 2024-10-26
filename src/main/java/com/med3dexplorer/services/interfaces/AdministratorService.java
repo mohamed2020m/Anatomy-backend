@@ -17,4 +17,6 @@ public interface AdministratorService {
     AdministratorDTO updateAdministrator(AdministratorDTO administratorDTO)throws UserNotFoundException;
 
     void deleteAdministrator(Long administratorId) throws UserNotFoundException;
+
+    AdministratorDTO getAdminInfo(String username);
 }

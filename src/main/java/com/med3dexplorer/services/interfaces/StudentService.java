@@ -17,4 +17,6 @@ public interface StudentService {
     StudentDTO updateStudent(StudentDTO studentDTO)throws UserNotFoundException;
 
     void deleteStudent(Long studentId) throws UserNotFoundException;
+
+    StudentDTO getStudentInfo(String username);
 }

@@ -30,15 +30,4 @@ public class Student extends User{
     private Collection<Category> categories=new ArrayList<>();
 
 
-
-
-    /*
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Note> notes;
-
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Favourite> favourites;
-
-    @ManyToMany
-    private List<Category> categories;*/
 }

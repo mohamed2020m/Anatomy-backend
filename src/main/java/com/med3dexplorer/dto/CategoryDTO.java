@@ -14,11 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
-
     private Long id;
     private String name;
     private String description;
     private String image;
     private LocalDateTime createdAt;
-
 }

@@ -3,6 +3,7 @@ package com.med3dexplorer.services.implementations;
 import com.med3dexplorer.dto.StudentDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.StudentDTOConverter;
+import com.med3dexplorer.models.Administrator;
 import com.med3dexplorer.models.Student;
 import com.med3dexplorer.repositories.StudentRepository;
 import com.med3dexplorer.services.interfaces.StudentService;
@@ -62,4 +63,11 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.delete(student);
     }
 
+    @Override
+    public StudentDTO getStudentInfo(String username) throws UserNotFoundException {
+        Student administrator = studentRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("Student not found"));
+
+        return studentDTOConverter.toDto(administrator);
+    }
 }

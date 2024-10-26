@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,8 +26,11 @@ public class ThreeDObject {
     private String description;
     private String descriptionAudio;
     private String image;
-    private LocalDateTime createdAt;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
     @JsonIgnore
@@ -41,8 +46,4 @@ public class ThreeDObject {
 
     @ManyToOne
     private Category category;
-
-
-
-
 }

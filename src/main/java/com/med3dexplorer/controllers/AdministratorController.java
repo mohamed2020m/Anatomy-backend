@@ -14,8 +14,6 @@ import java.util.List;
 @CrossOrigin("*")
 public class AdministratorController {
 
-
-
     private AdministratorServiceImpl administratorService;
 
     public  AdministratorController( AdministratorServiceImpl  administratorService) {
@@ -46,8 +44,6 @@ public class AdministratorController {
         AdministratorDTO updatedAdministrator = administratorService.updateAdministrator(administratorDTO);
         return ResponseEntity.ok(updatedAdministrator);
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAdministrator(@PathVariable Long id){

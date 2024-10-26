@@ -14,16 +14,13 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ProfessorServiceImpl implements ProfessorService {
-
     private final ProfessorDTOConverter  professorDTOConverter;
     private ProfessorRepository professorRepository;
-
 
     public ProfessorServiceImpl(ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter) {
         this.professorDTOConverter = professorDTOConverter;
         this.professorRepository = professorRepository;
     }
-
 
     @Override
     public ProfessorDTO saveProfessor(ProfessorDTO professorDTO){
@@ -54,11 +51,17 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorDTOConverter.toDto(updatedProfessor);
     }
 
-
     @Override
     public void deleteProfessor(Long professorId) throws UserNotFoundException {
         Professor professor=professorRepository.findById(professorId).orElseThrow(() -> new UserNotFoundException("Professor not found"));
         professorRepository.delete(professor);
     }
 
+    @Override
+    public ProfessorDTO getProfessorInfo(String username)  throws UserNotFoundException{
+        Professor administrator = professorRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("Professor not found"));
+
+        return professorDTOConverter.toDto(administrator);
+    }
 }
