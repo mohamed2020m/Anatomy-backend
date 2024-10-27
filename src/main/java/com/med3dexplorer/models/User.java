@@ -18,7 +18,7 @@ import java.util.List;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -44,9 +44,26 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Transient
+    private String role;
+
+    public User() {
+        setRoleBasedOnType();
+    }
+
+    private void setRoleBasedOnType() {
+        if (this instanceof Administrator) {
+            this.role = "ROLE_ADMIN";
+        } else if (this instanceof Professor) {
+            this.role = "ROLE_PROF";
+        } else {
+            this.role = "ROLE_STUD";
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role;
+        //String role;
         if (this instanceof Administrator) {
             role = Role.ROLE_ADMIN.name();
         } else if (this instanceof Professor) {
@@ -54,6 +71,7 @@ public class User implements UserDetails {
         } else {
             role = Role.ROLE_STUD.name();
         }
+        setRoleBasedOnType();
         return List.of(() -> role);
     }
 
