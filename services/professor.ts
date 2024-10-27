@@ -1,4 +1,4 @@
-import { Category } from "../constants/data"
+import { Professor } from "../constants/data"
 import { Session } from "../types/next-auth"
 import getServerSession from 'next-auth';
 import authConfig from '../auth.config';
@@ -13,8 +13,8 @@ const getSessionToken = async () => {
     return auth.user.access_token;
 }
 
-// Fetch all categories
-export const fetchCategories = async (): Promise<Category[]> => {
+// Fetch all professors
+export const fetchProfessors = async (): Promise<Professor[]> => {
     const token = await getSessionToken();
     console.log('jwt token', token);
     
@@ -24,20 +24,20 @@ export const fetchCategories = async (): Promise<Category[]> => {
     }
     console.log('headers', headers);
 
-    const response = await fetch(`${API_URL}/categories`, {
+    const response = await fetch(`${API_URL}/professors`, {
         method: 'GET',
         headers: headers
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch categories');
+        throw new Error('Failed to fetch professors');
     }
 
     return await response.json();
 };
 
 
-export const fetchCategoriesByID = async (): Promise<Category[]> => {
+export const fetchProfessorsByID = async (): Promise<Professor[]> => {
     const token = await getSessionToken();
         
     const headers = {
@@ -46,50 +46,45 @@ export const fetchCategoriesByID = async (): Promise<Category[]> => {
     }
     console.log('headers', headers);
 
-    const response = await fetch(`${API_URL}/categories`, {
+    const response = await fetch(`${API_URL}/professors`, {
         method: 'GET',
         headers: headers
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch categories');
+        throw new Error('Failed to fetch professors');
     }
 
     return await response.json();
 };
 
 
-export const categoriesService = {
-    records: [] as Category[], // Holds the list of category objects
+export const professorsService = {
+    records: [] as Professor[], // Holds the list of professor objects
 
     // Initialize with fetched data
     async initialize() {
-        this.records = await fetchCategories(); // Fetch categories from API
+        this.records = await fetchProfessors(); // Fetch professors from API
     },
 
-    // Get all categories with optional search
+    // Get all professors with optional search
     async getAll({ search }: { search?: string }) {
-        let categories = [...this.records];
+        let professors = [...this.records];
 
         // Search functionality across multiple fields
         if (search) {
-            categories = categories.filter(category =>
-                category.name.toLowerCase().includes(search.toLowerCase()) ||
-                category.description.toLowerCase().includes(search.toLowerCase())
+            professors = professors.filter(professor =>
+                professor.firstName.toLowerCase().includes(search.toLowerCase()) ||
+                professor.lastName.toLowerCase().includes(search.toLowerCase())
             );
         }
 
-        // Fetch and set images for each category
-        const categoriesWithImages = await Promise.all(categories.map(async (category) => {
-            const imageUrl = `${API_URL}/files/download/${category.image}` 
-            return { ...category, image: imageUrl }; 
-        }));
 
-        return categoriesWithImages;
+        return professors;
     },
 
     // Get paginated results with optional search
-    async getCategories({
+    async getProfessors({
         page = 1,
         limit = 10,
         search
@@ -98,22 +93,22 @@ export const categoriesService = {
         limit?: number;
         search?: string;
     }) {
-        const allCategories = await this.getAll({ search });
-        const totalCategories = allCategories.length;
+        const allProfessors = await this.getAll({ search });
+        const totalProfessors = allProfessors.length;
 
         // Pagination logic
         const offset = (page - 1) * limit;
-        const paginatedCategories = allCategories.slice(offset, offset + limit);
+        const paginatedProfessors = allProfessors.slice(offset, offset + limit);
 
         // Return paginated response
         return {
             success: true,
-            total_categories: totalCategories,
+            total_professors: totalProfessors,
             offset,
             limit,
-            categories: paginatedCategories
+            professors: paginatedProfessors
         };
     }
 };
 
-categoriesService.initialize();
+professorsService.initialize();
