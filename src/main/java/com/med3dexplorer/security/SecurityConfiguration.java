@@ -55,7 +55,8 @@ public class SecurityConfiguration {
                             "/v3/api-docs/**"
                     ).permitAll()
                     .requestMatchers("/api/v1/administrators/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/professors/**").hasRole("PROF")
+                    .requestMatchers("/api/v1/professors/**").hasAnyRole("PROF", "ADMIN")
+                    .requestMatchers("/api/v1/categories/**").hasAnyRole("PROF", "ADMIN")
                     .requestMatchers("/api/v1/students/**").hasRole("STUD")
                     .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasRole("STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
