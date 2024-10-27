@@ -38,7 +38,7 @@ public class CategoryController {
 
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategorys() {
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 

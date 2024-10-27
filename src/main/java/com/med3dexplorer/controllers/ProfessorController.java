@@ -53,4 +53,9 @@ public class ProfessorController {
             professorService.deleteProfessor(id);
             return new ResponseEntity("Professor deleted successfully", HttpStatus.OK);
         }
+
+        @GetMapping("/count")
+        public Long getProfessorCount() {
+            return professorService.getProfessorsCount();
+    }
 }

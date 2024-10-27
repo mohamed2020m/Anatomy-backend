@@ -19,4 +19,6 @@ public interface ProfessorService {
     void deleteProfessor(Long professorId) throws UserNotFoundException;
 
     ProfessorDTO getProfessorInfo(String username);
+
+    Long getProfessorsCount();
 }
