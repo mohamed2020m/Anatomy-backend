@@ -20,7 +20,6 @@ public class ProfessorDTO {
     private String password;
     private String role;
     private Category category;
-    private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
