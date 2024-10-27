@@ -37,11 +37,11 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy="category",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="category",fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JsonIgnore
     private List<ThreeDObject> threeDObjects;
 
-    @OneToMany(mappedBy="category", fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="category",fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JsonIgnore
     private List<Professor> professors;
 
@@ -56,4 +56,18 @@ public class Category {
     @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<Student> students=new ArrayList<>();
+
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", professorCount=" + (professors != null ? professors.size() : 0) +
+                '}';
+    }
 }

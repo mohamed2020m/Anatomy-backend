@@ -1,5 +1,9 @@
 package com.med3dexplorer.controllers;
 
+import com.med3dexplorer.dto.AdministratorDTO;
+import com.med3dexplorer.dto.ProfessorDTO;
+import com.med3dexplorer.dto.StudentDTO;
+import com.med3dexplorer.models.Role;
 import com.med3dexplorer.security.JwtAuthenticationFilter;
 import com.med3dexplorer.services.interfaces.AdministratorService;
 import com.med3dexplorer.services.interfaces.JwtService;
@@ -42,11 +46,17 @@ public class UserController {
         String role = roles.isEmpty() ? null : roles.get(0);
 
         if ("ROLE_ADMIN".equals(role)) {
-            return ResponseEntity.ok(adminService.getAdminInfo(username));
+            AdministratorDTO admin = adminService.getAdminInfo(username);
+            admin.setRole(Role.ROLE_ADMIN.name());
+            return ResponseEntity.ok(admin);
         } else if ("ROLE_STUD".equals(role)) {
-            return ResponseEntity.ok(studentService.getStudentInfo(username));
+            StudentDTO studentDTO = studentService.getStudentInfo(username);
+            studentDTO.setRole(Role.ROLE_STUD.name());
+            return ResponseEntity.ok(studentDTO);
         } else if ("ROLE_PROF".equals(role)) {
-            return ResponseEntity.ok(professorService.getProfessorInfo(username));
+            ProfessorDTO professorDTO = professorService.getProfessorInfo(username);
+            professorDTO.setRole(Role.ROLE_PROF.name());
+            return ResponseEntity.ok(professorDTO);
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Role not recognized.");
         }

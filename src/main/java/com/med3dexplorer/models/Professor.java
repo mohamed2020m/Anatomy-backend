@@ -11,10 +11,17 @@ import java.util.List;
 @DiscriminatorValue("PROF")
 public class Professor extends User {
 
-//    @OneToMany(mappedBy="professor",fetch=FetchType.LAZY)
-//    @JsonIgnore
-//    private List<ThreeDObject> threeDObjects;
-
     @ManyToOne
+    @JoinColumn(unique = true)
     private Category category;
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "id=" + getId() +
+                ", name='" + getFirstName() + " " + getLastName() + '\'' +
+                ", categoryId=" + (category != null ? category.getId() : null) +
+                '}';
+    }
+
 }

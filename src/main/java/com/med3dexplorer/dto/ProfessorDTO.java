@@ -19,6 +19,7 @@ public class ProfessorDTO {
     private String lastName;
     private String password;
     private Category category;
+    private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
