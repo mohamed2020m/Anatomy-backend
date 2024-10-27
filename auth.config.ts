@@ -3,6 +3,8 @@ import CredentialProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
+const BACKEND_API = process.env.BACKEND_API;
+
 const authConfig = {
   providers: [
     GithubProvider({
@@ -19,19 +21,24 @@ const authConfig = {
         password: { label: 'Password', type: 'password' }
       },
 
-      async authorize(credentials, req) {
-        // Step 1: Authenticate the user
+      async authorize(credentials) {
+
         const res = await fetch(
-          'http://localhost:8080/api/v1/auth/authenticate',
+          `${BACKEND_API}/api/v1/auth/login`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
             body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password
+              email: credentials?.email,
+              password: credentials?.password
             })
           }
         );
+
+        
 
         // const authData = await res.text();
         // console.log("authData:", authData);
@@ -50,24 +57,28 @@ const authConfig = {
         // console.log("Response status:", res.status);
 
         // Check if the authentication was successful
+
         if (!res.ok) {
           throw new Error('Invalid login credentials');
         }
 
         const authData = await res.json();
 
-        // Step 2: Fetch the user details using the user_id from authentication response
+
+        // Step 2: Fetch user details
         const userRes = await fetch(
-          `http://localhost:8080/api/v1/auth/user/${authData.user_id}`,
+          `${BACKEND_API}/api/v1/me`,
           {
             headers: {
-              Authorization: `Bearer ${authData.access_token}`
+              'Authorization': `Bearer ${authData.accessToken}`,
+              'Accept': 'application/json'
             }
           }
         );
 
         if (!userRes.ok) {
-          throw new Error('Failed to fetch user details');
+          const errorData = await userRes.json();
+          throw new Error(errorData.message || 'Failed to fetch user details');
         }
 
         const user = await userRes.json();
@@ -77,14 +88,15 @@ const authConfig = {
 
         // Combine user info and token in a format NextAuth expects
         return {
-          id: user.id,
-          name: user.firstname + ' ' + user.lastname,
-          firstname: user.firstname,
-          lastname: user.lastname,
+          id: user.id.toString(),
+          name: `${user.firstName} ${user.lastName}`,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           role: user.role,
-          access_token: authData.access_token,
-          refresh_token: authData.refresh_token,
+          access_token: authData.accessToken,
+          refresh_token: authData.refreshToken,
+          expires_in: authData.expiresIn
         };
       }
     })
@@ -97,12 +109,13 @@ const authConfig = {
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.firstname = user.firstname;
-        token.lastname = user.lastname;
+        token.firstName = user.firstname;
+        token.lastName = user.lastname;
         token.email = user.email;
         token.role = user.role;
         token.access_token = user.access_token;
         token.refresh_token = user.refresh_token;
+        //token.expires_in = user.expires_in;
       }
       return token;
     },

@@ -9,6 +9,15 @@ export type User = {
   status: string;
 };
 
+export type Professor = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  category: String;
+};
+
+
 export const users: User[] = [
   {
     id: 1,
@@ -134,6 +143,12 @@ export const navItems: NavItem[] = [
     href: '/dashboard/categories',
     icon: 'folder',
     label: 'Categories'
+  },
+  {
+    title: 'Professor',
+    href: '/dashboard/professor',
+    icon: 'user',
+    label: 'professor'
   },
   {
     title: 'Employee',
