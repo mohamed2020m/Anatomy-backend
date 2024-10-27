@@ -64,4 +64,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 
         return professorDTOConverter.toDto(prof);
     }
+
+    @Override
+    public Long getProfessorsCount() {
+        return professorRepository.count();
+    }
 }
