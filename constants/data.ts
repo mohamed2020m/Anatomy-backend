@@ -26,6 +26,15 @@ export type Professor = {
   category: Category;
 };
 
+
+export type Student = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+};
+
 export type Admin = {
   id: number;
   email: string;
@@ -179,12 +188,19 @@ export const navItems: NavItem[] = [
     roles: ['ROLE_ADMIN'], 
   },
   {
-    title: 'Employee',
-    href: '/admin/employee',
-    icon: 'user',
-    label: 'Employee',
+    title: 'Students',
+    href: '/admin/students',
+    icon: 'product',
+    label: 'Students',
     roles: ['ROLE_ADMIN'],  
   },
+  // {
+  //   title: 'Employee',
+  //   href: '/admin/employee',
+  //   icon: 'user',
+  //   label: 'Employee',
+  //   roles: ['ROLE_ADMIN'],  
+  // },
   {
     title: 'Product',
     href: '/prof/product', // Prof product path
