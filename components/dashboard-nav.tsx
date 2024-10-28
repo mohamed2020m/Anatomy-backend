@@ -23,6 +23,9 @@ import {
   TooltipTrigger
 } from './ui/tooltip';
 
+import { useSession } from 'next-auth/react'; // Import NextAuth
+
+
 interface DashboardNavProps {
   items: NavItem[];
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -114,6 +117,22 @@ export function DashboardNav({
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const { isAboveLg } = useBreakpoint('lg');
 
+  const { data: session } = useSession(); // Get the session data
+
+  const userRoles = session?.user?.role || [];
+
+  // Filter nav items based on user roles
+  const filteredItems = useMemo(() => {
+    return items.filter(item => 
+      !item.roles || item.roles.some(role => userRoles.includes(role))
+    ).map(item => ({
+      ...item,
+      children: item.children?.filter(child => 
+        !child.roles || child.roles.some(role => userRoles.includes(role))
+      )
+    }));
+  }, [items, userRoles]);
+
   const toggleExpand = useCallback((title: string) => {
     setExpandedItems((prev) => {
       const newSet = new Set(prev);
@@ -197,7 +216,8 @@ export function DashboardNav({
     [expandedItems, isMinimized, isAboveLg, path, handleSetOpen, toggleExpand]
   );
 
-  const memoizedItems = useMemo(() => items, [items]);
+  // const memoizedItems = useMemo(() => items, [items]);
+  const memoizedItems = useMemo(() => filteredItems, [filteredItems]);
 
   if (!memoizedItems?.length) {
     return null;

@@ -79,7 +79,7 @@ export default function CategoriesForm() {
   }
 
   async function createCategory(data: { id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/category/add`, {
+    const response = await fetch(`${APP_URL}/categories`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,

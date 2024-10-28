@@ -122,57 +122,119 @@ export type Product = {
   updated_at: string;
 };
 
+
 export const navItems: NavItem[] = [
   {
     title: 'Dashboard',
-    href: '/dashboard',
+    href: '/admin/dashboard', 
     icon: 'dashboard',
-    label: 'Dashboard'
+    label: 'Dashboard',
+    roles: ['ROLE_ADMIN'],  
   },
   {
     title: 'Categories',
-    href: '/dashboard/categories',
+    href: '/admin/categories', 
     icon: 'folder',
-    label: 'Categories'
+    label: 'Categories',
+    roles: ['ROLE_ADMIN'],  
   },
   {
     title: 'Employee',
-    href: '/dashboard/employee',
+    href: '/admin/employee',
     icon: 'user',
-    label: 'employee'
+    label: 'Employee',
+    roles: ['ROLE_ADMIN'],  
   },
   {
     title: 'Product',
-    href: '/dashboard/product',
+    href: '/prof/product', // Prof product path
     icon: 'product',
-    label: 'product'
+    label: 'Product',
+    roles: ['ROLE_PROF'],  
   },
   {
     title: 'Account',
     icon: 'user',
-    label: 'account',
+    label: 'Account',
+    roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
     children: [
       {
         title: 'Profile',
-        href: '/dashboard/profile',
+        href: '/prof/profile',
         icon: 'userPen',
-        label: 'profile'
+        label: 'Profile',
+        roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
       },
       {
         title: 'Login',
         href: '/',
         icon: 'login',
-        label: 'login'
-      }
-    ]
+        label: 'Login',
+        roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
+      },
+    ],
   },
   {
     title: 'Kanban',
-    href: '/dashboard/kanban',
+    href: '/prof/kanban', 
     icon: 'kanban',
-    label: 'kanban'
-  }
+    label: 'Kanban',
+    roles: ['ROLE_ADMIN','ROLE_PROF'],  
+  },
 ];
+
+
+// export const navItems: NavItem[] = [
+//   {
+//     title: 'Dashboard',
+//     href: '/dashboard',
+//     icon: 'dashboard',
+//     label: 'Dashboard'
+//   },
+//   {
+//     title: 'Categories',
+//     href: '/dashboard/categories',
+//     icon: 'folder',
+//     label: 'Categories'
+//   },
+//   {
+//     title: 'Employee',
+//     href: '/dashboard/employee',
+//     icon: 'user',
+//     label: 'employee'
+//   },
+//   {
+//     title: 'Product',
+//     href: '/dashboard/product',
+//     icon: 'product',
+//     label: 'product'
+//   },
+//   {
+//     title: 'Account',
+//     icon: 'user',
+//     label: 'account',
+//     children: [
+//       {
+//         title: 'Profile',
+//         href: '/dashboard/profile',
+//         icon: 'userPen',
+//         label: 'profile'
+//       },
+//       {
+//         title: 'Login',
+//         href: '/',
+//         icon: 'login',
+//         label: 'login'
+//       }
+//     ]
+//   },
+//   {
+//     title: 'Kanban',
+//     href: '/dashboard/kanban',
+//     icon: 'kanban',
+//     label: 'kanban'
+//   }
+// ];
 
 
 export type Category = {

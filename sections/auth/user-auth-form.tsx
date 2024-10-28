@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { signIn, getSession} from 'next-auth/react';
 // import { signIn } from "@/auth"
 import { useSearchParams } from 'next/navigation';
 import { useState, useTransition } from 'react';
@@ -79,7 +79,13 @@ export default function UserAuthForm() {
       if (result?.error) {
         setError('Invalid email or password. Please try again.');
       } else {
-        window.location.href = result?.url || '/dashboard';
+        // Fetch the session to get the user’s role
+        const session = await getSession();
+        const userRole = session?.user?.role;
+
+        // Redirect based on the user's role
+        const roleBasedUrl = userRole === 'ROLE_ADMIN' ? '/admin/dashboard' : '/prof/dashboard';
+        window.location.href = roleBasedUrl;
       }
     });
   };
