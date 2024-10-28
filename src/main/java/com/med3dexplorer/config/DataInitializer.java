@@ -109,7 +109,7 @@ public class DataInitializer {
                                 .name("3D Model 1")
                                 .description("A sample 3D object in subcategory 1")
                                 .object("objects-2aac1d72-2c70-4061-a3f6-251ae7e436f6.glb")
-                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .category(subCategory1)
                                 .professor(professor)
                                 .build();

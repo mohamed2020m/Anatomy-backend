@@ -103,7 +103,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> getMainCategories(){
-        List<Category> categories = categoryRepository.findByParentCategoryIsNull();
+        List<Category> categories = categoryRepository.findByParentCategoryIdIsNull();
         List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
         return categoryDTOs;
     }
