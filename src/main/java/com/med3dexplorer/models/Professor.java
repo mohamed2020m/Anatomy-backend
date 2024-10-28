@@ -12,16 +12,20 @@ import java.util.List;
 public class Professor extends User {
 
     @ManyToOne
-    @JoinColumn(unique = true)
+//    @JoinColumn(unique = true)
     private Category category;
+
+    @OneToMany(mappedBy="professor", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<ThreeDObject> threeDObjects;
 
     @Override
     public String toString() {
         return "Professor{" +
-                "id=" + getId() +
-                ", name='" + getFirstName() + " " + getLastName() + '\'' +
-                ", categoryId=" + (category != null ? category.getId() : null) +
-                '}';
+            "id=" + getId() +
+            ", name='" + getFirstName() + " " + getLastName() + '\'' +
+            ", categoryId=" + (category != null ? category.getId() : null) +
+            '}';
     }
 
 }

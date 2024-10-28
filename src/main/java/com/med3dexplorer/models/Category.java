@@ -37,15 +37,27 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy="category",fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+//    @OneToMany(mappedBy="category",fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+//    @JsonIgnore
+//    private List<ThreeDObject> threeDObjects;
+//
+//    @OneToMany(mappedBy="category", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Professor> professors;
+//
+//    @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Category> subCategories;
+
+    @OneToMany(mappedBy="category", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<ThreeDObject> threeDObjects;
 
-    @OneToMany(mappedBy="category",fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="category", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Professor> professors;
 
-    @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parentCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Category> subCategories;
 
