@@ -150,6 +150,7 @@
 // export default authConfig;
 
 
+// TODO: add the refresh token logic later
 
 import { NextAuthConfig } from 'next-auth';
 import CredentialProvider from 'next-auth/providers/credentials';
@@ -200,7 +201,7 @@ const authConfig = {
 
 
         // Step 2: Fetch user details
-        const userRes = await fetch(`http://localhost:8080/api/v1/me`,
+        const userRes = await fetch(`${BACKEND_API}/api/v1/me`,
           {
             headers: {
               Authorization: `Bearer ${authData.accessToken}`
