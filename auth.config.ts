@@ -156,6 +156,8 @@ import CredentialProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
+const BACKEND_API = process.env.BACKEND_API;
+
 const authConfig = {
   providers: [
     GithubProvider({
@@ -172,16 +174,18 @@ const authConfig = {
         password: { label: 'Password', type: 'password' }
       },
 
-      async authorize(credentials, req) {
-        // Step 1: Authenticate the user
-        const res = await fetch(
-          'http://localhost:8080/api/v1/auth/login',
+      async authorize(credentials) {
+
+        const res = await fetch(`${BACKEND_API}/api/v1/auth/login`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
             body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password
+              email: credentials?.email,
+              password: credentials?.password
             })
           }
         );
@@ -194,9 +198,9 @@ const authConfig = {
 
         const authData = await res.json();
 
-        // Step 2: Fetch the user details using the user_id from authentication response
-        const userRes = await fetch(
-          `http://localhost:8080/api/v1/me`,
+
+        // Step 2: Fetch user details
+        const userRes = await fetch(`http://localhost:8080/api/v1/me`,
           {
             headers: {
               Authorization: `Bearer ${authData.accessToken}`
@@ -205,7 +209,8 @@ const authConfig = {
         );
 
         if (!userRes.ok) {
-          throw new Error('Failed to fetch user details');
+          const errorData = await userRes.json();
+          throw new Error(errorData.message || 'Failed to fetch user details');
         }
 
         const user = await userRes.json();
@@ -236,8 +241,8 @@ const authConfig = {
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.firstname = user.firstname;
-        token.lastname = user.lastname;
+        token.firstName = user.firstname;
+        token.lastName = user.lastname;
         token.email = user.email;
         token.role = user.role;
         token.access_token = user.access_token;

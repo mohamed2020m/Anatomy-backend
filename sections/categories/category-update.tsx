@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-const APP_URL = 'http://localhost:8080/api/v1';
+const APP_URL = `${process.env.BACKEND_API}/api/v1`
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -82,7 +82,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
         throw new Error('Unauthorized');
       }
       try {
-        const response = await fetch(`${APP_URL}/category/${categoryId}`, {
+        const response = await fetch(`${APP_URL}/categories/${categoryId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -139,7 +139,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
   }
 
   async function updateCategory(data: {id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/category/update`, {
+    const response = await fetch(`${APP_URL}/category`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
