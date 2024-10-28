@@ -37,7 +37,7 @@ export const columns: ColumnDef<Professor>[] = [
     header: 'EMAIL'
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'category.name',
     header: 'CATEGORY'
   },
   {
