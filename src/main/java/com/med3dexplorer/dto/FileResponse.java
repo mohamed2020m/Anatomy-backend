@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class ResponseMessage {
-    private String status;
+public class FileResponse {
     private String message;
+    private String path;
 }

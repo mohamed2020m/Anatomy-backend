@@ -26,7 +26,6 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-
     @Override
     public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
 
@@ -64,6 +63,14 @@ public class CategoryServiceImpl implements CategoryService {
         return subcategories.stream()
                 .map(categoryDTOConverter::toDto)
                 .collect(Collectors.toList());
+    }
+
+    // getting categories crated by the admin
+    @Override
+    public List<CategoryDTO> getCategories() {
+        List<Category> categories = categoryRepository.findByParentCategoryIdIsNull();
+        List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
+        return categoryDTOs;
     }
 
 
