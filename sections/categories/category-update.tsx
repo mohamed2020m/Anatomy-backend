@@ -16,10 +16,11 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-const APP_URL = `${process.env.BACKEND_API}/api/v1`
+// const APP_URL = 'http://localhost:8080/api/v1';
+const APP_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
 const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 // const formSchema = z.object({
 //   name: z.string().min(2, {
@@ -77,6 +78,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
   // Fetch category data by id and populate form
   useEffect(() => {
     const fetchCategory = async () => {
+      console.log("categoryId: ", categoryId);
       const token = session?.user?.access_token;
       if (!token) {
         throw new Error('Unauthorized');
@@ -102,7 +104,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
         form.reset({
           name: category.name,
           description: category.description,
-          image: null, // Handle image upload separately
+          image: null,
         });
       } catch (error) {
         toast({
@@ -135,11 +137,11 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
     }
 
     const data = await response.json();
-    return data.image; 
+    return data.path; 
   }
 
   async function updateCategory(data: {id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/category`, {
+    const response = await fetch(`${APP_URL}/categories/${data.id}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -196,7 +198,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
         id: categoryId,
         name: values.name,
         description: values.description,
-        image: imagePath.replace("/", "-"),
+        image: imagePath.replace("/", "-")
       };
 
       console.log(categoryData);
@@ -212,6 +214,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
       // router.refresh()
       // router.push('/dashboard/categories');
     } catch (error) {
+      console.error("Error: ", error);
       toast({
         title: 'Error',
         description: (error as Error)?.message || 'Failed to update category.',

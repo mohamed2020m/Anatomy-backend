@@ -3,6 +3,9 @@ import { twMerge } from 'tailwind-merge';
 import { Active, DataRef, Over } from '@dnd-kit/core';
 import { ColumnDragData } from '@/sections/kanban/board-column';
 import { TaskDragData } from '@/sections/kanban/task-card';
+import getServerSession from 'next-auth';
+import authConfig from '../auth.config'
+import { Session } from '../types/next-auth'
 
 type DraggableData = ColumnDragData | TaskDragData;
 
@@ -44,4 +47,13 @@ export function formatBytes(
   return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
     sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
   }`;
+}
+
+
+// Get the user role
+export const getUserRole= async () => {
+  const session = await getServerSession(authConfig);
+  const auth : Session = await session.auth();
+  
+  return auth.user.role;
 }
