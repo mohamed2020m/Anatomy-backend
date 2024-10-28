@@ -21,4 +21,6 @@ public interface ProfessorService {
     ProfessorDTO getProfessorInfo(String username);
 
     Long getProfessorsCount();
+
+    List<Object[]> getProfessorsByCategory();
 }

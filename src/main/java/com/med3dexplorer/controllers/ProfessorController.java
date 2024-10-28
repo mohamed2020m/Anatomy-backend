@@ -57,5 +57,10 @@ public class ProfessorController {
         @GetMapping("/count")
         public Long getProfessorCount() {
             return professorService.getProfessorsCount();
-    }
+        }
+
+        @GetMapping("/by-categories")
+        public List<Object[]> getProfessorsByCategory() {
+            return professorService.getProfessorsByCategory();
+        }
 }
