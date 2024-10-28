@@ -92,8 +92,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long categoryId) throws UserNotFoundException {
-        Category category=categoryRepository.findById(categoryId).orElseThrow(() -> new UserNotFoundException("Category not found"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new UserNotFoundException("Category not found"));
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public Long getCategoriesCount() {
+        return categoryRepository.count();
+    }
+
+    @Override
+    public List<CategoryDTO> getMainCategories(){
+        List<Category> categories = categoryRepository.findByParentCategoryIsNull();
+        List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
+        return categoryDTOs;
     }
 
 }
