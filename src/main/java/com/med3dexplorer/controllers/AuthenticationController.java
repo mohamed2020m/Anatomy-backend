@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RequestMapping("/api/v1/auth")
 @RestController
 public class AuthenticationController {
+    private static final Logger logger = Logger.getLogger(AuthenticationController.class.getName());
+
     private final JwtServiceImpl jwtService;
     private final AuthenticationServiceImpl authenticationService;
     private final UserDetailsService userDetailsService;
@@ -98,26 +101,34 @@ public class AuthenticationController {
 
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<LoginResponseDTO> refreshAccessToken(@RequestBody TokenRefreshRequestDTO request) {
+    public ResponseEntity<?> refreshAccessToken(@RequestBody TokenRefreshRequestDTO request) {
+        logger.info("Called refresh token endpoint");
         String refreshToken = request.getRefreshToken();
-        String username = jwtService.extractUsername(refreshToken);
+        try{
+            String username = jwtService.extractUsername(refreshToken);
 
-        // Load UserDetails using the userDetailsService
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // Load UserDetails using the userDetailsService
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        if (jwtService.isTokenValid(refreshToken, userDetails)) {
-            String newAccessToken = jwtService.generateToken(userDetails);
+            if (jwtService.isTokenValid(refreshToken, userDetails)) {
+                String newAccessToken = jwtService.generateToken(userDetails);
 
-            List<String> roles = jwtService.extractRoles(newAccessToken);
-            String role = roles.isEmpty() ? null : roles.get(0);
+                List<String> roles = jwtService.extractRoles(newAccessToken);
+                String role = roles.isEmpty() ? null : roles.get(0);
 
-            return ResponseEntity.ok(new LoginResponseDTO()
-                    .setAccessToken(newAccessToken)
-                    .setExpiresIn(jwtService.getExpirationTime())
-                    .setRole(Role.valueOf(role))
-                    .setRefreshToken(refreshToken));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return ResponseEntity.ok(new LoginResponseDTO()
+                        .setAccessToken(newAccessToken)
+                        .setExpiresIn(jwtService.getExpirationTime())
+                        .setRole(Role.valueOf(role))
+                        .setRefreshToken(refreshToken));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ResponseMessage("Error", "Invalid refresh token"));
+            }
+        }catch (Exception error){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ResponseMessage("Error", error.getMessage()));
         }
+
     }
 }
