@@ -36,12 +36,17 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getSubCategoryByCategoryId(id));
     }
 
-
+    // This will get only admin categories
     @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getCategories() {
+        return ResponseEntity.ok(categoryService.getCategories());
+    }
+
+
+    @GetMapping("/all")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {

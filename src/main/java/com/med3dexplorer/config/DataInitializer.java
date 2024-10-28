@@ -55,7 +55,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Main Category")
                                 .description("A primary category for 3D objects")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .build();
                         return categoryRepository.save(category);
                     });
@@ -65,7 +65,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Subcategory 1")
                                 .description("First subcategory")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .parentCategory(mainCategory)
                                 .build();
                         return categoryRepository.save(category);
@@ -76,7 +76,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Subcategory 2")
                                 .description("Second subcategory")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .parentCategory(mainCategory)
                                 .build();
                         return categoryRepository.save(category);
@@ -109,7 +109,7 @@ public class DataInitializer {
                                 .name("3D Model 1")
                                 .description("A sample 3D object in subcategory 1")
                                 .object("objects-2aac1d72-2c70-4061-a3f6-251ae7e436f6.glb")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .category(subCategory1)
                                 .professor(professor)
                                 .build();
