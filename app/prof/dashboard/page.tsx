@@ -1,7 +1,7 @@
 import { OverViewPageView } from '@/sections/overview/view';
 
 export const metadata = {
-  title: 'AnatoLearn | Dashboard',
+  title: 'Med3D Explorer | Dashboard',
   icons: 'logo.png'
 };
 
