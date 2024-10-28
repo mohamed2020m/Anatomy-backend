@@ -1,20 +1,20 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
-import ProfessorsTable from '../professor-tables';
+import ProfessorsTable from '../student-tables';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import { Professor } from '@/constants/data';
+import { Student } from '@/constants/data';
 import { searchParamsCache } from '@/lib/searchparams';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import { professorsService } from '@/services/professor';
+import { studentService } from '@/services/student';
 
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/admin' },
-  { title: 'Professor', link: '/admin/professor' }
+  { title: 'Students', link: '/admin/students' }
 ];
 
 type TProfessorsListingPage = {};
@@ -35,11 +35,11 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
 
   
   // get data from the service
-  await professorsService.initialize();
-  const data = await professorsService.getProfessors(filters);
-  const totalProfessors = data.total_professors;
-  const professors: Professor[] = data.professors;
-  console.log("professors: ", professors);
+  await studentService.initialize();
+  const data = await studentService.getStudents(filters);
+  const totalStudents = data.total_students;
+  const students: Student[] = data.students;
+  console.log("Students: ", students);
   
   return (
     <PageContainer scrollable>
@@ -48,19 +48,19 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Professors (${totalProfessors})`}
-            description="Manage professorss"
+            title={`Students (${totalStudents})`}
+            description="Manage students"
           />
 
           <Link
-            href={'/admin/professor/new'}
+            href={'/admin/students/new'}
             className={cn(buttonVariants({ variant: 'default' }))}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New
           </Link>
         </div>
         <Separator />
-        <ProfessorsTable data={professors} totalData={totalProfessors} />
+        <ProfessorsTable data={students} totalData={totalStudents} />
       </div>
     </PageContainer>
   );

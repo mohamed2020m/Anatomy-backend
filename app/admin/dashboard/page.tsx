@@ -1,4 +1,4 @@
-import { OverViewPageView } from '@/sections/overview/view';
+import { OverViewPageView } from '@/sections/overview/admin/view';
 
 export const metadata = {
   title: 'Admin | Dashboard',
