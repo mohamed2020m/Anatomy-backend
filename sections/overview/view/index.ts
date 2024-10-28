@@ -1,1 +1,1 @@
-export { default as OverViewPageView } from './overviewOld';
+export { default as OverViewPageView } from './overview';
