@@ -22,36 +22,12 @@ const formSchema = z.object({
   lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-  categoryId: z.number().int().nonnegative({ message: 'Please select a category.' }),
 });
 
-export default function ProfessorForm() {
+export default function AdminForm() {
   const session = useSession();
-  const [categories, setCategories] = React.useState<{ id: number; name: string }[]>([]);
   const router = useRouter();
 
-React.useEffect(() => {
-  async function fetchCategories() {
-    try {
-      const response = await fetch(`${API_URL}/categories/main`, {
-        headers: {
-          'Authorization': `Bearer ${session.data?.user.access_token}`,
-          'Content-Type': 'application/json'
-        },
-      });
-      const data = await response.json();
-      setCategories(data);
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch categories.',
-        variant: 'destructive',
-      });
-    }
-  }
-
-  fetchCategories();
-}, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,8 +39,8 @@ React.useEffect(() => {
     }
   });
 
-  async function createProfessor(data: { firstName: string; lastName: string; email: string; password: string; category: { id: number } }, token: string) {
-    const response = await fetch(`${API_URL}/professors`, {
+  async function createAdmin(data: { firstName: string; lastName: string; email: string; password: string }, token: string) {
+    const response = await fetch(`${API_URL}/administrators`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -77,7 +53,7 @@ React.useEffect(() => {
     //console.log("Response data:", responseData);
 
     if (!response.ok) {
-      throw new Error('Failed to create professor');
+      throw new Error('Failed to create admin');
     }
 
     return await response.json();
@@ -90,22 +66,19 @@ React.useEffect(() => {
       throw new Error('Unauthorized');
     }
 
-    // Prepare professor data with category
-    const professorData = {
+    // Prepare admin data
+    const adminData = {
       firstName: values.firstName,
       lastName: values.lastName,
       email: values.email,
       password: values.password,
-      category: {
-        id: values.categoryId,
-      },
     };
 
-    const res = await createProfessor(professorData, access_token);
+    const res = await createAdmin(adminData, access_token);
 
     toast({
       title: 'Success',
-      description: res.message || 'Professor created successfully',
+      description: res.message || 'Admin created successfully',
       variant: 'success',
     });
 
@@ -114,7 +87,7 @@ React.useEffect(() => {
   } catch (error) {
     toast({
       title: 'Error',
-      description: (error as Error)?.message || 'Failed to create professor.',
+      description: (error as Error)?.message || 'Failed to create admin.',
       variant: 'destructive',
     });
   }
@@ -123,7 +96,7 @@ React.useEffect(() => {
   return (
     <Card className="mx-auto w-full">
       <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">Professor Information</CardTitle>
+        <CardTitle className="text-left text-2xl font-bold">Admin Information</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -181,30 +154,7 @@ React.useEffect(() => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        className="form-select"
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
             </div>
             <Button type="submit">Submit</Button>
           </form>

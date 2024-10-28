@@ -8,32 +8,25 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { FileUploader } from '@/components/file-uploader';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-//const APP_URL = `${process.env.BACKEND_API}/api/v1`
-const APP_URL = 'http://localhost:8080/api/v1';
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
-
-
-// Define schema based
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'First name must be at least 2 characters.' }),
   lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  categoryId: z.number().int().nonnegative({ message: 'Please select a category.' }),
 });
-
 
 export default function ProfessorUpdate({ professorId }: { professorId: number }) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const [initialData, setInitialData] = useState<{ firstName: string; lastName: string; email: string; password: string } | null>(null);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,11 +35,33 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      categoryId: 0
     }
   });
 
-  // Fetch professor data by id and populate form
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_URL}/categories/main`, {
+          headers: {
+            'Authorization': `Bearer ${session?.user.access_token}`,
+            'Content-Type': 'application/json'
+          },
+        });
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch categories.',
+          variant: 'destructive',
+        });
+      }
+    };
+    fetchCategories();
+  }, [session]);
+
   useEffect(() => {
     const fetchProfessor = async () => {
       const token = session?.user?.access_token;
@@ -54,7 +69,7 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
         throw new Error('Unauthorized');
       }
       try {
-        const response = await fetch(`${APP_URL}/professors/${professorId}`, {
+        const response = await fetch(`${API_URL}/professors/${professorId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,17 +81,12 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
         }
 
         const professor = await response.json();
-        setInitialData({
-          firstName: professor.firstName,
-          lastName: professor.lastName,
-          email: professor.email,
-          password: professor.password,
-        });
         form.reset({
           firstName: professor.firstName,
           lastName: professor.lastName,
           email: professor.email,
           password: professor.password,
+          categoryId: professor.category.id, // Set initial category ID here
         });
       } catch (error) {
         toast({
@@ -92,10 +102,8 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
     fetchProfessor();
   }, [professorId, session, form]);
 
-
-
-  async function updateProfessor(data: { firstName: string; lastName: string; email: string; password: string }, token: string) {
-    const response = await fetch(`${APP_URL}/professors`, {
+  async function updateProfessor(data: { firstName: string; lastName: string; email: string; password: string; category: { id: number } }, token: string) {
+    const response = await fetch(`${API_URL}/professors/${professorId}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -111,7 +119,6 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
     return await response.json();
   }
 
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const access_token = session?.user?.access_token;
@@ -119,25 +126,25 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
         throw new Error('Unauthorized');
       }
 
-      // Prepare professor data
       const professorData = {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
-        password: values.password
+        password: values.password,
+        category: {
+          id: values.categoryId,
+        },
       };
-
-      console.log(professorData);
 
       const res = await updateProfessor(professorData, access_token);
       
       toast({
         title: 'Success',
-        description: res.message,
+        description: res.message || 'Professor updated successfully',
         variant: 'success',
       });
 
-
+      //router.push('dashboard/professor'); // Redirect after update
     } catch (error) {
       toast({
         title: 'Error',
@@ -147,9 +154,8 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
     }
   }
 
-
   if (isLoading) {
-    return <p>Loading...</p>; // Add a loader if needed
+    return <p>Loading...</p>;
   }
 
   return (
@@ -208,6 +214,31 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Enter password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="form-select"
+                        defaultValue={field.value}
+                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

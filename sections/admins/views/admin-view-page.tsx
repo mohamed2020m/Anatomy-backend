@@ -1,20 +1,20 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import ProfessorForm from '../professor-form';
-import ProfessorUpdate from '../professor-update';
+import AdminForm from '../admin-form';
+import AdminUpdate from '../admin-update';
 import PageContainer from '@/components/layout/page-container';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/admin' },
-  { title: 'Professor', link: '/admin/professor' },
-  { title: 'Create', link: '/admin/professor/create' }
+  { title: 'admin', link: '/admin/administrators' },
+  { title: 'Create', link: '/admin/administrators/create' }
 ];
 
-interface professorViewPageProps {
-  professorId?: number;
+interface adminViewPageProps {
+  adminId?: number;
 }
 
-export default function professorViewPage({ professorId }: professorViewPageProps) {
+export default function professorViewPage({ adminId }: adminViewPageProps) {
   return (
     <>
       <div className="flex-1 space-y-4 px-8">
@@ -22,10 +22,10 @@ export default function professorViewPage({ professorId }: professorViewPageProp
       </div>
       <PageContainer scrollable>
         <div className="flex-1 space-y-4 p-8">
-          {professorId ?
-            <ProfessorUpdate professorId={professorId} />
+          {adminId ?
+            <AdminUpdate professorId={adminId} />
             :
-            <ProfessorForm />
+            <AdminForm />
           }
         </div>
       </PageContainer>

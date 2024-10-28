@@ -9,12 +9,38 @@ export type User = {
   status: string;
 };
 
+
+export type Category = {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+};
+
+
 export type Professor = {
   id: number;
   email: string;
   firstName: string;
   lastName: string;
-  category: String;
+  category: Category;
+};
+
+
+export type Student = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+};
+
+export type Admin = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
 };
 
 
@@ -144,22 +170,37 @@ export const navItems: NavItem[] = [
     title: 'Categories',
     href: '/admin/categories', 
     icon: 'folder',
-    label: 'Categories',
+    label: 'Category',
     roles: ['ROLE_ADMIN'],  
   },
   {
     title: 'Professor',
-    href: '/dashboard/professor',
+    href: '/admin/professor',
     icon: 'user',
-    label: 'professor'
+    label: 'Professor',
+    roles: ['ROLE_ADMIN'], 
   },
   {
-    title: 'Employee',
-    href: '/admin/employee',
+    title: 'Adminstrators',
+    href: '/admin/administrators',
     icon: 'user',
-    label: 'Employee',
+    label: 'Adminstrator',
+    roles: ['ROLE_ADMIN'], 
+  },
+  {
+    title: 'Students',
+    href: '/admin/students',
+    icon: 'product',
+    label: 'Students',
     roles: ['ROLE_ADMIN'],  
   },
+  // {
+  //   title: 'Employee',
+  //   href: '/admin/employee',
+  //   icon: 'user',
+  //   label: 'Employee',
+  //   roles: ['ROLE_ADMIN'],  
+  // },
   {
     title: 'Product',
     href: '/prof/product', // Prof product path
@@ -250,11 +291,3 @@ export const navItems: NavItem[] = [
 //     label: 'kanban'
 //   }
 // ];
-
-
-export type Category = {
-  id: number;
-  image: string;
-  name: string;
-  description: string;
-};

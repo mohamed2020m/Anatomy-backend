@@ -8,19 +8,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Professor } from '@/constants/data';
+import { Admin } from '@/constants/data';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from '@/components/ui/use-toast';
 
-//const APP_URL = `${process.env.BACKEND_API}/api/v1`
-const APP_URL = 'http://localhost:8080/api/v1';
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
 
 interface CellActionProps {
-  data: Professor;
+  data: Admin;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -40,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
 
 
-      const response = await fetch(`${APP_URL}/professors/${data.id}`, {
+      const response = await fetch(`${API_URL}/administrators/${data.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${access_token}`
@@ -48,13 +47,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete professor');
+        throw new Error('Failed to delete admin');
       }
 
       // Show success toast
       toast({
         title: 'Success',
-        description: `Professor deleted successfully!`,
+        description: `Admin deleted successfully!`,
         variant: 'success',
       });
 
@@ -68,7 +67,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       // Show error toast
       toast({
         title: 'Error',
-        description: (error as Error)?.message || 'Failed to delete professor.',
+        description: (error as Error)?.message || 'Failed to delete admin.',
         variant: 'destructive',
       });
       return false;
@@ -96,7 +95,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/professor/update/${data.id}`)}
+            onClick={() => router.push(`/admin/administrators/update/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
