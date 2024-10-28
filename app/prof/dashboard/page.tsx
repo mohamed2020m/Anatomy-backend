@@ -1,4 +1,4 @@
-import { OverViewPageView } from '@/sections/overview/view';
+import { OverViewPageView } from '@/sections/overview/professor/view';
 
 export const metadata = {
   title: 'Med3D Explorer | Dashboard',
