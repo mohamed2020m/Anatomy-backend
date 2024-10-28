@@ -9,12 +9,21 @@ export type User = {
   status: string;
 };
 
+
+export type Category = {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+};
+
+
 export type Professor = {
   id: number;
   email: string;
   firstName: string;
   lastName: string;
-  category: String;
+  category: Category;
 };
 
 
@@ -250,11 +259,3 @@ export const navItems: NavItem[] = [
 //     label: 'kanban'
 //   }
 // ];
-
-
-export type Category = {
-  id: number;
-  image: string;
-  name: string;
-  description: string;
-};

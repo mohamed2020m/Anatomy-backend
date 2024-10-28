@@ -16,75 +16,38 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { fetchCategoryCount, fetchProfessorCount, fetchProfessorsByCategories } from '@/services/statitstics';
-
-
 
 export default function OverViewPage() {
   const { data: session } = useSession();
   const [professorCount, setProfessorCount] = useState(0);
-  const [categoriesCount, setCategoriesCount] = useState(0);
-  const [professorByCategory, setProfessorByCategory] = useState<[string, number][]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingCat, setLoadingCat] = useState(true);
-
+  
   useEffect(() => {
-    const fetchData = async () => {
-      if (!session) return;
-      setLoading(true);
+    const fetchTotalRevenue = async () => {
       try {
-        const count = await fetchProfessorCount(session.user.access_token);
-        setProfessorCount(count);
+        const headers = {
+          Authorization: `Bearer ${session?.user.access_token}`,
+          'Content-Type': 'application/json'
+        };
+        const response = await fetch('http://localhost:8080/api/v1/professors/count', {
+          method: 'GET',
+          headers: headers
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        //console.log("Data : ", data)
+        setProfessorCount(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Failed to fetch total revenue:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!session) return;
-      setLoadingCat(true);
-      try {
-        const count = await fetchCategoryCount(session.user.access_token);
-        setCategoriesCount(count);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoadingCat(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!session) return;
-
-      try {
-        const data: [string, number][] = await fetchProfessorsByCategories(session.user.access_token);
-        console.log("Data for Pie Chart : ", data);
-        
-        if (!Array.isArray(data) || !data.every(item => Array.isArray(item) && item.length === 2)) {
-          throw new Error('Invalid data format');
-        }
-
-        setProfessorByCategory(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-
-      }
-    };
-
-    fetchData();
-  }, []);
-
+    fetchTotalRevenue();
+  }, [session]);
 
   if (session) {
     return (
@@ -108,11 +71,10 @@ export default function OverViewPage() {
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {/* First Card*/}
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Professors Counts
+                      Professors counts
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -137,11 +99,10 @@ export default function OverViewPage() {
                     )}
                   </CardContent>
                 </Card>
-                {/* Second Card*/}
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Categories Counts
+                      Subscriptions
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -159,20 +120,84 @@ export default function OverViewPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    {loadingCat ? (
-                      <div className="text-lg">Loading...</div>
-                    ) : (
-                      <div className="text-2xl font-bold">{categoriesCount.toLocaleString('en-US', { minimumFractionDigits: 0 })}</div>
-                    )}
+                    <div className="text-2xl font-bold">+2350</div>
+                    <p className="text-xs text-muted-foreground">
+                      +180.1% from last month
+                    </p>
                   </CardContent>
                 </Card>
-                
-                <div className="col-span-4 md:col-span-3">
-                  <PieGraph apiData={professorByCategory}/>
-                </div>
-
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <rect width="20" height="14" x="2" y="5" rx="2" />
+                      <path d="M2 10h20" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">+12,234</div>
+                    <p className="text-xs text-muted-foreground">
+                      +19% from last month
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Active Now
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">+573</div>
+                    <p className="text-xs text-muted-foreground">
+                      +201 since last hour
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
-
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <div className="col-span-4">
+                  <BarGraph />
+                </div>
+                <Card className="col-span-4 md:col-span-3">
+                  <CardHeader>
+                    <CardTitle>Recent Sales</CardTitle>
+                    <CardDescription>
+                      You made 265 sales this month.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <RecentSales />
+                  </CardContent>
+                </Card>
+                <div className="col-span-4">
+                  <AreaGraph />
+                </div>
+                <div className="col-span-4 md:col-span-3">
+                  <PieGraph />
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

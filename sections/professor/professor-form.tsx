@@ -10,10 +10,10 @@ import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
-//const API_URL = `${process.env.BACKEND_API}/api/v1`;
-const API_URL = 'http://localhost:8080/api/v1';
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
 
 // Define schema based
@@ -22,10 +22,36 @@ const formSchema = z.object({
   lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+  categoryId: z.number().int().nonnegative({ message: 'Please select a category.' }),
 });
 
 export default function ProfessorForm() {
   const session = useSession();
+  const [categories, setCategories] = React.useState<{ id: number; name: string }[]>([]);
+  const router = useRouter();
+
+React.useEffect(() => {
+  async function fetchCategories() {
+    try {
+      const response = await fetch(`${API_URL}/categories/main`, {
+        headers: {
+          'Authorization': `Bearer ${session.data?.user.access_token}`,
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch categories.',
+        variant: 'destructive',
+      });
+    }
+  }
+
+  fetchCategories();
+}, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,7 +63,7 @@ export default function ProfessorForm() {
     }
   });
 
-  async function createProfessor(data: { firstName: string; lastName: string; email: string; password: string }, token: string) {
+  async function createProfessor(data: { firstName: string; lastName: string; email: string; password: string; category: { id: number } }, token: string) {
     const response = await fetch(`${API_URL}/professors`, {
       method: 'POST',
       headers: {
@@ -58,43 +84,41 @@ export default function ProfessorForm() {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const access_token = session.data?.user?.access_token;
-      
-      console.log("Access token:", access_token);
-      console.log("API_URL:", API_URL);
-      
-      if (!access_token) {
-        throw new Error('Unauthorized');
-      }
-
-      // Prepare professor data
-      const professorData = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password
-      };
-
-      const res = await createProfessor(professorData, access_token);
-
-      // Show success toast
-      toast({
-        title: 'Success',
-        description: res.message || 'Professor created successfully',
-        variant: 'success',
-      });
-
-      form.reset();
-
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: (error as Error)?.message || 'Failed to create professor.',
-        variant: 'destructive',
-      });
+  try {
+    const access_token = session.data?.user?.access_token;
+    if (!access_token) {
+      throw new Error('Unauthorized');
     }
+
+    // Prepare professor data with category
+    const professorData = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      category: {
+        id: values.categoryId,
+      },
+    };
+
+    const res = await createProfessor(professorData, access_token);
+
+    toast({
+      title: 'Success',
+      description: res.message || 'Professor created successfully',
+      variant: 'success',
+    });
+
+    form.reset();
+    router.push('dashboard/professor'); // Redirect after add
+  } catch (error) {
+    toast({
+      title: 'Error',
+      description: (error as Error)?.message || 'Failed to create professor.',
+      variant: 'destructive',
+    });
   }
+}
 
   return (
     <Card className="mx-auto w-full">
@@ -152,6 +176,30 @@ export default function ProfessorForm() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="Enter password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="form-select"
+                        onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
