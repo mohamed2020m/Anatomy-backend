@@ -3,7 +3,7 @@ import { Session } from "../types/next-auth"
 import getServerSession from 'next-auth';
 import authConfig from '../auth.config';
 
-const API_URL = `${process.env.BACKEND_API}/api/v1`
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
 // Get the session
 const getSessionToken = async () => {

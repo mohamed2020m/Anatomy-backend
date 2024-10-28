@@ -11,16 +11,37 @@ import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { categoriesService } from '@/services/category';
+import getServerSession from 'next-auth';
+import authConfig from '../../../auth.config'
+import { Session } from '../../../types/next-auth'
 
+// const breadcrumbItems = [
+//   { title: 'Dashboard', link: '/dashboard' },
+//   { title: 'Categories', link: '/dashboard/categories' }
+// ];
 
-const breadcrumbItems = [
-  { title: 'Dashboard', link: '/dashboard' },
-  { title: 'Categories', link: '/dashboard/categories' }
-];
+// Get the session token
+const getUserRole= async () => {
+  const session = await getServerSession(authConfig);
+  const auth : Session = await session.auth();
+  
+  return auth.user.role;
+}
+
 
 type TCategoriesListingPage = {};
 
 export default async function CategoriesListingPage({}: TCategoriesListingPage) {
+  const userRole = await getUserRole()
+
+  const path = userRole === 'ROLE_ADMIN' ? '/admin' : '/prof';
+
+  const breadcrumbItems = [
+    { title: 'Dashboard', link: `${path}/dashboard` },
+    { title: 'Categories', link: `${path}/categories` }
+  ];
+
+  
   // Showcasing the use of search params cache in nested RSCs
   const page = searchParamsCache.get('page');
   const search = searchParamsCache.get('q');
