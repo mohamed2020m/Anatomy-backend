@@ -69,4 +69,9 @@ public class ProfessorServiceImpl implements ProfessorService {
     public Long getProfessorsCount() {
         return professorRepository.count();
     }
+
+    @Override
+    public List<Object[]> getProfessorsByCategory(){
+        return professorRepository.countProfessorsByCategory();
+    }
 }

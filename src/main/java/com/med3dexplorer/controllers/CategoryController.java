@@ -57,4 +57,15 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return new ResponseEntity("Category deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/count")
+    public Long getCategoriesCount() {
+        return categoryService.getCategoriesCount();
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<List<CategoryDTO>> getMainCategories() {
+        return ResponseEntity.ok(categoryService.getMainCategories());
+    }
+
 }
