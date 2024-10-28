@@ -110,7 +110,7 @@ React.useEffect(() => {
     });
 
     form.reset();
-    router.push('dashboard/professor'); // Redirect after add
+    router.push(''); // Redirect after add
   } catch (error) {
     toast({
       title: 'Error',
