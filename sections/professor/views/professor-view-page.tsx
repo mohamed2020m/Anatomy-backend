@@ -5,9 +5,9 @@ import ProfessorUpdate from '../professor-update';
 import PageContainer from '@/components/layout/page-container';
 
 const breadcrumbItems = [
-  { title: 'Dashboard', link: '/dashboard' },
-  { title: 'Professor', link: '/dashboard/professor' },
-  { title: 'Create', link: '/dashboard/professor/create' }
+  { title: 'Dashboard', link: '/admin' },
+  { title: 'Professor', link: '/admin/professor' },
+  { title: 'Create', link: '/admin/professor/create' }
 ];
 
 interface professorViewPageProps {

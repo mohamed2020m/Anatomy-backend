@@ -158,9 +158,10 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Professor',
-    href: '/dashboard/professor',
+    href: '/admin/professor',
     icon: 'user',
-    label: 'professor'
+    label: 'Professor',
+    roles: ['ROLE_ADMIN'], 
   },
   {
     title: 'Employee',
