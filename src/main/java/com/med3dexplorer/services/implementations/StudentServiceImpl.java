@@ -1,21 +1,19 @@
 package com.med3dexplorer.services.implementations;
 
 import com.med3dexplorer.dto.StudentDTO;
-import com.med3dexplorer.dto.ThreeDObjectDTO;
-import com.med3dexplorer.exceptions.ThreeDObjectNotFoundException;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.StudentDTOConverter;
 import com.med3dexplorer.models.Administrator;
+import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.models.Student;
-import com.med3dexplorer.models.ThreeDObject;
+import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.repositories.StudentRepository;
 import com.med3dexplorer.services.interfaces.StudentService;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +21,14 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDTOConverter  studentDTOConverter;
+    private final ProfessorRepository professorRepository;
     private StudentRepository studentRepository;
-    private PasswordEncoder passwordEncoder;
 
 
-    public StudentServiceImpl(PasswordEncoder passwordEncoder,StudentRepository studentRepository, StudentDTOConverter studentDTOConverter) {
+    public StudentServiceImpl(StudentRepository studentRepository, StudentDTOConverter studentDTOConverter, ProfessorRepository professorRepository) {
         this.studentDTOConverter = studentDTOConverter;
         this.studentRepository = studentRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.professorRepository = professorRepository;
     }
 
 
@@ -59,28 +57,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO updateStudent(StudentDTO studentDTO) throws UserNotFoundException {
         Student existingStudent = studentRepository.findById(studentDTO.getId())
                 .orElseThrow(() -> new UserNotFoundException("Student not found with id: " + studentDTO.getId()));
-        if (studentDTO.getEmail() != null) {
-            existingStudent.setEmail(studentDTO.getEmail());
-        }
-        if (studentDTO.getFirstName() != null) {
-            existingStudent.setFirstName(studentDTO.getFirstName());
-        }
-
-        if (studentDTO.getLastName() != null) {
-            existingStudent.setLastName(studentDTO.getLastName());
-        }
-        if (studentDTO.getPassword() != null) {
-            existingStudent.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
-        }
-        if (studentDTO.getCreatedAt() != null) {
-            existingStudent.setCreatedAt(studentDTO.getCreatedAt());
-        }
-
-        existingStudent.setUpdatedAt(LocalDateTime.now());
-        Student updatedStudent = studentRepository.save(existingStudent);
+        Student updatedStudent = studentRepository.save(studentDTOConverter.toEntity(studentDTO));
         return studentDTOConverter.toDto(updatedStudent);
     }
-
 
 
     @Override
@@ -95,5 +74,17 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new UserNotFoundException("Student not found"));
 
         return studentDTOConverter.toDto(administrator);
+    }
+
+    public List<StudentDTO> getStudentsByProfessorCategory(Long professorId) {
+        Optional<Professor> professor = professorRepository.findById(professorId);
+        if (professor.isPresent() && professor.get().getCategory() != null) {
+            Long categoryId = professor.get().getCategory().getId();
+            List<Student> students = studentRepository.findByCategoryId(categoryId);
+            List<StudentDTO> studentDTOs = students.stream().map(student -> studentDTOConverter.toDto(student)).collect(Collectors.toList());
+            return studentDTOs;
+        } else {
+            throw new RuntimeException("Professor or associated category not found");
+        }
     }
 }

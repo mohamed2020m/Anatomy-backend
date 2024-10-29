@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Data
@@ -18,6 +19,7 @@ public class StudentDTO {
     private String lastName;
     private String password;
     private String role;
+    private List<CategoryDTO> categories;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
