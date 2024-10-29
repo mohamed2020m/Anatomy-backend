@@ -53,11 +53,19 @@ public class SecurityConfiguration {
                             "/api/v1/files/download/**",
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
+//                            "/api/v1/administrators/**",
+//                            "/api/v1/categories/**",
+//                            "/api/v1/threeDObjects/**",
+//                            "/api/v1/professors/**",
+//                            "/api/v1/students/**",
+//                            "/api/v1/notes/**",
+//                            "/api/v1/me/**"
                     ).permitAll()
                     .requestMatchers("/api/v1/administrators/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/professors/**").hasAnyRole("PROF", "ADMIN")
-                    .requestMatchers("/api/v1/categories/**").hasAnyRole("PROF", "ADMIN")
-                    .requestMatchers("/api/v1/students/**").hasRole("STUD")
+                    .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
+                    .requestMatchers("/api/v1/threeDObjects/**").hasAnyRole("PROF")
+                    .requestMatchers("/api/v1/professors/**").hasAnyRole("ADMIN", "PROF")
+                    .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
                     .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasRole("STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
                     .anyRequest()

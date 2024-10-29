@@ -20,7 +20,6 @@ public class AdministratorController {
         this. administratorService =  administratorService;
     }
 
-
     @PostMapping
     public ResponseEntity<AdministratorDTO> saveAdministrator(@RequestBody AdministratorDTO administratorDTO) {
         return ResponseEntity.ok(administratorService.saveAdministrator(administratorDTO));

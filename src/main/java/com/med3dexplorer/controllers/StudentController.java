@@ -13,8 +13,6 @@ import java.util.List;
 @CrossOrigin("*")
 public class StudentController {
 
-   
-
         private StudentServiceImpl studentService;
 
         public StudentController(StudentServiceImpl  studentService) {

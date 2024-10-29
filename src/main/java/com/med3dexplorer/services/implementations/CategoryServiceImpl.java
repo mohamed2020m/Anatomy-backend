@@ -26,7 +26,6 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-
     @Override
     public CategoryDTO saveCategory(CategoryDTO categoryDTO) {
 
@@ -66,6 +65,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    // getting categories crated by the admin
+    @Override
+    public List<CategoryDTO> getCategories() {
+        List<Category> categories = categoryRepository.findByParentCategoryIdIsNull();
+        List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
+        return categoryDTOs;
+    }
+
 
     @Override
     public List<CategoryDTO> getAllCategories() {
@@ -85,8 +92,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long categoryId) throws UserNotFoundException {
-        Category category=categoryRepository.findById(categoryId).orElseThrow(() -> new UserNotFoundException("Category not found"));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new UserNotFoundException("Category not found"));
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public Long getCategoriesCount() {
+        return categoryRepository.count();
+    }
+
+    @Override
+    public List<CategoryDTO> getMainCategories(){
+        List<Category> categories = categoryRepository.findByParentCategoryIdIsNull();
+        List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
+        return categoryDTOs;
     }
 
 }
