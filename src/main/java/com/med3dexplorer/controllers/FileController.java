@@ -1,18 +1,22 @@
 package com.med3dexplorer.controllers;
 
+import com.med3dexplorer.dto.FileResponse;
+import com.med3dexplorer.dto.ResponseMessage;
 import com.med3dexplorer.exceptions.FileNotFoundException;
 import com.med3dexplorer.services.implementations.FileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/v1/files")
 public class FileController {
 
     private final FileServiceImpl fileService;
@@ -23,12 +27,14 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FileResponse> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String filePath = fileService.uploadFile(file);
-            return ResponseEntity.ok("File uploaded successfully: " + filePath);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new FileResponse("File uploaded successfully", filePath));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new FileResponse("File upload failed: " + e.getMessage(), null));
         }
     }
 
@@ -45,13 +51,34 @@ public class FileController {
         }
     }
 
-    @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        boolean deleted = fileService.deleteFile(fileName);
-        if (deleted) {
-            return ResponseEntity.ok("File deleted successfully: " + fileName);
-        } else {
-            return ResponseEntity.status(500).body("File deletion failed.");
+//    @DeleteMapping("/delete/{fileName}")
+//    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
+//        boolean deleted = fileService.deleteFile(fileName);
+//        if (deleted) {
+//            return ResponseEntity.ok("File deleted successfully: " + fileName);
+//        } else {
+//            return ResponseEntity.status(500).body("File deletion failed.");
+//        }
+//    }
+
+    @DeleteMapping(path = "/delete/{path}")
+    public ResponseEntity<Map<String, String>> deleteUserImage(@PathVariable("path") String path) {
+        try {
+            path = path.replaceFirst("-", "/");
+            boolean isDeleted = fileService.deleteFile(path);
+
+            Map<String, String> response = new HashMap<>();
+            if (isDeleted) {
+                response.put("message", "Image deleted successfully");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "Image not found or could not be deleted");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Failed to delete image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

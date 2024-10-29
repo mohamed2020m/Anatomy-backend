@@ -44,7 +44,6 @@ public class ThreeDObject {
     @ManyToOne
     private Professor professor;
 
-
     @ManyToOne
     private Category category;
 }

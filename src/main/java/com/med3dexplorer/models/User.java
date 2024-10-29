@@ -2,7 +2,6 @@ package com.med3dexplorer.models;
 
 
 import jakarta.persistence.*;
-import jdk.jfr.Description;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,9 +29,13 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String email;
+
     private String firstName;
     private String lastName;
+
     private String password;
 
     @CreationTimestamp
@@ -62,11 +65,11 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //String role;
         if (this instanceof Administrator) {
-            role = "ROLE_ADMIN";
+            role = Role.ROLE_ADMIN.name();
         } else if (this instanceof Professor) {
-            role = "ROLE_PROF";
+            role = Role.ROLE_PROF.name();
         } else {
-            role = "ROLE_STUD";
+            role = Role.ROLE_STUD.name();
         }
         setRoleBasedOnType();
         return List.of(() -> role);

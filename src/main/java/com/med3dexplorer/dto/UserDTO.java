@@ -1,5 +1,6 @@
 package com.med3dexplorer.dto;
 
+import com.med3dexplorer.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String password;
+    private Role role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

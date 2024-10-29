@@ -47,7 +47,6 @@ public class ProfessorController {
         }
 
 
-
         @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteProfessor(@PathVariable Long id){
             professorService.deleteProfessor(id);
@@ -57,5 +56,10 @@ public class ProfessorController {
         @GetMapping("/count")
         public Long getProfessorCount() {
             return professorService.getProfessorsCount();
-    }
+        }
+
+        @GetMapping("/by-categories")
+        public List<Object[]> getProfessorsByCategory() {
+            return professorService.getProfessorsByCategory();
+        }
 }
