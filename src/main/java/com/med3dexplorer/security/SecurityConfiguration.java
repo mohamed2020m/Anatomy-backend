@@ -66,7 +66,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/api/v1/threeDObjects/**").hasAnyRole("PROF")
                     .requestMatchers("/api/v1/professors/**").hasAnyRole("ADMIN", "PROF")
                     .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
-                    .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasRole("STUD")
+                    .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasAnyRole("ADMIN","STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
                     .anyRequest()
                     .authenticated()

@@ -33,14 +33,10 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
     @Override
     public ThreeDObjectDTO saveThreeDObject(ThreeDObjectDTO threeDObjectDTO) {
-        System.out.println("Received DTO: " + threeDObjectDTO);
         ThreeDObject threeDObject = threeDObjectDTOConverter.toEntity(threeDObjectDTO);
         threeDObject.setCreatedAt(LocalDateTime.now());
-        System.out.println("Converted to Entity: " + threeDObject);
         ThreeDObject savedObject = threeDObjectRepository.save(threeDObject);
-        System.out.println("Saved Entity: " + savedObject);
         ThreeDObjectDTO resultDTO = threeDObjectDTOConverter.toDto(savedObject);
-        System.out.println("Returned DTO: " + resultDTO);
         return resultDTO;
     }
 
@@ -63,9 +59,28 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
     public ThreeDObjectDTO updateThreeDObject(ThreeDObjectDTO threeDObjectDTO) throws ThreeDObjectNotFoundException {
         ThreeDObject existingThreeDObject = threeDObjectRepository.findById(threeDObjectDTO.getId())
                 .orElseThrow(() -> new ThreeDObjectNotFoundException("ThreeDObject not found with id: " + threeDObjectDTO.getId()));
-        ThreeDObject updatedThreeDObject = threeDObjectRepository.save(threeDObjectDTOConverter.toEntity(threeDObjectDTO));
+
+        if (threeDObjectDTO.getName() != null) {
+            existingThreeDObject.setName(threeDObjectDTO.getName());
+        }
+        if (threeDObjectDTO.getDescription() != null) {
+            existingThreeDObject.setDescription(threeDObjectDTO.getDescription());
+        }
+
+        if (threeDObjectDTO.getDescriptionAudio() != null) {
+            existingThreeDObject.setDescriptionAudio(threeDObjectDTO.getDescriptionAudio());
+        }
+        if (threeDObjectDTO.getImage() != null) {
+            existingThreeDObject.setImage(threeDObjectDTO.getImage());
+        }
+        if (threeDObjectDTO.getProfessor() != null) {
+            existingThreeDObject.setProfessor(threeDObjectDTO.getProfessor());
+        }
+        existingThreeDObject.setUpdatedAt(LocalDateTime.now());
+        ThreeDObject updatedThreeDObject = threeDObjectRepository.save(existingThreeDObject);
         return threeDObjectDTOConverter.toDto(updatedThreeDObject);
     }
+
 
 
     @Override

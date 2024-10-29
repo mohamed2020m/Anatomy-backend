@@ -4,6 +4,7 @@ import com.med3dexplorer.dto.CategoryDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.CategoryDTOConverter;
 import com.med3dexplorer.models.Category;
+import com.med3dexplorer.models.Category;
 import com.med3dexplorer.repositories.CategoryRepository;
 import com.med3dexplorer.services.interfaces.CategoryService;
 import jakarta.transaction.Transactional;
@@ -85,7 +86,22 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO updateCategory(CategoryDTO categoryDTO) throws UserNotFoundException {
         Category existingCategory = categoryRepository.findById(categoryDTO.getId())
                 .orElseThrow(() -> new UserNotFoundException("Category not found with id: " + categoryDTO.getId()));
-        Category updatedCategory = categoryRepository.save(categoryDTOConverter.toEntity(categoryDTO));
+
+        if (categoryDTO.getImage() != null) {
+            existingCategory.setImage(categoryDTO.getImage());
+        }
+        if (categoryDTO.getDescription() != null) {
+            existingCategory.setDescription(categoryDTO.getDescription());
+        }
+        if (categoryDTO.getName() != null) {
+            existingCategory.setName(categoryDTO.getName());
+        }
+        if (categoryDTO.getCreatedAt() != null) {
+            existingCategory.setCreatedAt(categoryDTO.getCreatedAt());
+        }
+
+        existingCategory.setUpdatedAt(LocalDateTime.now());
+        Category updatedCategory = categoryRepository.save(existingCategory);
         return categoryDTOConverter.toDto(updatedCategory);
     }
 

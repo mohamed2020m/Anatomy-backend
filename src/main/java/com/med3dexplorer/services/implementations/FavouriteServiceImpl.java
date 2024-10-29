@@ -4,6 +4,7 @@ import com.med3dexplorer.dto.FavouriteDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.FavouriteDTOConverter;
 import com.med3dexplorer.models.Favourite;
+import com.med3dexplorer.models.Favourite;
 import com.med3dexplorer.repositories.FavouriteRepository;
 import com.med3dexplorer.services.interfaces.FavouriteService;
 import jakarta.transaction.Transactional;
@@ -53,7 +54,8 @@ public class FavouriteServiceImpl implements FavouriteService {
     public FavouriteDTO updateFavourite(FavouriteDTO favouriteDTO) throws UserNotFoundException {
         Favourite existingFavourite = favouriteRepository.findById(favouriteDTO.getId())
                 .orElseThrow(() -> new UserNotFoundException("Favourite not found with id: " + favouriteDTO.getId()));
-        Favourite updatedFavourite = favouriteRepository.save(favouriteDTOConverter.toEntity(favouriteDTO));
+        existingFavourite.setUpdatedAt(LocalDateTime.now());
+        Favourite updatedFavourite = favouriteRepository.save(existingFavourite);
         return favouriteDTOConverter.toDto(updatedFavourite);
     }
 
