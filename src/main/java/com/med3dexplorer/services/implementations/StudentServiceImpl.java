@@ -4,13 +4,16 @@ import com.med3dexplorer.dto.StudentDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.StudentDTOConverter;
 import com.med3dexplorer.models.Administrator;
+import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.models.Student;
+import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.repositories.StudentRepository;
 import com.med3dexplorer.services.interfaces.StudentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,11 +22,13 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentDTOConverter  studentDTOConverter;
     private StudentRepository studentRepository;
+    private ProfessorRepository professorRepository;
 
 
-    public StudentServiceImpl(StudentRepository studentRepository, StudentDTOConverter studentDTOConverter) {
+    public StudentServiceImpl(StudentRepository studentRepository, StudentDTOConverter studentDTOConverter, ProfessorRepository professorRepository) {
         this.studentDTOConverter = studentDTOConverter;
         this.studentRepository = studentRepository;
+        this.professorRepository = professorRepository;
     }
 
 
@@ -69,5 +74,18 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new UserNotFoundException("Student not found"));
 
         return studentDTOConverter.toDto(administrator);
+    }
+
+    public List<StudentDTO> getStudentsByProfessorCategory(Long professorId) {
+        Optional<Professor> professor = professorRepository.findById(professorId);
+
+        if (professor.isPresent() && professor.get().getCategory() != null) {
+            Long categoryId = professor.get().getCategory().getId();
+            List<Student> students = studentRepository.findByCategoryId(categoryId);
+            List<StudentDTO> studentDTOs = students.stream().map(student -> studentDTOConverter.toDto(student)).collect(Collectors.toList());
+            return studentDTOs;
+        } else {
+            throw new RuntimeException("Professor or associated category not found");
+        }
     }
 }
