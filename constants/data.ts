@@ -202,6 +202,13 @@ export const navItems: NavItem[] = [
   //   roles: ['ROLE_ADMIN'],  
   // },
   {
+    title: 'Students',
+    href: '/prof/students',
+    icon: 'user',
+    label: 'Students',
+    roles: ['ROLE_PROF'],  
+  },
+  {
     title: 'Product',
     href: '/prof/product', // Prof product path
     icon: 'product',
