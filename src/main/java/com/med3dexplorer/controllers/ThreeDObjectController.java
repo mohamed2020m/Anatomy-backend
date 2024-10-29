@@ -47,6 +47,7 @@ public class ThreeDObjectController {
 
 
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteThreeDObject(@PathVariable Long id){
         threeDObjectService.deleteThreeDObject(id);

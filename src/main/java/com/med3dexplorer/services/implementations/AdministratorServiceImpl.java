@@ -7,8 +7,10 @@ import com.med3dexplorer.models.Administrator;
 import com.med3dexplorer.repositories.AdministratorRepository;
 import com.med3dexplorer.services.interfaces.AdministratorService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +18,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class AdministratorServiceImpl implements AdministratorService {
 
+    private final PasswordEncoder passwordEncoder;
+
     private final AdministratorDTOConverter administratorDTOConverter;
     private AdministratorRepository administratorRepository;
 
 
-    public AdministratorServiceImpl(AdministratorRepository administratorRepository, AdministratorDTOConverter administratorDTOConverter) {
+    public AdministratorServiceImpl(PasswordEncoder passwordEncoder,AdministratorRepository administratorRepository, AdministratorDTOConverter administratorDTOConverter) {
         this.administratorDTOConverter = administratorDTOConverter;
+        this.passwordEncoder = passwordEncoder;
         this.administratorRepository = administratorRepository;
     }
 
@@ -29,6 +34,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Override
     public AdministratorDTO saveAdministrator(AdministratorDTO administratorDTO){
         Administrator administrator=administratorDTOConverter.toEntity(administratorDTO);
+        administrator.setCreatedAt(LocalDateTime.now());
         AdministratorDTO savedAdministrator =administratorDTOConverter.toDto(administratorRepository.save(administrator));
         return savedAdministrator;
     }
@@ -51,7 +57,25 @@ public class AdministratorServiceImpl implements AdministratorService {
     public AdministratorDTO updateAdministrator(AdministratorDTO administratorDTO) throws UserNotFoundException {
         Administrator existingAdministrator = administratorRepository.findById(administratorDTO.getId())
                 .orElseThrow(() -> new UserNotFoundException("Administrator not found with id: " + administratorDTO.getId()));
-        Administrator updatedAdministrator = administratorRepository.save(administratorDTOConverter.toEntity(administratorDTO));
+        if (administratorDTO.getEmail() != null) {
+            existingAdministrator.setEmail(administratorDTO.getEmail());
+        }
+        if (administratorDTO.getFirstName() != null) {
+            existingAdministrator.setFirstName(administratorDTO.getFirstName());
+        }
+
+        if (administratorDTO.getLastName() != null) {
+            existingAdministrator.setLastName(administratorDTO.getLastName());
+        }
+        if (administratorDTO.getPassword() != null) {
+            existingAdministrator.setPassword(passwordEncoder.encode(administratorDTO.getPassword()));
+        }
+        if (administratorDTO.getCreatedAt() != null) {
+            existingAdministrator.setCreatedAt(administratorDTO.getCreatedAt());
+        }
+
+        existingAdministrator.setUpdatedAt(LocalDateTime.now());
+        Administrator updatedAdministrator = administratorRepository.save(existingAdministrator);
         return administratorDTOConverter.toDto(updatedAdministrator);
     }
 

@@ -7,7 +7,10 @@ import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.services.interfaces.ProfessorService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,15 +19,18 @@ import java.util.stream.Collectors;
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDTOConverter  professorDTOConverter;
     private ProfessorRepository professorRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public ProfessorServiceImpl(ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter) {
+    public ProfessorServiceImpl(PasswordEncoder passwordEncoder,ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter) {
         this.professorDTOConverter = professorDTOConverter;
         this.professorRepository = professorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public ProfessorDTO saveProfessor(ProfessorDTO professorDTO){
         Professor professor=professorDTOConverter.toEntity(professorDTO);
+        professor.setCreatedAt(LocalDateTime.now());
         ProfessorDTO savedProfessor =professorDTOConverter.toDto(professorRepository.save(professor));
         return savedProfessor;
     }
@@ -47,7 +53,24 @@ public class ProfessorServiceImpl implements ProfessorService {
     public ProfessorDTO updateProfessor(ProfessorDTO professorDTO) throws UserNotFoundException {
         Professor existingProfessor = professorRepository.findById(professorDTO.getId())
                 .orElseThrow(() -> new UserNotFoundException("Professor not found with id: " + professorDTO.getId()));
-        Professor updatedProfessor = professorRepository.save(professorDTOConverter.toEntity(professorDTO));
+        if (professorDTO.getEmail() != null) {
+            existingProfessor.setEmail(professorDTO.getEmail());
+        }
+        if (professorDTO.getFirstName() != null) {
+            existingProfessor.setFirstName(professorDTO.getFirstName());
+        }
+        if (professorDTO.getLastName() != null) {
+            existingProfessor.setLastName(professorDTO.getLastName());
+        }
+        if (professorDTO.getPassword() != null) {
+            existingProfessor.setPassword(passwordEncoder.encode(professorDTO.getPassword()));
+        }
+        if (professorDTO.getCreatedAt() != null) {
+            existingProfessor.setCreatedAt(professorDTO.getCreatedAt());
+        }
+
+        existingProfessor.setUpdatedAt(LocalDateTime.now());
+        Professor updatedProfessor = professorRepository.save(existingProfessor);
         return professorDTOConverter.toDto(updatedProfessor);
     }
 
@@ -61,7 +84,6 @@ public class ProfessorServiceImpl implements ProfessorService {
     public ProfessorDTO getProfessorInfo(String username)  throws UserNotFoundException{
         Professor prof = professorRepository.findByEmail(username)
                 .orElseThrow(() -> new UserNotFoundException("Professor not found"));
-
         return professorDTOConverter.toDto(prof);
     }
 

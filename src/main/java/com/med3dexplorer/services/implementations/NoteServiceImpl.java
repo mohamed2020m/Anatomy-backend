@@ -56,7 +56,11 @@ public class NoteServiceImpl implements NoteService{
     public NoteDTO updateNote(NoteDTO noteDTO) throws NoteNotFoundException {
         Note existingNote = noteRepository.findById(noteDTO.getId())
                 .orElseThrow(() -> new NoteNotFoundException("Note not found with id: " + noteDTO.getId()));
-        Note updatedNote = noteRepository.save(noteDTOConverter.toEntity(noteDTO));
+        if (noteDTO.getContent() != null) {
+            existingNote.setContent(noteDTO.getContent());
+        }
+        existingNote.setUpdatedAt(LocalDateTime.now());
+        Note updatedNote = noteRepository.save(existingNote);
         return noteDTOConverter.toDto(updatedNote);
     }
 
