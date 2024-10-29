@@ -181,6 +181,13 @@ export const navItems: NavItem[] = [
     roles: ['ROLE_ADMIN'], 
   },
   {
+    title: 'Categories',
+    href: '/prof/categories', 
+    icon: 'folder',
+    label: 'Category',
+    roles: ['ROLE_PROF'],  
+  },
+  {
     title: 'Adminstrators',
     href: '/admin/administrators',
     icon: 'user',

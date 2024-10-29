@@ -1,4 +1,4 @@
-import { CategoriesViewPage } from '@/sections/categories/views';
+import { CategoriesViewPage } from '@/sections/sub-categories/views';
 
 export const metadata = {
   title: 'Dashboard : New Category',
