@@ -5,82 +5,102 @@ import authConfig from '../auth.config';
 
 const API_URL = `${process.env.BACKEND_API}/api/v1`
 
-// Get the session
-const getSessionToken = async () => {
+
+// Get session info
+const getSessionInfo = async () => {
     const session = await getServerSession(authConfig);
     const auth : Session = await session.auth();
-    
-    return auth.user.access_token;
-}
 
-// Fetch all students
-export const fetchStudents = async (): Promise<Student[]> => {
-    const token = await getSessionToken();
-    console.log('jwt token', token);
+    if (!auth) {
+        throw new Error("Session or auth details are not available");
+    }
+
+    return {
+        token: auth.user.access_token,
+        user: {
+            id: auth.user.id,
+            role: auth.user.role,
+        },
+    };
+};
+
+// Base API call function
+const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+    const { token } = await getSessionInfo();
     
     const headers = {
-        Authorization: `Bearer ${token}`, 
-       'Content-Type': 'application/json'
-    }
-    console.log('headers', headers);
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...options.headers,
+    };
 
-    const response = await fetch(`${API_URL}/students`, {
-        method: 'GET',
-        headers: headers
+    const response = await fetch(`${API_URL}${endpoint}`, {
+        ...options,
+        headers,
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch student');
+        throw new Error(`API call failed: ${response.statusText}`);
     }
 
-    return await response.json();
+    return response.json();
 };
-
-
 
 
 export const studentService = {
     records: [] as Student[],
 
-    // Initialize with fetched data
+    // Initialize with fetched data based on user role
     async initialize() {
-        this.records = await fetchStudents(); // Fetch student from API
+        const { user } = await getSessionInfo();
+        
+        // Different endpoints based on role
+        const endpoint = user.role === 'ROLE_ADMIN' 
+            ? '/students'
+            : `/students/by-professor/${user.id}`;
+            
+        this.records = await apiCall(endpoint);
     },
 
-    // Get all student with optional search
-    async getAll({ search }: { search?: string }) {
+    // Get all students with filtering options
+    async getAll(options: {
+        search?: string;
+        professorId?: string;
+        courseId?: string;
+        status?: string;
+    } = {}) {
         let students = [...this.records];
 
-        // Search functionality across multiple fields
-        if (search) {
+        // Apply filters
+        if (options.search) {
             students = students.filter(student =>
-                student.firstName.toLowerCase().includes(search.toLowerCase()) ||
-                student.lastName.toLowerCase().includes(search.toLowerCase())
+                student.firstName.toLowerCase().includes(options.search!.toLowerCase()) ||
+                student.lastName.toLowerCase().includes(options.search!.toLowerCase())
             );
         }
-
 
         return students;
     },
 
-    // Get paginated results with optional search
+    // Get paginated results with filtering options
     async getStudents({
         page = 1,
         limit = 10,
-        search
+        ...filterOptions
     }: {
         page?: number;
         limit?: number;
         search?: string;
+        professorId?: string;
+        courseId?: string;
+        status?: string;
     }) {
-        const allStudents = await this.getAll({ search });
+        const allStudents = await this.getAll(filterOptions);
         const totalStudents = allStudents.length;
 
-        // Pagination logic
         const offset = (page - 1) * limit;
         const paginatedStudents = allStudents.slice(offset, offset + limit);
 
-        // Return paginated response
         return {
             success: true,
             total_students: totalStudents,
@@ -88,7 +108,36 @@ export const studentService = {
             limit,
             students: paginatedStudents
         };
+    },
+
+    // Refresh data
+    async refresh() {
+        await this.initialize();
+    },
+
+    // Get a single student by ID
+    async getStudentById(id: string) {
+        const { token } = await getSessionInfo();
+        return apiCall(`/students/${id}`);
+    },
+
+    // Update a student
+    async updateStudent(id: string, data: Partial<Student>) {
+        const response = await apiCall(`/students/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        });
+        await this.refresh();
+        return response;
+    },
+
+    // Create a new student
+    async createStudent(data: Omit<Student, 'id'>) {
+        const response = await apiCall('/students', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+        await this.refresh();
+        return response;
     }
 };
-
-studentService.initialize();
