@@ -1,8 +1,11 @@
 package com.med3dexplorer.services.implementations;
 
+import com.med3dexplorer.dto.CategoryDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
+import com.med3dexplorer.exceptions.CategoryNotFoundException;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.ProfessorDTOConverter;
+import com.med3dexplorer.models.Category;
 import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.services.interfaces.ProfessorService;
@@ -19,11 +22,13 @@ import java.util.stream.Collectors;
 public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDTOConverter  professorDTOConverter;
     private ProfessorRepository professorRepository;
+    private CategoryServiceImpl categoryService;
     private PasswordEncoder passwordEncoder;
 
-    public ProfessorServiceImpl(PasswordEncoder passwordEncoder,ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter) {
+    public ProfessorServiceImpl(PasswordEncoder passwordEncoder,ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter, CategoryServiceImpl categoryService) {
         this.professorDTOConverter = professorDTOConverter;
         this.professorRepository = professorRepository;
+        this.categoryService = categoryService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -96,4 +101,20 @@ public class ProfessorServiceImpl implements ProfessorService {
     public List<Object[]> getProfessorsByCategory(){
         return professorRepository.countProfessorsByCategory();
     }
+
+    @Override
+    public List<CategoryDTO> getSubCategoriesOfProfessor(Long professorId) {
+        Professor professor = professorRepository.findById(professorId).orElseThrow(() -> new UserNotFoundException("Professor not found"));
+
+        // Check if the professor has an associated category
+        Category category = professor.getCategory();
+        if (category == null) {
+            throw new CategoryNotFoundException("Professor has no associated category");
+        }
+
+        Long mainCategoryId = category.getId();
+
+        return categoryService.getSubCategoryByCategoryId(mainCategoryId);
+    }
+
 }
