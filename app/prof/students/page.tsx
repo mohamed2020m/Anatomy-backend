@@ -8,7 +8,7 @@ type pageProps = {
 };
 
 export const metadata = {
-    title: 'AnatoLearn | Categories',
+    title: 'Med3D Explorer | Students',
     icons: '/logo.png'
 };
 

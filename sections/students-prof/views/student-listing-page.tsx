@@ -1,16 +1,11 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
 import ProfessorsTable from '../student-tables';
-import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { Student } from '@/constants/data';
 import { searchParamsCache } from '@/lib/searchparams';
-import { cn } from '@/lib/utils';
-import { Plus } from 'lucide-react';
-import Link from 'next/link';
-import { studentService } from '@/services/student-prof';
-
+import { studentService } from '@/services/student';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/prof' },
@@ -40,8 +35,21 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
   
   const totalStudents = data.total_students;
   const students: Student[] = data.students;
+
+  // // Create a new student
+  // const newStudent = {
+  //   email: 'creation@example.com',
+  //   firstName: 'Creation',
+  //   lastName: 'Test',
+  //   password: 'abderrahmane'
+  // };
+
+  // // Call the createStudent method
+  // const createdStudent = await studentService.createStudent(newStudent);
+
+  // console.log('Created student:', createdStudent);
   
-  console.log("Students: ", students);
+  // console.log("Students: ", students);
   
   return (
     <PageContainer scrollable>
@@ -54,12 +62,6 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
             description="Manage students"
           />
 
-          <Link
-            href={'/admin/students/new'}
-            className={cn(buttonVariants({ variant: 'default' }))}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add New
-          </Link>
         </div>
         <Separator />
         <ProfessorsTable data={students} totalData={totalStudents} />
