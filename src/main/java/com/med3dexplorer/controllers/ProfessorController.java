@@ -1,5 +1,6 @@
 package com.med3dexplorer.controllers;
 
+import com.med3dexplorer.dto.CategoryDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
 import com.med3dexplorer.services.implementations.ProfessorServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -62,4 +63,10 @@ public class ProfessorController {
         public List<Object[]> getProfessorsByCategory() {
             return professorService.getProfessorsByCategory();
         }
+
+        @GetMapping("/{id}/sub-categories")
+        public List<CategoryDTO> getSubCategoriesOfProfessor(@PathVariable Long id) {
+            return professorService.getSubCategoriesOfProfessor(id);
+        }
+
 }
