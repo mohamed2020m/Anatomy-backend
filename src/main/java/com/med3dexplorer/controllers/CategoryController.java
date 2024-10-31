@@ -36,14 +36,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getSubCategoryByCategoryId(id));
     }
 
-    // This will get only admin categories
-    @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getCategories() {
-        return ResponseEntity.ok(categoryService.getCategories());
-    }
-
-
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
@@ -56,7 +49,6 @@ public class CategoryController {
     }
 
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id){
         categoryService.deleteCategory(id);
@@ -67,6 +59,7 @@ public class CategoryController {
     public Long getCategoriesCount() {
         return categoryService.getCategoriesCount();
     }
+
 
     @GetMapping("/main")
     public ResponseEntity<List<CategoryDTO>> getMainCategories() {
