@@ -7,9 +7,13 @@ import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.ProfessorDTOConverter;
 import com.med3dexplorer.models.Category;
 import com.med3dexplorer.models.Professor;
+import com.med3dexplorer.models.Student;
+import com.med3dexplorer.repositories.CategoryRepository;
 import com.med3dexplorer.repositories.ProfessorRepository;
+import com.med3dexplorer.repositories.StudentRepository;
 import com.med3dexplorer.services.interfaces.ProfessorService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +27,16 @@ public class ProfessorServiceImpl implements ProfessorService {
     private final ProfessorDTOConverter  professorDTOConverter;
     private ProfessorRepository professorRepository;
     private CategoryServiceImpl categoryService;
+    private CategoryRepository categoryRepository;
+    private StudentRepository studentRepository;
     private PasswordEncoder passwordEncoder;
 
-    public ProfessorServiceImpl(PasswordEncoder passwordEncoder,ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter, CategoryServiceImpl categoryService) {
+    public ProfessorServiceImpl(PasswordEncoder passwordEncoder,ProfessorRepository professorRepository, ProfessorDTOConverter professorDTOConverter, CategoryServiceImpl categoryService, CategoryRepository categoryRepository, StudentRepository studentRepository) {
         this.professorDTOConverter = professorDTOConverter;
         this.professorRepository = professorRepository;
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
+        this.studentRepository = studentRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -115,6 +123,30 @@ public class ProfessorServiceImpl implements ProfessorService {
         Long mainCategoryId = category.getId();
 
         return categoryService.getSubCategoryByCategoryId(mainCategoryId);
+    }
+
+    public void assignCategoryToStudents(Long categoryId, List<Long> studentIds) {
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new UserNotFoundException("Category not found with id " + categoryId));
+
+
+        List<Student> students = studentRepository.findAllById(studentIds);
+        if (students.isEmpty()) {
+            throw new UserNotFoundException("No students found with provided IDs");
+        }
+
+        for (Student student : students) {
+            boolean exists = student.getCategories().stream()
+                    .anyMatch(c -> c.getId().equals(category.getId()));
+
+            if (!exists) {
+                student.getCategories().add(category);
+                student.setUpdatedAt(LocalDateTime.now());
+            }
+        }
+
+        studentRepository.saveAll(students);
     }
 
 }

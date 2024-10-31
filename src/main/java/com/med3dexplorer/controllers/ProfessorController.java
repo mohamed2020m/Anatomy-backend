@@ -1,5 +1,6 @@
 package com.med3dexplorer.controllers;
 
+import com.med3dexplorer.dto.CategoryAssignmentRequest;
 import com.med3dexplorer.dto.CategoryDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
 import com.med3dexplorer.services.implementations.ProfessorServiceImpl;
@@ -67,6 +68,12 @@ public class ProfessorController {
         @GetMapping("/{id}/sub-categories")
         public List<CategoryDTO> getSubCategoriesOfProfessor(@PathVariable Long id) {
             return professorService.getSubCategoriesOfProfessor(id);
+        }
+
+        @PostMapping("/assign-category")
+        public ResponseEntity<String> assignCategoryToStudents(@RequestBody CategoryAssignmentRequest request) {
+            professorService.assignCategoryToStudents(request.getCategoryId(), request.getStudentIds());
+            return ResponseEntity.ok("Category assigned successfully to students.");
         }
 
 }
