@@ -12,8 +12,6 @@ public interface CategoryService {
 
     List<CategoryDTO> getSubCategoryByCategoryId(Long categoryId) throws CategoryNotFoundException;
 
-    List<CategoryDTO> getCategories();
-
     List<CategoryDTO> getAllCategories();
 
     CategoryDTO updateCategory(CategoryDTO categoryDTO)throws CategoryNotFoundException;

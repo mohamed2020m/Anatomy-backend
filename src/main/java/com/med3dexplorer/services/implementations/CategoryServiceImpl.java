@@ -66,15 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-    // getting categories crated by the admin
-    @Override
-    public List<CategoryDTO> getCategories() {
-        List<Category> categories = categoryRepository.findByParentCategoryIdIsNull();
-        List<CategoryDTO> categoryDTOs = categories.stream().map(category -> categoryDTOConverter.toDto(category)).collect(Collectors.toList());
-        return categoryDTOs;
-    }
-
-
     @Override
     public List<CategoryDTO> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
