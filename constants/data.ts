@@ -17,6 +17,12 @@ export type Category = {
   description: string;
 };
 
+export type ThreeDObject = {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+};
 
 export type Professor = {
   id: number;
@@ -78,6 +84,13 @@ export const navItems: NavItem[] = [
     href: '/prof/assign', 
     icon: 'folder',
     label: 'Assign',
+    roles: ['ROLE_PROF'],  
+  },
+  {
+    title: '3D Objects',
+    href: '/prof/threedobjects',
+    icon: 'product',
+    label: '3D Objects',
     roles: ['ROLE_PROF'],  
   },
   {
