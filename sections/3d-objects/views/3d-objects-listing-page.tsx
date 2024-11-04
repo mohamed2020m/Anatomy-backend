@@ -1,11 +1,10 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import PageContainer from '@/components/layout/page-container';
-import CategoriesTable from '../3d-objects-tables';
+import ThreeDObjectsTable from '../3d-objects-tables';
 import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { ThreeDObject } from '@/constants/data';
-import { fakeCategories } from '@/constants/mock-api';
 import { searchParamsCache } from '@/lib/searchparams';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
@@ -19,9 +18,9 @@ const breadcrumbItems = [
 
 
 
-type TCategoriesListingPage = {};
+type TThreeDObjectsListingPage = {};
 
-export default async function CategoriesListingPage({}: TCategoriesListingPage) {
+export default async function ThreeDObjectsListingPage({}: TThreeDObjectsListingPage) {
   
   // Showcasing the use of search params cache in nested RSCs
   const page = searchParamsCache.get('page');
@@ -36,13 +35,13 @@ export default async function CategoriesListingPage({}: TCategoriesListingPage) 
     ...(gender && { genders: gender })
   };
 
-  // const cs = await categoriesService.getCategories(filters);
+  // const cs = await categoriesService.getThreeDObjects(filters);
   // console.log("categories: ", cs);
 
   // get data from the service
   await categoriesService.initialize();
   const data = await categoriesService.getCategories(filters);
-  const totalCategories = data.total_categories;
+  const totalThreeDObjects = data.total_categories;
   const categories: ThreeDObject[] = data.categories;
   console.log("categories: ", categories);
   
@@ -53,19 +52,19 @@ export default async function CategoriesListingPage({}: TCategoriesListingPage) 
 
         <div className="flex items-start justify-between">
           <Heading
-            title={`Categories (${totalCategories})`}
-            description="Manage categoriess"
+            title={`3D Objects (${totalThreeDObjects})`}
+            description="Manage 3D Objects"
           />
 
           <Link
-            href={'/dashboard/categories/new'}
+            href={'/dashboard/threeDObjects/new'}
             className={cn(buttonVariants({ variant: 'default' }))}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New
           </Link>
         </div>
         <Separator />
-        <CategoriesTable data={categories} totalData={totalCategories} />
+        <ThreeDObjectsTable data={categories} totalData={totalThreeDObjects} />
       </div>
     </PageContainer>
   );

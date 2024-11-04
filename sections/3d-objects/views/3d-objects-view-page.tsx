@@ -1,24 +1,24 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import CategoriesForm from '../3d-objects-form';
-import CategoryUpdate from '../3d-objects-update';
+import ThreeDObjectsForm from '../3d-objects-form';
+import ThreeDObjectView from '../3d-object-view';
 import PageContainer from '@/components/layout/page-container';
-
-
+import { getSession } from 'next-auth/react';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/prof' },
   { title: '3D Objects', link: '/prof/threedobjects' },
+  { title: 'View 3D Object', link: '/prof/threedobjects/show' },
   { title: 'Create', link: '/prof/threedobjects/create' }
 ];
 
-
-interface CategoriesViewPageProps {
-  categoryId?: number;
+interface ThreeDObjectsViewPageProps {
+  objectId?: number;
 }
 
-export default async function CategoriesViewPage({ categoryId }: CategoriesViewPageProps) {
-
+export default function ThreeDObjectsViewPage({
+  objectId
+}: ThreeDObjectsViewPageProps) {
   return (
     <>
       <div className="flex-1 space-y-4 px-8">
@@ -26,15 +26,13 @@ export default async function CategoriesViewPage({ categoryId }: CategoriesViewP
       </div>
       <PageContainer scrollable>
         <div className="flex-1 space-y-4 p-8">
-          {categoryId ?
-            <CategoryUpdate categoryId={categoryId} />
-            :
-            <CategoriesForm />
-          }
+          {objectId==null ? (
+            <ThreeDObjectsForm />
+          ) : (
+            <ThreeDObjectView objectId={objectId} />
+          )}
         </div>
       </PageContainer>
     </>
-    // <ScrollArea className="h-full">
-    // </ScrollArea>
   );
 }
