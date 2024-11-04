@@ -55,7 +55,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Main Category")
                                 .description("A primary category for 3D objects")
-                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
                                 .build();
                         return categoryRepository.save(category);
                     });
@@ -65,7 +65,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Subcategory 1")
                                 .description("First subcategory")
-                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("images-dfhks12ls-ab33-40cb-9fac-6a2023e8c8c3.jpg")
                                 .parentCategory(mainCategory)
                                 .build();
                         return categoryRepository.save(category);
@@ -76,7 +76,7 @@ public class DataInitializer {
                         Category category = Category.builder()
                                 .name("Subcategory 2")
                                 .description("Second subcategory")
-                                .image("2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
+                                .image("images-0d6f1622-ab33-40cb-9fac-6a2023e8c8c3.jpg")
                                 .parentCategory(mainCategory)
                                 .build();
                         return categoryRepository.save(category);
@@ -122,7 +122,20 @@ public class DataInitializer {
                                 .name("3D Model 2")
                                 .description("A sample 3D object in subcategory 2")
                                 .object("objects-3bbc1e72-2c70-4061-a3f6-951de7e446f8.glb")
-                                .image("images-2514f0f1-84f8-4d03-a3bf-ad99032b1dfc.jpg")
+                                .image("images-0d6f1622-ab33-40cb-9fac-6a2023e8c8c3.jpg")
+                                .category(subCategory2)
+                                .professor(professor)
+                                .build();
+                        return threeDObjectRepository.save(object2);
+                    });
+
+            threeDObjectRepository.findByName("stomach 3D organ")
+                    .orElseGet(() -> {
+                        ThreeDObject object2 = ThreeDObject.builder()
+                                .name("3D Model 2")
+                                .description("A sample 3D object in subcategory 2")
+                                .object("objects-3bbc1e72-2c70-4061-a3f6-951de7e446f8.glb")
+                                .image("images-dfhks12ls-ab33-40cb-9fac-6a2023e8c8c3.jpg")
                                 .category(subCategory2)
                                 .professor(professor)
                                 .build();
