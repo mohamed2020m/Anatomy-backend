@@ -1,4 +1,4 @@
-import { CategoriesViewPage } from '@/sections/sub-categories/views';
+import { ThreeDObjectsViewPage } from '@/sections/3d-objects/views';
 
 export const metadata = {
   title: 'Dashboard : New Category',
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <CategoriesViewPage />;
+  return <ThreeDObjectsViewPage />;
 }

@@ -28,7 +28,7 @@ const formSchema = z.object({
     message: 'Name must be at least 2 characters.'
   }),
   description: z.string({
-    required_error: 'Please select category description.'
+    required_error: 'Please select threeDObject description.'
   }).max(255, {
     message: 'Description must not be more than 255 characters.'
   }),
@@ -45,7 +45,7 @@ const formSchema = z.object({
     ),
 });
 
-export default function CategoriesForm() {
+export default function ThreeDObjectsForm() {
   const session = useSession();
   // console.log("session: ", session.data.user.access_token);
 
@@ -78,8 +78,8 @@ export default function CategoriesForm() {
     return data.image;
   }
 
-  async function createCategory(data: { id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/categories`, {
+  async function createThreeDObject(data: { id: number, name: string; description: string; image: string }, token: string) {
+    const response = await fetch(`${APP_URL}/threeDObjects`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -89,7 +89,7 @@ export default function CategoriesForm() {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create category');
+      throw new Error('Failed to create threeDObject');
     }
 
     return await response.json();
@@ -106,15 +106,15 @@ export default function CategoriesForm() {
       // Upload the image first
       const imagePath = await uploadImage(values.image[0], access_token);
 
-      // Create the category with the uploaded image path
-      const categoryData = {
+      // Create the threeDObject with the uploaded image path
+      const threeDObjectData = {
         id: 10,
         name: values.name,
         description: values.description,
         image: imagePath.replace('/', '-')
       };
 
-      const res = await createCategory(categoryData, access_token);
+      const res = await createThreeDObject(threeDObjectData, access_token);
 
       // Show success toast
       toast({
@@ -130,7 +130,7 @@ export default function CategoriesForm() {
       // Show error toast
       toast({
         title: 'Error',
-        description: (error as Error)?.message || 'Failed to create category.',
+        description: (error as Error)?.message || 'Failed to create threeDObject.',
         variant: 'destructive',
       });
     }
@@ -140,7 +140,7 @@ export default function CategoriesForm() {
     <Card className="mx-auto w-full">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">
-          Category Information
+          ThreeDObject Information
         </CardTitle>
       </CardHeader>
       <CardContent>

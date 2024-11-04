@@ -27,7 +27,7 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 //     message: 'Name must be at least 2 characters.',
 //   }),
 //   description: z.string({
-//     required_error: 'Please select category description.',
+//     required_error: 'Please select threeDObject description.',
 //   }),
 //   image: z
 //     .any()
@@ -59,7 +59,7 @@ const formSchema = z.object({
 });
 
 
-export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
+export default function ThreeDObjectUpdate({ threeDObjectId }: { threeDObjectId: number }) {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [initialData, setInitialData] = useState<{name: string; description: string; image: string } | null>(null);
@@ -75,16 +75,16 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
     },
   });
 
-  // Fetch category data by id and populate form
+  // Fetch threeDObject data by id and populate form
   useEffect(() => {
-    const fetchCategory = async () => {
-      console.log("categoryId: ", categoryId);
+    const fetchThreeDObject = async () => {
+      console.log("threeDObjectId: ", threeDObjectId);
       const token = session?.user?.access_token;
       if (!token) {
         throw new Error('Unauthorized');
       }
       try {
-        const response = await fetch(`${APP_URL}/categories/${categoryId}`, {
+        const response = await fetch(`${APP_URL}/threeDObjects/${threeDObjectId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,24 +92,24 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch category data.');
+          throw new Error('Failed to fetch threeDObject data.');
         }
 
-        const category = await response.json();
+        const threeDObject = await response.json();
         setInitialData({
-          name: category.name,
-          description: category.description,
-          image: category.image, // Image name (filename stored in DB)
+          name: threeDObject.name,
+          description: threeDObject.description,
+          image: threeDObject.image, // Image name (filename stored in DB)
         });
         form.reset({
-          name: category.name,
-          description: category.description,
+          name: threeDObject.name,
+          description: threeDObject.description,
           image: null,
         });
       } catch (error) {
         toast({
           title: 'Error',
-          description: (error as Error)?.message || 'Failed to fetch category.',
+          description: (error as Error)?.message || 'Failed to fetch threeDObject.',
           variant: 'destructive',
         });
       } finally {
@@ -117,8 +117,8 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
       }
     };
 
-    fetchCategory();
-  }, [categoryId, session, form]);
+    fetchThreeDObject();
+  }, [threeDObjectId, session, form]);
 
   async function uploadImage(file: File, token: string) {
     const formData = new FormData();
@@ -140,8 +140,8 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
     return data.path; 
   }
 
-  async function updateCategory(data: {id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/categories/${data.id}`, {
+  async function updateThreeDObject(data: {id: number, name: string; description: string; image: string }, token: string) {
+    const response = await fetch(`${APP_URL}/threeDObjects/${data.id}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -151,7 +151,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update category');
+      throw new Error('Failed to update threeDObject');
     }
 
     return await response.json();
@@ -194,16 +194,16 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
         console.log("imagePath: ", imagePath);
       }
 
-      const categoryData = {
-        id: categoryId,
+      const threeDObjectData = {
+        id: threeDObjectId,
         name: values.name,
         description: values.description,
         image: imagePath.replace("/", "-")
       };
 
-      console.log(categoryData);
+      console.log(threeDObjectData);
 
-      const res = await updateCategory(categoryData, access_token);
+      const res = await updateThreeDObject(threeDObjectData, access_token);
       
       toast({
         title: 'Success',
@@ -212,12 +212,12 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
       });
 
       // router.refresh()
-      // router.push('/dashboard/categories');
+      // router.push('/dashboard/threeDObjects');
     } catch (error) {
       console.error("Error: ", error);
       toast({
         title: 'Error',
-        description: (error as Error)?.message || 'Failed to update category.',
+        description: (error as Error)?.message || 'Failed to update threeDObject.',
         variant: 'destructive',
       });
     }
@@ -240,7 +240,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
   return (
     <Card className="mx-auto w-full">
       <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">Update Category</CardTitle>
+        <CardTitle className="text-left text-2xl font-bold">Update ThreeDObject</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -290,7 +290,7 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter category name" {...field} />
+                      <Input placeholder="Enter threeDObject name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -303,14 +303,14 @@ export default function CategoryUpdate({ categoryId }: { categoryId: number }) {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Enter category description" className="resize-none" {...field} />
+                      <Textarea placeholder="Enter threeDObject description" className="resize-none" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <Button type="submit">Update Category</Button>
+            <Button type="submit">Update ThreeDObject</Button>
           </form>
         </Form>
       </CardContent>
