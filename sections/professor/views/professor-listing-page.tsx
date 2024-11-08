@@ -14,7 +14,7 @@ import { professorsService } from '@/services/professor';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/admin' },
-  { title: 'Professor', link: '/admin/professor' }
+  { title: 'Professors', link: '/admin/professors' }
 ];
 
 type TProfessorsListingPage = {};
@@ -53,7 +53,7 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
           />
 
           <Link
-            href={'/admin/professor/new'}
+            href={'/admin/professors/new'}
             className={cn(buttonVariants({ variant: 'default' }))}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New

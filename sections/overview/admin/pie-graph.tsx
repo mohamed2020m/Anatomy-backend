@@ -51,7 +51,7 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
   }));
 
   const chartConfig = {
-    visitors: { label: 'Professors' },
+    professors: { label: 'Professors' },
     ...Object.fromEntries(
       chartData.map((item, index) => [
         item.category,
@@ -110,7 +110,7 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Professors
                         </tspan>
                       </text>
                     );
