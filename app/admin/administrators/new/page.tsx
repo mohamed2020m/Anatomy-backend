@@ -1,7 +1,7 @@
 import { AdminViewPage } from '@/sections/admins/views';
 
 export const metadata = {
-  title: 'Dashboard : New Admin',
+  title: 'Administrators : New Admin',
   icons: 'logo.png'
 };
 

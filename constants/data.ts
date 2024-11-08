@@ -67,10 +67,10 @@ export const navItems: NavItem[] = [
     roles: ['ROLE_ADMIN'],  
   },
   {
-    title: 'Professor',
-    href: '/admin/professor',
+    title: 'Professors',
+    href: '/admin/professors',
     icon: 'user',
-    label: 'Professor',
+    label: 'Professors',
     roles: ['ROLE_ADMIN'], 
   },
   {

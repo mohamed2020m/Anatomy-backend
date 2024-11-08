@@ -1,7 +1,7 @@
 import { AdminViewPage } from '@/sections/admins/views';
 
 export const metadata = {
-    title: 'Update Admin | Med3D Explorer',
+    title: 'Update Administrator | Med3D Explorer',
     icons: '/logo.png'
 };
 

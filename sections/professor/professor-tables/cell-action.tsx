@@ -15,8 +15,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from '@/components/ui/use-toast';
 
-//const APP_URL = `${process.env.BACKEND_API}/api/v1`
-const APP_URL = 'http://localhost:8080/api/v1';
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
 
 interface CellActionProps {
@@ -40,7 +39,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
 
 
-      const response = await fetch(`${APP_URL}/professors/${data.id}`, {
+      const response = await fetch(`${API_URL}/professors/${data.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${access_token}`
@@ -96,7 +95,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/professor/update/${data.id}`)}
+            onClick={() => router.push(`/admin/professors/update/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

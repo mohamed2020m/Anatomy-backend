@@ -8,7 +8,7 @@ type pageProps = {
 };
 
 export const metadata = {
-    title: 'Med3D Explorer | Professors',
+    title: 'Med3D Explorer | Administrators',
     icons: '/logo.png'
 };
 

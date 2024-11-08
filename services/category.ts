@@ -24,7 +24,7 @@ export const fetchCategories = async (): Promise<Category[]> => {
     }
     console.log('headers', headers);
 
-    const response = await fetch(`${API_URL}/categories`, {
+    const response = await fetch(`${API_URL}/categories/main`, {
         method: 'GET',
         headers: headers
     });
