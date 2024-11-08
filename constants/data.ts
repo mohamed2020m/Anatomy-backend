@@ -39,6 +39,7 @@ export type Student = {
   firstName: string;
   lastName: string;
   password: string;
+  categories: Category[];
 };
 
 export type Admin = {
@@ -71,6 +72,13 @@ export const navItems: NavItem[] = [
     icon: 'user',
     label: 'Professor',
     roles: ['ROLE_ADMIN'], 
+  },
+  {
+    title: 'Dashboard',
+    href: '/prof/dashboard', 
+    icon: 'dashboard',
+    label: 'Dashboard',
+    roles: ['ROLE_PROF'],  
   },
   {
     title: 'Categories',
@@ -107,13 +115,6 @@ export const navItems: NavItem[] = [
     label: 'Students',
     roles: ['ROLE_ADMIN'],  
   },
-  // {
-  //   title: 'Employee',
-  //   href: '/admin/employee',
-  //   icon: 'user',
-  //   label: 'Employee',
-  //   roles: ['ROLE_ADMIN'],  
-  // },
   {
     title: 'Students',
     href: '/prof/students',
@@ -121,13 +122,20 @@ export const navItems: NavItem[] = [
     label: 'Students',
     roles: ['ROLE_PROF'],  
   },
-  {
-    title: 'Product',
-    href: '/prof/product', // Prof product path
-    icon: 'product',
-    label: 'Product',
-    roles: ['ROLE_PROF'],  
-  },
+  // {
+  //   title: 'Product',
+  //   href: '/prof/product',
+  //   icon: 'product',
+  //   label: 'Product',
+  //   roles: ['ROLE_PROF'],  
+  // },
+    // {
+  //   title: 'Employee',
+  //   href: '/admin/employee',
+  //   icon: 'user',
+  //   label: 'Employee',
+  //   roles: ['ROLE_ADMIN'],  
+  // },
   {
     title: 'Account',
     icon: 'user',
