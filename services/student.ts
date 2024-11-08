@@ -55,9 +55,11 @@ export const studentService = {
         const { user } = await getSessionInfo();
         
         // Different endpoints based on role
-        const endpoint = user.role === 'ROLE_ADMIN' 
-            ? '/students'
-            : `/students/by-professor/${user.id}`;
+        // const endpoint = user.role === 'ROLE_ADMIN' 
+        //     ? '/students'
+        //     : `/students/by-professor/${user.id}`;
+
+        const endpoint = '/students';
             
         this.records = await apiCall(endpoint);
     },
@@ -65,17 +67,24 @@ export const studentService = {
     // Get all students with filtering options
     async getAll(options: {
         search?: string;
-        professorId?: string;
-        courseId?: string;
-        status?: string;
+        category?: string; // Add the category filter
     } = {}) {
         let students = [...this.records];
 
-        // Apply filters
+        // Apply search filters
         if (options.search) {
             students = students.filter(student =>
                 student.firstName.toLowerCase().includes(options.search!.toLowerCase()) ||
                 student.lastName.toLowerCase().includes(options.search!.toLowerCase())
+            );
+        }
+
+        // Apply category filter
+        if (options.category) {
+            students = students.filter(student =>
+                student.categories.some(category => 
+                    category.name.toLowerCase() === options.category.toLowerCase()
+                )
             );
         }
 
@@ -91,9 +100,7 @@ export const studentService = {
         page?: number;
         limit?: number;
         search?: string;
-        professorId?: string;
-        courseId?: string;
-        status?: string;
+        category?: string; // Add the category filter
     }) {
         const allStudents = await this.getAll(filterOptions);
         const totalStudents = allStudents.length;

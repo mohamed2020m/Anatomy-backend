@@ -46,19 +46,21 @@ export default function StudentCategoryAssignment() {
   const { data: session } = useSession();
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [students, setStudents] = useState<{ id: number; firstName: string, lastName: string, email: string }[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<{ id: number; name: string }>(null);
-  const [selectedStudentIds, setSelectedStudentIds] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<{ id: number; name: string } | null>(null);
+  const [selectedStudentIds, setSelectedStudentIds] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   
   
   const filteredStudents = students.filter(student =>
-    student.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.firstName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 
   useEffect(() => {
     const fetchCategories = async () => {
+      if (!session) return; // Ensure session is available
       try {
         const response = await fetch(`${API_URL}/professors/${session?.user.id}/sub-categories`, {
           headers: {
@@ -82,7 +84,7 @@ export default function StudentCategoryAssignment() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch(`${API_URL}/students/by-professor/${session?.user.id}`, {
+        const response = await fetch(`${API_URL}/students`, {
           headers: {
             'Authorization': `Bearer ${session?.user.access_token}`,
             'Content-Type': 'application/json'
@@ -101,13 +103,13 @@ export default function StudentCategoryAssignment() {
     fetchStudents();
   }, []);
 
-  const handleCategorySelect = (category: { id: number; name: string }) => {
+  const handleCategorySelect = (category: { id: number; name: string } | null) => {
     //console.log("Category selected: ", category);
     setSelectedCategory(category);
     setSelectedStudentIds([]); // Clear previous selections when a new category is selected
   };
 
-  const handleStudentSelect = (studentId) => {
+  const handleStudentSelect = (studentId : number) => {
     setSelectedStudentIds((prevSelected) =>
       prevSelected.includes(studentId)
         ? prevSelected.filter((id) => id !== studentId)
@@ -117,7 +119,11 @@ export default function StudentCategoryAssignment() {
 
   const handleAssignCategory = async () => {
     if (!selectedCategory || selectedStudentIds.length === 0) {
-      alert("Please select both a category and at least one student to assign.");
+      toast({
+        title: 'Error',
+        description: 'Please select both a category and at least one student to assign.',
+        variant: 'destructive',
+      });
       return;
     }
 
@@ -145,14 +151,26 @@ export default function StudentCategoryAssignment() {
       });
   
       if (response.ok) {
-        alert("Category assigned successfully.");
+        toast({
+          title: 'Success',
+          description: 'Category assigned successfully.',
+          variant: 'success',
+        });
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
+        toast({
+          title: 'Error',
+          description: `Error: ${errorData.message}`,
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error("Error assigning category:", error);
-      alert("An error occurred while assigning the category.");
+      toast({
+        title: 'Error',
+        description: 'An error occurred while assigning the category.',
+        variant: 'destructive',
+      });
     } 
 
  
@@ -175,7 +193,7 @@ export default function StudentCategoryAssignment() {
             {/* Category Selection */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium">Select Category</label>
-              <Select onValueChange={(value) => handleCategorySelect(categories.find(cat => cat.name === value))}>
+              <Select onValueChange={(value) => handleCategorySelect(categories.find(cat => cat.name === value) || null)}>
                 <SelectTrigger className="w-[280px]">
                   <SelectValue>{selectedCategory?.name || "Select category..."}</SelectValue>
                 </SelectTrigger>
