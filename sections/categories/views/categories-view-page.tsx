@@ -31,7 +31,6 @@ export default async function CategoriesViewPage({ categoryId }: CategoriesViewP
     { title: 'Create', link:  `${path}/categories/create`}
   ];
 
-
   return (
     <>
       <div className="flex-1 space-y-4 px-8">

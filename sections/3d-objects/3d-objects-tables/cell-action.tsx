@@ -8,7 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Edit, MoreHorizontal, Trash } from 'lucide-react';
+import { Edit, MoreHorizontal, Trash ,Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -95,7 +95,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem
             onClick={() => router.push(`/prof/threedobjects/show/${data.id}`)}
           >
-            <Edit className="mr-2 h-4 w-4" /> View
+            <Eye className="mr-2 h-4 w-4" /> View
           </DropdownMenuItem>
 
           <DropdownMenuItem

@@ -1,7 +1,7 @@
 import { ThreeDObjectsViewPage } from '@/sections/3d-objects/views';
 
 export const metadata = {
-  title: 'Dashboard : New Category',
+  title: 'Dashboard : New 3D-Object',
   icons: 'logo.png'
 };
 

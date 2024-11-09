@@ -9,34 +9,72 @@ const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
 const getSessionToken = async () => {
     const session = await getServerSession(authConfig);
     const auth : Session = await session.auth();
-    
     return auth.user.access_token;
 }
+
+// Get the session
+const getUserId = async () => {
+    const session = await getServerSession(authConfig);
+    const auth : Session = await session.auth();
+    const userId:number=auth.user.id;
+    return userId;
+}
+
 
 // Fetch all categories
 export const fetchCategories = async (): Promise<ThreeDObject[]> => {
     const token = await getSessionToken();
-    console.log('jwt token', token);
-    
+    const userId = await getUserId();
+    console.log('JWT Token:', token);
+    console.log('User ID:', userId);
+
     const headers = {
         Authorization: `Bearer ${token}`, 
-       'Content-Type': 'application/json'
-    }
-    console.log('headers', headers);
+        'Content-Type': 'application/json'
+    };
 
-    const response = await fetch(`${API_URL}/threeDObjects`, {
+    console.log('Headers:', headers);
+
+    const response = await fetch(`${API_URL}/threeDObjects/prof/${userId}`, {
         method: 'GET',
         headers: headers
     });
 
     if (!response.ok) {
-        throw new Error('Failed to fetch categories');
+        const errorMessage = `Failed to fetch 3D objects: ${response.status} ${response.statusText}`;
+        console.error(errorMessage);
+        throw new Error(errorMessage);
     }
 
     return await response.json();
 };
 
-
+export const fetchObjectById = async (id: number): Promise<ThreeDObject> => {
+    const token = await getSessionToken();
+    console.log('JWT token:', token); // Affiche le jeton pour déboguer
+    
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    console.log('Headers:', headers); // Affiche les en-têtes pour déboguer
+  
+    const url = `${API_URL}/threeDObjects/${id}`;
+    console.log('Fetching object from:', url); // Affiche l'URL pour déboguer
+  
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: headers,
+    });
+  
+    if (!response.ok) {
+      const errorData = await response.text(); // Récupère l'erreur détaillée
+      throw new Error(`Failed to fetch object with ID: ${id}. Error: ${errorData}`);
+    }
+  
+    return await response.json();
+  };
+  
 
 
 export const categoriesService = {
@@ -94,6 +132,12 @@ export const categoriesService = {
             categories: paginatedCategories
         };
     }
+
+
+
+
+
+    
 };
 
 categoriesService.initialize();
