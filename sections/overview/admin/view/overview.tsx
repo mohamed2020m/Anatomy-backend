@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { 
-  fetchCategoryCount,
+  fetchMainCategoryCount,
   fetchProfessorCount,
   fetchAdministratorsCount,
   fetchStudentsCount,
@@ -91,7 +91,7 @@ export default function OverViewPage() {
       if (!session) return;
       setLoadingCat(true);
       try {
-        const count = await fetchCategoryCount(session.user.access_token);
+        const count = await fetchMainCategoryCount(session.user.access_token);
         setCategoriesCount(count);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -154,66 +154,6 @@ export default function OverViewPage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Professors Counts
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    {loading ? (
-                      <div className="text-lg">Loading...</div>
-                    ) : (
-                      <div className="text-2xl font-bold">{professorCount}</div>
-                    )}
-                  </CardContent>
-                </Card>
-                
-                {/* Second Card*/}
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Categories Counts
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    {loadingCat ? (
-                      <div className="text-lg">Loading...</div>
-                    ) : (
-                      <div className="text-2xl font-bold">{categoriesCount}</div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Third Card*/}
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
                       Admins Counts
                     </CardTitle>
                     <svg
@@ -239,12 +179,72 @@ export default function OverViewPage() {
                     )}
                   </CardContent>
                 </Card>
+                
+                {/* Second Card*/}   
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Professors Counts
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    {loading ? (
+                      <div className="text-lg">Loading...</div>
+                    ) : (
+                      <div className="text-2xl font-bold">{professorCount}</div>
+                    )}
+                  </CardContent>
+                </Card>            
+                
+                {/* Third Card*/}
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Students Counts
+                    </CardTitle>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="h-4 w-4 text-muted-foreground"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </CardHeader>
+                  <CardContent>
+                    {loadingCat ? (
+                      <div className="text-lg">Loading...</div>
+                    ) : (
+                      <div className="text-2xl font-bold">{studentsCount}</div>
+                    )}
+                  </CardContent>
+                </Card>
 
                 {/* Fourth Card*/}
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Students Counts
+                      Categories Counts
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

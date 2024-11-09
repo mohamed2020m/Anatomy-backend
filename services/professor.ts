@@ -68,15 +68,25 @@ export const professorsService = {
     },
 
     // Get all professors with optional search
-    async getAll({ search }: { search?: string }) {
+    async getAll(options: {
+        search?: string;
+        category?: string; // Add the category filter
+    } = {}) {
         let professors = [...this.records];
 
         // Search functionality across multiple fields
-        if (search) {
+        if (options.search) {
             professors = professors.filter(professor =>
-                professor.firstName.toLowerCase().includes(search.toLowerCase()) ||
-                professor.lastName.toLowerCase().includes(search.toLowerCase())
+                professor.firstName.toLowerCase().includes(options.search!.toLowerCase()) ||
+                professor.lastName.toLowerCase().includes(options.search!.toLowerCase())
             );
+        }
+
+         // Apply category filter
+         if (options.category) {
+            professors = professors.filter(professor =>
+                professor.category.name.toLowerCase() === options.category!.toLowerCase()
+                )
         }
 
 
@@ -87,13 +97,14 @@ export const professorsService = {
     async getProfessors({
         page = 1,
         limit = 10,
-        search
+        ...filterOptions
     }: {
         page?: number;
         limit?: number;
         search?: string;
+        category?: string;
     }) {
-        const allProfessors = await this.getAll({ search });
+        const allProfessors = await this.getAll(filterOptions);
         const totalProfessors = allProfessors.length;
 
         // Pagination logic

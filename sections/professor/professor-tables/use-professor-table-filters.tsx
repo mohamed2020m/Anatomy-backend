@@ -2,14 +2,12 @@
 
 import { searchParams } from '@/lib/searchparams';
 import { useQueryState } from 'nuqs';
-import { useCallback, useMemo } from 'react';
-
-export const GENDER_OPTIONS = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' }
-];
+import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { toast } from '@/components/ui/use-toast';
 
 export function useProfessorsTableFilters() {
+  const { data: session } = useSession();
   const [searchQuery, setSearchQuery] = useQueryState(
     'q',
     searchParams.q
@@ -17,9 +15,36 @@ export function useProfessorsTableFilters() {
       .withDefault('')
   );
 
-  const [genderFilter, setGenderFilter] = useQueryState(
-    'gender',
-    searchParams.gender.withOptions({ shallow: false }).withDefault('')
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+
+  const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (!session) return; // Ensure session is available
+      try {
+        const response = await fetch(`${API_URL}/categories/main`, {
+          headers: {
+            'Authorization': `Bearer ${session.user.access_token}`,
+            'Content-Type': 'application/json'
+          },
+        });
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch categories.',
+          variant: 'destructive',
+        });
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const [categoryFilter, setCategoryFilter] = useQueryState(
+    'category',
+    searchParams.category.withOptions({ shallow: false }).withDefault('')
   );
 
   const [page, setPage] = useQueryState(
@@ -29,23 +54,23 @@ export function useProfessorsTableFilters() {
 
   const resetFilters = useCallback(() => {
     setSearchQuery(null);
-    setGenderFilter(null);
-
+    setCategoryFilter(null);
     setPage(1);
-  }, [setSearchQuery, setGenderFilter, setPage]);
+  }, [setSearchQuery, setCategoryFilter, setPage]);
 
   const isAnyFilterActive = useMemo(() => {
-    return !!searchQuery || !!genderFilter;
-  }, [searchQuery, genderFilter]);
+    return !!searchQuery || !!categoryFilter;
+  }, [searchQuery, categoryFilter]);
 
   return {
     searchQuery,
     setSearchQuery,
-    genderFilter,
-    setGenderFilter,
+    categoryFilter,
+    setCategoryFilter,
     page,
     setPage,
     resetFilters,
-    isAnyFilterActive
+    isAnyFilterActive,
+    categories
   };
 }
