@@ -2,6 +2,7 @@ package com.med3dexplorer.controllers;
 
 import com.med3dexplorer.dto.CategoryAssignmentRequest;
 import com.med3dexplorer.dto.CategoryDTO;
+import com.med3dexplorer.dto.CategoryStudentCountDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
 import com.med3dexplorer.services.implementations.ProfessorServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -70,10 +71,21 @@ public class ProfessorController {
             return professorService.getSubCategoriesOfProfessor(id);
         }
 
-        @PostMapping("/assign-category")
-        public ResponseEntity<String> assignCategoryToStudents(@RequestBody CategoryAssignmentRequest request) {
-            professorService.assignCategoryToStudents(request.getCategoryId(), request.getStudentIds());
-            return ResponseEntity.ok("Category assigned successfully to students.");
-        }
+    @GetMapping("/{id}/sub-categories/count")
+    public Long getSubCategoriesCountByProfessor(@PathVariable Long id) {
+        return professorService.getSubCategoriesCountByProfessorId(id);
+    }
+
+    @PostMapping("/assign-category")
+    public ResponseEntity<String> assignCategoryToStudents(@RequestBody CategoryAssignmentRequest request) {
+        professorService.assignCategoryToStudents(request.getCategoryId(), request.getStudentIds());
+        return ResponseEntity.ok("Category assigned successfully to students.");
+    }
+
+    @GetMapping("/{professorId}/sub-categories/student-counts")
+    public ResponseEntity<List<CategoryStudentCountDTO>> getSuCategoriesByStudents(@PathVariable Long professorId) {
+        List<CategoryStudentCountDTO> categoryStudentCounts = professorService.getCategoryStudentCounts(professorId);
+        return ResponseEntity.ok(categoryStudentCounts);
+    }
 
 }

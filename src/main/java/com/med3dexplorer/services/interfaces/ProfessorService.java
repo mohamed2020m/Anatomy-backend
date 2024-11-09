@@ -26,4 +26,6 @@ public interface ProfessorService {
     List<Object[]> getProfessorsByCategory();
 
     List<CategoryDTO> getSubCategoriesOfProfessor(Long professorId);
+
+    Long getSubCategoriesCountByProfessorId(Long professorId);
 }
