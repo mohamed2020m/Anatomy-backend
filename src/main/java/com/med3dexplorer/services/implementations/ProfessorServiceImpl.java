@@ -1,6 +1,7 @@
 package com.med3dexplorer.services.implementations;
 
 import com.med3dexplorer.dto.CategoryDTO;
+import com.med3dexplorer.dto.CategoryStudentCountDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
 import com.med3dexplorer.exceptions.CategoryNotFoundException;
 import com.med3dexplorer.exceptions.UserNotFoundException;
@@ -13,12 +14,14 @@ import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.repositories.StudentRepository;
 import com.med3dexplorer.services.interfaces.ProfessorService;
 import jakarta.transaction.Transactional;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,4 +152,44 @@ public class ProfessorServiceImpl implements ProfessorService {
         studentRepository.saveAll(students);
     }
 
+    @Override
+    public Long getSubCategoriesCountByProfessorId(Long professorId) {
+        return professorRepository.countSubCategoriesByProfessorId(professorId);
+    }
+
+    public List<CategoryStudentCountDTO> getCategoryStudentCounts(Long professorId) {
+        // Get the professor by ID
+        Professor professor = professorRepository.findById(professorId)
+                .orElseThrow(() -> new RuntimeException("Professor not found"));
+
+        // Get the professor's main category
+        Category professorMainCategory = professor.getCategory();
+
+        // Fetch all students (you can add filtering logic if needed)
+        List<Student> students = studentRepository.findAll();
+
+        // Create a map to store student count per subcategory
+        Map<String, Long> subcategoryCounts = new HashMap<>();
+
+        // Iterate over students and their categories
+        for (Student student : students) {
+            for (Category studentCategory : student.getCategories()) {
+                // Check if the student category is a subcategory of the professor's main category
+                if (studentCategory.getParentCategory() != null &&
+                        studentCategory.getParentCategory().equals(professorMainCategory)) {
+                    // Count students for the corresponding subcategory
+                    subcategoryCounts.put(studentCategory.getName(),
+                            subcategoryCounts.getOrDefault(studentCategory.getName(), 0L) + 1);
+                }
+            }
+        }
+
+        // Convert the map to a list of DTOs
+        List<CategoryStudentCountDTO> result = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : subcategoryCounts.entrySet()) {
+            result.add(new CategoryStudentCountDTO(entry.getKey(), entry.getValue()));
+        }
+
+        return result;
+    }
 }
