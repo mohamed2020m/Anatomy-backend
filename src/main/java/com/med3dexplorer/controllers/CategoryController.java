@@ -66,4 +66,9 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getMainCategories());
     }
 
+    @GetMapping("/main/count")
+    public ResponseEntity<Long> getMainCategoryCount() {
+        return ResponseEntity.ok(categoryService.getMainCategoriesCount());
+    }
+
 }

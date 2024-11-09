@@ -4,7 +4,6 @@ import com.med3dexplorer.dto.CategoryDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.CategoryDTOConverter;
 import com.med3dexplorer.models.Category;
-import com.med3dexplorer.models.Category;
 import com.med3dexplorer.repositories.CategoryRepository;
 import com.med3dexplorer.services.interfaces.CategoryService;
 import jakarta.transaction.Transactional;
@@ -115,4 +114,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDTOs;
     }
 
+    @Override
+    public Long getMainCategoriesCount() {
+        return categoryRepository.countMainCategories();
+    }
 }

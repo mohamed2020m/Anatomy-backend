@@ -21,4 +21,6 @@ public interface CategoryService {
     Long getCategoriesCount();
 
     List<CategoryDTO> getMainCategories();
+
+    Long getMainCategoriesCount();
 }

@@ -49,4 +49,9 @@ public class AdministratorController {
         administratorService.deleteAdministrator(id);
         return new ResponseEntity("Administrator deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/count")
+    public Long getCategoriesCount() {
+        return administratorService.getAdminsCount();
+    }
 }
