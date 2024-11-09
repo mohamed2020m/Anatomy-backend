@@ -51,7 +51,7 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
   }));
 
   const chartConfig = {
-    visitors: { label: 'Professors' },
+    total: { label: '3D Objects' },
     ...Object.fromEntries(
       chartData.map((item, index) => [
         item.category,
@@ -68,8 +68,8 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-      <CardTitle>Professor Distribution by Category</CardTitle>
-      <CardDescription>Category Statistics</CardDescription>
+      <CardTitle>3D Objects Distribution by Category</CardTitle>
+      <CardDescription>3D Objects Statistics</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -110,7 +110,7 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          3D Objects
                         </tspan>
                       </text>
                     );
@@ -126,7 +126,7 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div> */}
         <div className="leading-none text-muted-foreground">
-          Total Professors: {total}
+          Total 3D Objects: {total}
         </div>
       </CardFooter>
     </Card>
