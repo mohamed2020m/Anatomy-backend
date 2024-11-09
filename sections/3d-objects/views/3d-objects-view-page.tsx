@@ -8,16 +8,16 @@ import { getSession } from 'next-auth/react';
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/prof' },
   { title: '3D Objects', link: '/prof/threedobjects' },
-  { title: 'View 3D Object', link: '/prof/threedobjects/show' },
-  { title: 'Create', link: '/prof/threedobjects/create' }
+  { title: 'View 3D Object', link: '/prof/threedobjects/show' }
+  
 ];
 
 interface ThreeDObjectsViewPageProps {
-  objectId?: number;
+  threeDObjectId?: number;
 }
 
 export default function ThreeDObjectsViewPage({
-  objectId
+  threeDObjectId
 }: ThreeDObjectsViewPageProps) {
   return (
     <>
@@ -26,10 +26,10 @@ export default function ThreeDObjectsViewPage({
       </div>
       <PageContainer scrollable>
         <div className="flex-1 space-y-4 p-8">
-          {objectId==null ? (
+          {threeDObjectId==null ? (
             <ThreeDObjectsForm />
           ) : (
-            <ThreeDObjectView objectId={objectId} />
+            <ThreeDObjectView threeDObjectId={threeDObjectId} />
           )}
         </div>
       </PageContainer>

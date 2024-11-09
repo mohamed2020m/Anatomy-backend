@@ -6,6 +6,6 @@ export const metadata = {
 };
 
 export default function Page({ params }: { params: {threeDObjectId: number } }) {
-    return <ThreeDObjectsViewPage objectId={params.threeDObjectId} />;
+    return <ThreeDObjectsViewPage threeDObjectId={params.threeDObjectId} />;
 }
 
