@@ -24,9 +24,9 @@ export const fetchProfessorCount = async (accessToken : string) => {
     }
   };
 
-  export const fetchCategoryCount = async (accessToken : string) => {
+  export const fetchMainCategoryCount = async (accessToken : string) => {
     try {
-        const response = await fetch(`${API_URL}/categories/count`, {
+        const response = await fetch(`${API_URL}/categories/main/count`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accessToken}`,

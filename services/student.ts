@@ -83,7 +83,7 @@ export const studentService = {
         if (options.category) {
             students = students.filter(student =>
                 student.categories.some(category => 
-                    category.name.toLowerCase() === options.category.toLowerCase()
+                    category.name.toLowerCase() === options.category!.toLowerCase()
                 )
             );
         }

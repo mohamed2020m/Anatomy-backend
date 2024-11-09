@@ -6,10 +6,7 @@ import { DataTableResetFilter } from '@/components/ui/table/data-table-reset-fil
 import { DataTableSearch } from '@/components/ui/table/data-table-search';
 import { Professor } from '@/constants/data';
 import { columns } from '../professor-tables/columns';
-import {
-  GENDER_OPTIONS,
-  useProfessorsTableFilters
-} from './use-professor-table-filters';
+import {  useProfessorsTableFilters } from './use-professor-table-filters';
 
 export default function ProfessorssTable({
   data,
@@ -19,13 +16,14 @@ export default function ProfessorssTable({
   totalData: number;
 }) {
   const {
-    genderFilter,
-    setGenderFilter,
+    categoryFilter,
+    setCategoryFilter,
     isAnyFilterActive,
     resetFilters,
     searchQuery,
     setPage,
-    setSearchQuery
+    setSearchQuery,
+    categories
   } = useProfessorsTableFilters();
 
   return (
@@ -37,17 +35,17 @@ export default function ProfessorssTable({
           setSearchQuery={setSearchQuery}
           setPage={setPage}
         />
-        {/* <DataTableFilterBox
-          filterKey="gender"
-          title="Gender"
-          options={GENDER_OPTIONS}
-          setFilterValue={setGenderFilter}
-          filterValue={genderFilter}
+        <DataTableFilterBox
+          filterKey="category"
+          title="Category"
+          options={categories.map(cat => ({ value: cat.name, label: cat.name }))}
+          setFilterValue={setCategoryFilter}
+          filterValue={categoryFilter}
         />
         <DataTableResetFilter
           isFilterActive={isAnyFilterActive}
           onReset={resetFilters}
-        /> */}
+        />
       </div>
       <DataTable columns={columns} data={data} totalItems={totalData} />
     </div>
