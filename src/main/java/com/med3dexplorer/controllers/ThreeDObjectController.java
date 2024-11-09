@@ -1,11 +1,13 @@
 package com.med3dexplorer.controllers;
 
 import com.med3dexplorer.dto.ThreeDObjectDTO;
+import com.med3dexplorer.exceptions.ThreeDObjectNotFoundException;
 import com.med3dexplorer.services.implementations.ThreeDObjectServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -36,6 +38,17 @@ public class ThreeDObjectController {
     public ResponseEntity<List<ThreeDObjectDTO>> getAllThreeDObjects() {
         return ResponseEntity.ok(threeDObjectService.getAllThreeDObjects());
     }
+
+    @GetMapping("/prof/{profId}")
+    public ResponseEntity<List<ThreeDObjectDTO>> getThreeDObjectByProfessorId(@PathVariable Long profId) {
+        try {
+            List<ThreeDObjectDTO> threeDObjects = threeDObjectService.getThreeDObjectByProfessorId(profId);
+            return ResponseEntity.ok(threeDObjects);
+        } catch (ThreeDObjectNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
 
 
     @PutMapping("/{id}")

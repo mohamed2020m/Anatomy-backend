@@ -11,6 +11,8 @@ public interface ThreeDObjectService {
 
     ThreeDObjectDTO getThreeDObjectById(Long threeDObjectId) throws ThreeDObjectNotFoundException;
 
+    List<ThreeDObjectDTO> getThreeDObjectByProfessorId(Long profId) throws ThreeDObjectNotFoundException;
+
     List<ThreeDObjectDTO> getAllThreeDObjects();
 
     ThreeDObjectDTO updateThreeDObject(ThreeDObjectDTO threeDObjectDTO)throws ThreeDObjectNotFoundException;
