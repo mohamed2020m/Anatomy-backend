@@ -77,7 +77,7 @@ export default async function CategoriesListingPage({}: TCategoriesListingPage) 
           />
 
           <Link
-            href={'/dashboard/categories/new'}
+            href={'/admin/categories/new'}
             className={cn(buttonVariants({ variant: 'default' }))}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New

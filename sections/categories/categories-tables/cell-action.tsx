@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from '@/components/ui/use-toast';
 
-const APP_URL = `${process.env.BACKEND_API}/api/v1`
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
 interface CellActionProps {
   data: Category;
@@ -29,7 +29,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   // Function to delete the old image
   async function deleteOldImage(oldImagePath: string, access_token: string) {
-    const deleteUrl = `${APP_URL}/files/delete/${oldImagePath}`;
+    const deleteUrl = `${API_URL}/files/delete/${oldImagePath}`;
     const response = await fetch(deleteUrl, {
       method: 'DELETE',
       headers: {
@@ -53,12 +53,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
       const imagePathParts = data.image.split('/');
       const imageName = imagePathParts[imagePathParts.length - 1];
+      
       console.log("Image name: ", imageName);
 
       // delete the image
       deleteOldImage(imageName, access_token);
 
-      const response = await fetch(`${APP_URL}/categories/${data.id}`, {
+      const response = await fetch(`${API_URL}/categories/${data.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${access_token}`
