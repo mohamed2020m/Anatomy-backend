@@ -32,7 +32,7 @@ public class DataInitializer {
             AuthenticationService authenticationService
     ) {
         return args -> {
-            // Créer l'administrateur
+            // Create admin user
             String adminEmail = "admin@admin.com";
             String adminPassword = "123456";
 
@@ -46,167 +46,179 @@ public class DataInitializer {
 
                 authenticationService.signup(admin);
                 System.out.println("Admin user created.");
-            } else {
-                System.out.println("Admin user already exists.");
             }
 
-            // Creating of main category
+            // Main Categories Creation
+            // 1. Anatomy Category
             Category anatomyCategory = categoryRepository.findByName("Anatomy")
                     .orElseGet(() -> {
                         Category category = Category.builder()
                                 .name("Anatomy")
                                 .description("3D models of human anatomy structures")
-                                .image("images-0d6f1622-ab33-40cb-9fac-6a2023e8c8c3.jpg")
+                                .image("images-anatomy-main.jpg")
                                 .build();
                         return categoryRepository.save(category);
                     });
 
-            Category cardiovascularSystem = categoryRepository.findByName("Cardiovascular System")
+            // Anatomy subcategories
+            Category cardiovascularSystem = createSubCategory(categoryRepository, "Cardiovascular System",
+                    "Models of heart, blood vessels, and circulatory system", null ,anatomyCategory);
+            Category digestiveSystem = createSubCategory(categoryRepository, "Digestive System",
+                    "Models of stomach, intestines, and other digestive organs",null, anatomyCategory);
+            Category nervousSystem = createSubCategory(categoryRepository, "Nervous System",
+                    "Models of brain, spinal cord, and neural networks",null, anatomyCategory);
+            Category skeletalSystem = createSubCategory(categoryRepository, "Skeletal System",
+                    "Models of bones, joints, and skeletal structures", null, anatomyCategory);
+
+            // 2. Geology Category
+            Category geologyCategory = categoryRepository.findByName("Geology")
                     .orElseGet(() -> {
                         Category category = Category.builder()
-                                .name("Cardiovascular System")
-                                .description("Models of heart, blood vessels, and circulatory system")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
-                                .parentCategory(anatomyCategory)
+                                .name("Geology")
+                                .description("3D models of geological formations and structures")
+                                .image("images-geology-main.jpg")
                                 .build();
                         return categoryRepository.save(category);
                     });
 
-            Category digestiveSystem = categoryRepository.findByName("Digestive System")
+            // Geology subcategories
+            Category minerals = createSubCategory(categoryRepository, "Minerals",
+                    "3D models of various mineral structures and crystals", null, geologyCategory);
+            Category tectonics = createSubCategory(categoryRepository, "Plate Tectonics",
+                    "Models of tectonic plates and their movements", null, geologyCategory);
+            Category volcanology = createSubCategory(categoryRepository, "Volcanology",
+                    "Models of volcanic structures and formations", null ,geologyCategory);
+
+            // 3. Chemistry Category
+            Category chemistryCategory = categoryRepository.findByName("Chemistry")
                     .orElseGet(() -> {
                         Category category = Category.builder()
-                                .name("Digestive System")
-                                .description("Models of stomach, intestines, and other digestive organs")
-                                .image("images-dfhks12ls-ab33-40cb-9fac-6a2023e8c8c3.jpg")
-                                .parentCategory(anatomyCategory)
+                                .name("Chemistry")
+                                .description("3D models of molecular structures and chemical compounds")
+                                .image("images-chemistry-main.jpg")
                                 .build();
                         return categoryRepository.save(category);
                     });
 
-            String profEmail0 = "mohamed.lachgar@example.com";
-            if (!userRepository.existsByEmail(profEmail0)) {
-                RegisterUserDTO prof0 = new RegisterUserDTO();
-                prof0.setEmail(profEmail0);
-                prof0.setFirstName("Mohamed");
-                prof0.setLastName("Lachgar");
-                prof0.setPassword("123456");
-                prof0.setCategory(anatomyCategory);
-                prof0.setRole("PROF");
+            // Chemistry subcategories
+            Category organicChemistry = createSubCategory(categoryRepository, "Organic Chemistry",
+                    "Models of organic compounds and molecules", null, chemistryCategory);
+            Category inorganicChemistry = createSubCategory(categoryRepository, "Inorganic Chemistry",
+                    "Models of inorganic compounds and crystal structures", null ,chemistryCategory);
 
-                authenticationService.signup(prof0);
-                System.out.println("Professor Mohamed Lachgar created.");
-            } else {
-                System.out.println("Professor Mohamed Lachgar already exists.");
-            }
+            // Create Professors
+            // Anatomy Professors
+            createProfessor(authenticationService, userRepository, "ahmad.khalil@example.com", "Ahmad", "Khalil", anatomyCategory);
+            createProfessor(authenticationService, userRepository, "fatima.hassan@example.com", "Fatima", "Hassan", anatomyCategory);
+            createProfessor(authenticationService, userRepository, "omar.qasim@example.com", "Omar", "Qasim", anatomyCategory);
 
-            String profEmail1 = "hamza.alami@example.com";
-            if (!userRepository.existsByEmail(profEmail1)) {
-                RegisterUserDTO prof1 = new RegisterUserDTO();
-                prof1.setEmail(profEmail1);
-                prof1.setFirstName("Hamza");
-                prof1.setLastName("Alami");
-                prof1.setPassword("123456");
-                prof1.setCategory(anatomyCategory);
-                prof1.setRole("PROF");
+            // Geology Professors
+            createProfessor(authenticationService, userRepository, "zainab.malik@example.com", "Zainab", "Malik", geologyCategory);
+            createProfessor(authenticationService, userRepository, "karim.abdallah@example.com", "Karim", "Abdallah", geologyCategory);
+            createProfessor(authenticationService, userRepository, "leila.rahman@example.com", "Leila", "Rahman", geologyCategory);
 
-                authenticationService.signup(prof1);
-                System.out.println("Professor Hamza Alami created.");
-            } else {
-                System.out.println("Professor Hamza Alami already exists.");
-            }
+            // Chemistry Professors
+            createProfessor(authenticationService, userRepository, "mustafa.saeed@example.com", "Mustafa", "Saeed", chemistryCategory);
+            createProfessor(authenticationService, userRepository, "amira.wahab@example.com", "Amira", "Wahab", chemistryCategory);
+            createProfessor(authenticationService, userRepository, "yasir.hamdi@example.com", "Yasir", "Hamdi", chemistryCategory);
 
-            String profEmail2 = "sara.elhaddad@example.com";
-            if (!userRepository.existsByEmail(profEmail2)) {
-                RegisterUserDTO prof2 = new RegisterUserDTO();
-                prof2.setEmail(profEmail2);
-                prof2.setFirstName("Sara");
-                prof2.setLastName("El Haddad");
-                prof2.setPassword("123456");
-                prof2.setCategory(anatomyCategory);
-                prof2.setRole("PROF");
+            // Create Students with Arabic names
+            createStudent(authenticationService, userRepository, "mahmoud.ali@student.com", "Mahmoud", "Ali");
+            createStudent(authenticationService, userRepository, "rania.omar@student.com", "Rania", "Omar");
+            createStudent(authenticationService, userRepository, "ibrahim.hassan@student.com", "Ibrahim", "Hassan");
+            createStudent(authenticationService, userRepository, "layla.mohamed@student.com", "Layla", "Mohamed");
+            createStudent(authenticationService, userRepository, "tariq.ahmad@student.com", "Tariq", "Ahmad");
+            createStudent(authenticationService, userRepository, "noor.kareem@student.com", "Noor", "Kareem");
+            createStudent(authenticationService, userRepository, "zaid.mansour@student.com", "Zaid", "Mansour");
+            createStudent(authenticationService, userRepository, "hana.bashir@student.com", "Hana", "Bashir");
+            createStudent(authenticationService, userRepository, "yasser.salim@student.com", "Yasser", "Salim");
+            createStudent(authenticationService, userRepository, "dina.farid@student.com", "Dina", "Farid");
 
-                authenticationService.signup(prof2);
-                System.out.println("Professor Sara El Haddad created.");
-            } else {
-                System.out.println("Professor Sara El Haddad already exists.");
-            }
+            // Create 3D Objects for each category
+            // Anatomy Objects
+            Professor anatomyProf = professorRepository.findByEmail("ahmad.khalil@example.com").orElseThrow();
+            create3DObject(threeDObjectRepository, "Heart Model", "Detailed 3D model of the human heart",
+                    "heart.glb", "heart.jpg", cardiovascularSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Brain Model", "Detailed 3D model of the human brain",
+                    "brain.glb", "brain.jpg", nervousSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Skeletal System", "Complete human skeletal system",
+                    "skeleton.glb", "skeleton.jpg", skeletalSystem, anatomyProf);
 
-            // Creation of sub categories for a category
-            Professor professor1 = professorRepository.findByEmail(profEmail1).orElseThrow();
-            Professor professor2 = professorRepository.findByEmail(profEmail2).orElseThrow();
+            // Geology Objects
+            Professor geologyProf = professorRepository.findByEmail("zainab.malik@example.com").orElseThrow();
+            create3DObject(threeDObjectRepository, "Quartz Crystal", "3D model of quartz crystal structure",
+                    "quartz.glb", "quartz.jpg", minerals, geologyProf);
+            create3DObject(threeDObjectRepository, "Volcano Formation", "Cross-section of a volcanic structure",
+                    "volcano.glb", "volcano.jpg", volcanology, geologyProf);
+            create3DObject(threeDObjectRepository, "Tectonic Plates", "Interactive model of tectonic plates",
+                    "tectonics.glb", "tectonics.jpg", tectonics, geologyProf);
 
-            threeDObjectRepository.findByName("Heart Model")
-                    .orElseGet(() -> {
-                        ThreeDObject heartModel = ThreeDObject.builder()
-                                .name("Heart Model")
-                                .description("Detailed 3D model of the human heart")
-                                .object("objects/heart-model.glb")
-                                .image("images-dfhks12ls-ab33-40cb-9fac-6a2023e8c8c3.jpg")
-                                .category(cardiovascularSystem)
-                                .professor(professor1)
-                                .build();
-                        return threeDObjectRepository.save(heartModel);
-                    });
-
-            threeDObjectRepository.findByName("Stomach Model")
-                    .orElseGet(() -> {
-                        ThreeDObject stomachModel = ThreeDObject.builder()
-                                .name("Stomach Model")
-                                .description("Detailed 3D model of the human stomach")
-                                .object("objects/stomach-model.glb")
-                                .image("images-2aac1d72-2c70-4061-a3f6-251ae7e436f6.jpg")
-                                .category(digestiveSystem)
-                                .professor(professor2)
-                                .build();
-                        return threeDObjectRepository.save(stomachModel);
-                    });
-
-            threeDObjectRepository.findByName("Intestines Model")
-                    .orElseGet(() -> {
-                        ThreeDObject intestinesModel = ThreeDObject.builder()
-                                .name("Intestines Model")
-                                .description("Detailed 3D model of the human intestines")
-                                .object("objects/intestines-model.glb")
-                                .image("images-0d6f1622-ab33-40cb-9fac-6a2023e8c8c3.jpg")
-                                .category(digestiveSystem)
-                                .professor(professor2)
-                                .build();
-                        return threeDObjectRepository.save(intestinesModel);
-                    });
-
-            // Créer des étudiants
-            String studentEmail1 = "youssef.benali@student.com";
-            if (!userRepository.existsByEmail(studentEmail1)) {
-                RegisterUserDTO student1 = new RegisterUserDTO();
-                student1.setEmail(studentEmail1);
-                student1.setFirstName("Youssef");
-                student1.setLastName("Benali");
-                student1.setPassword("123456");
-               // student1.getCategories().add(anatomyCategory);
-                student1.setRole("STUD");
-
-                authenticationService.signup(student1);
-                System.out.println("Student Youssef Benali created.");
-            } else {
-                System.out.println("Student Youssef Benali already exists.");
-            }
-
-            String studentEmail2 = "nadia.abbas@student.com";
-            if (!userRepository.existsByEmail(studentEmail2)) {
-                RegisterUserDTO student2 = new RegisterUserDTO();
-                student2.setEmail(studentEmail2);
-                student2.setFirstName("Nadia");
-                student2.setLastName("Abbas");
-                student2.setPassword("123456");
-               // student2.getCategories().add(anatomyCategory);
-                student2.setRole("STUD");
-
-                authenticationService.signup(student2);
-                System.out.println("Student Nadia Abbas created.");
-            } else {
-                System.out.println("Student Nadia Abbas already exists.");
-            }
+            // Chemistry Objects
+            Professor chemistryProf = professorRepository.findByEmail("mustafa.saeed@example.com").orElseThrow();
+            create3DObject(threeDObjectRepository, "Benzene Ring", "3D model of benzene molecular structure",
+                    "benzene.glb", "benzene.jpg", organicChemistry, chemistryProf);
+            create3DObject(threeDObjectRepository, "NaCl Crystal Structure", "Sodium chloride crystal lattice",
+                    "nacl.glb", "nacl.jpg", inorganicChemistry, chemistryProf);
         };
+    }
+
+    // Helper methods
+    private Category createSubCategory(CategoryRepository repo, String name, String description, String image, Category parent) {
+        return repo.findByName(name)
+                .orElseGet(() -> {
+                    Category category = Category.builder()
+                            .name(name)
+                            .description(description)
+                            .image("images-" + image)
+                            .parentCategory(parent)
+                            .build();
+                    return repo.save(category);
+                });
+    }
+
+    private void createProfessor(AuthenticationService auth, UserRepository repo, String email,
+                                 String firstName, String lastName, Category category) {
+        if (!repo.existsByEmail(email)) {
+            RegisterUserDTO prof = new RegisterUserDTO();
+            prof.setEmail(email);
+            prof.setFirstName(firstName);
+            prof.setLastName(lastName);
+            prof.setPassword("123456");
+            prof.setCategory(category);
+            prof.setRole("PROF");
+            auth.signup(prof);
+            System.out.println("Professor " + firstName + " " + lastName + " created.");
+        }
+    }
+
+    private void createStudent(AuthenticationService auth, UserRepository repo, String email,
+                               String firstName, String lastName) {
+        if (!repo.existsByEmail(email)) {
+            RegisterUserDTO student = new RegisterUserDTO();
+            student.setEmail(email);
+            student.setFirstName(firstName);
+            student.setLastName(lastName);
+            student.setPassword("123456");
+            student.setRole("STUD");
+            auth.signup(student);
+            System.out.println("Student " + firstName + " " + lastName + " created.");
+        }
+    }
+
+    private void create3DObject(ThreeDObjectRepository repo, String name, String description,
+                                String objectFile, String imageFile, Category category, Professor professor) {
+        repo.findByName(name)
+                .orElseGet(() -> {
+                    ThreeDObject object = ThreeDObject.builder()
+                            .name(name)
+                            .description(description)
+                            .object("objects-" + objectFile)
+                            .image("images-" + imageFile)
+                            .category(category)
+                            .professor(professor)
+                            .build();
+                    return repo.save(object);
+                });
     }
 
 }
