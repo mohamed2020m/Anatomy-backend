@@ -91,4 +91,9 @@ public class AdministratorServiceImpl implements AdministratorService {
             .orElseThrow(() -> new UserNotFoundException("Admin not found"));
         return administratorDTOConverter.toDto(administrator);
     }
+
+    @Override
+    public Long getAdminsCount() {
+        return administratorRepository.count();
+    }
 }

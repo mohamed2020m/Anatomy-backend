@@ -19,4 +19,6 @@ public interface StudentService {
     void deleteStudent(Long studentId) throws UserNotFoundException;
 
     StudentDTO getStudentInfo(String username);
+
+    Long getStudentsCount();
 }

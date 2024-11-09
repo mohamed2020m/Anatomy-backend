@@ -60,4 +60,9 @@ public class StudentController {
 
             return ResponseEntity.ok(students);
         }
+
+    @GetMapping("/count")
+    public Long getCategoriesCount() {
+        return studentService.getStudentsCount();
+    }
 }
