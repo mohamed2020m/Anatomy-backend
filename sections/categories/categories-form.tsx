@@ -13,7 +13,7 @@ import { FileUploader } from '@/components/file-uploader';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 
-const APP_URL = 'http://localhost:8080/api/v1';
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -62,7 +62,7 @@ export default function CategoriesForm() {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${APP_URL}/files/upload`, {
+    const response = await fetch(`${API_URL}/files/upload`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -75,11 +75,12 @@ export default function CategoriesForm() {
     }
 
     const data = await response.json();
-    return data.image;
+   // console.log("Image Name: ", data.path);
+    return data.path;
   }
 
   async function createCategory(data: { id: number, name: string; description: string; image: string }, token: string) {
-    const response = await fetch(`${APP_URL}/categories`, {
+    const response = await fetch(`${API_URL}/categories`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -103,8 +104,12 @@ export default function CategoriesForm() {
         throw new Error('Unauthorized');
       }
 
+      
+
       // Upload the image first
       const imagePath = await uploadImage(values.image[0], access_token);
+
+      // console.log("Image Name : ", imagePath);
 
       // Create the category with the uploaded image path
       const categoryData = {
