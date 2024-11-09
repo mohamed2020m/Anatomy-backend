@@ -4,7 +4,9 @@ package com.med3dexplorer.services.implementations;
 import com.med3dexplorer.dto.ThreeDObjectDTO;
 import com.med3dexplorer.exceptions.ThreeDObjectNotFoundException;
 import com.med3dexplorer.mapper.ThreeDObjectDTOConverter;
+import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.models.ThreeDObject;
+import com.med3dexplorer.repositories.ProfessorRepository;
 import com.med3dexplorer.repositories.ThreeDObjectRepository;
 import com.med3dexplorer.services.interfaces.ThreeDObjectService;
 import jakarta.transaction.Transactional;
@@ -23,11 +25,13 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
     private final ThreeDObjectDTOConverter threeDObjectDTOConverter;
     private ThreeDObjectRepository threeDObjectRepository;
+    private ProfessorRepository professorRepository;
 
 
-    public ThreeDObjectServiceImpl(ThreeDObjectRepository threeDObjectRepository, ThreeDObjectDTOConverter threeDObjectDTOConverter) {
+    public ThreeDObjectServiceImpl(ProfessorRepository professorRepository,ThreeDObjectRepository threeDObjectRepository, ThreeDObjectDTOConverter threeDObjectDTOConverter) {
         this.threeDObjectDTOConverter = threeDObjectDTOConverter;
         this.threeDObjectRepository = threeDObjectRepository;
+        this.professorRepository = professorRepository;
     }
 
 
@@ -47,6 +51,18 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         ThreeDObjectDTO threeDObjectDTO = threeDObjectDTOConverter.toDto(threeDObject);
         return threeDObjectDTO;
     }
+
+    @Override
+    public List<ThreeDObjectDTO> getThreeDObjectByProfessorId(Long profId) throws ThreeDObjectNotFoundException {
+        Professor professor = professorRepository.findById(profId)
+                .orElseThrow(() -> new ThreeDObjectNotFoundException("Professor not found with id: " + profId));
+
+        List<ThreeDObject> threeDObjects = threeDObjectRepository.findByProfessor(professor);
+        return threeDObjects.stream()
+                .map(threeDObjectDTOConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ThreeDObjectDTO> getAllThreeDObjects() {

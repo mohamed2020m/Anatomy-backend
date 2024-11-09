@@ -20,6 +20,7 @@ public class ThreeDObjectDTO {
     private String description;
     private String descriptionAudio;
     private String image;
+    private String object;
     private List<Note> notes;
     private Professor professor;
     private LocalDateTime createdAt;
