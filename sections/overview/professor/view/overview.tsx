@@ -18,20 +18,21 @@ import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { 
   fetchSubCategoryCount, 
-  fetchProfessorCount, 
+  fetchObjectsCount, 
   fetchProfessorsByCategories,
   fetchStudentsCount,
+  fetchObjectsBySubCategories,
   fetchSubCategoriesByStudents } from '@/services/statitstics';
 
 
 
 export default function OverViewPage() {
   const { data: session } = useSession();
-  const [professorCount, setProfessorCount] = useState(0);
   const [categoriesCount, setCategoriesCount] = useState(0);
   const [studentsCount, setStudentsCount] = useState(0);
-  const [professorByCategory, setProfessorByCategory] = useState<[string, number][]>([]);
+  const [objectsCounts, setObjectsCounts] = useState(0);
   const [studentsByCategories, setStudentsByCategories] = useState<[string, number][]>([]);
+  const [objectsByCategories, setObjectsByCategories] = useState<[string, number][]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,8 +40,8 @@ export default function OverViewPage() {
       if (!session) return;
       setLoading(true);
       try {
-        const count = await fetchProfessorCount(session.user.access_token);
-        setProfessorCount(count);
+        const count = await fetchObjectsCount(session.user.access_token, session.user.id);
+        setObjectsCounts(count);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -58,6 +59,23 @@ export default function OverViewPage() {
       try {
         const count = await fetchSubCategoryCount(session.user.access_token, session.user.id);
         setCategoriesCount(count);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!session) return;
+      setLoading(true);
+      try {
+        const data = await fetchObjectsBySubCategories(session.user.access_token, session.user.id);
+        setObjectsByCategories(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -184,7 +202,7 @@ export default function OverViewPage() {
                     {loading ? (
                       <div className="text-lg">Loading...</div>
                     ) : (
-                      <div className="text-2xl font-bold">{professorCount}</div>
+                      <div className="text-2xl font-bold">{objectsCounts}</div>
                     )}
                   </CardContent>
                 </Card>
@@ -279,7 +297,7 @@ export default function OverViewPage() {
                 </Card>
                 
                 <div className="col-span-4 md:col-span-3">
-                  <PieGraph apiData={professorByCategory}/>
+                  <PieGraph apiData={objectsByCategories}/>
                 </div>
 
                 <div className="col-span-4 md:col-span-3">
