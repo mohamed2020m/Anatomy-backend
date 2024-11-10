@@ -63,13 +63,13 @@ public class DataInitializer {
 
             // Anatomy subcategories
             Category cardiovascularSystem = createSubCategory(categoryRepository, "Cardiovascular System",
-                    "Models of heart, blood vessels, and circulatory system", null ,anatomyCategory);
+                    "Models of heart, blood vessels, and circulatory system", "cardiovascular-system.jpg" ,anatomyCategory);
             Category digestiveSystem = createSubCategory(categoryRepository, "Digestive System",
-                    "Models of stomach, intestines, and other digestive organs",null, anatomyCategory);
+                    "Models of stomach, intestines, and other digestive organs","digestive-system.jpg", anatomyCategory);
             Category nervousSystem = createSubCategory(categoryRepository, "Nervous System",
-                    "Models of brain, spinal cord, and neural networks",null, anatomyCategory);
+                    "Models of brain, spinal cord, and neural networks","nervous-system.jpg", anatomyCategory);
             Category skeletalSystem = createSubCategory(categoryRepository, "Skeletal System",
-                    "Models of bones, joints, and skeletal structures", null, anatomyCategory);
+                    "Models of bones, joints, and skeletal structures", "skeletal-system.jpg", anatomyCategory);
 
             // 2. Geology Category
             Category geologyCategory = categoryRepository.findByName("Geology")
