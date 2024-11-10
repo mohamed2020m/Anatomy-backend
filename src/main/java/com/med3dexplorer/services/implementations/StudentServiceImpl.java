@@ -1,8 +1,10 @@
 package com.med3dexplorer.services.implementations;
 
+import com.med3dexplorer.dto.CategoryStudentCountDTO;
 import com.med3dexplorer.dto.StudentDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 import com.med3dexplorer.mapper.StudentDTOConverter;
+import com.med3dexplorer.models.Category;
 import com.med3dexplorer.models.Professor;
 import com.med3dexplorer.models.Student;
 import com.med3dexplorer.repositories.ProfessorRepository;
@@ -11,8 +13,7 @@ import com.med3dexplorer.services.interfaces.StudentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,5 +91,34 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Long getStudentsCount() {
         return studentRepository.count();
+    }
+
+    public List<CategoryStudentCountDTO> getStudentsCountByMainCategories() {
+        // Fetch all students
+        List<Student> students = studentRepository.findAll();
+
+        // Create a map to store student count per subcategory
+        Map<String, Long> mainCategoryCounts = new HashMap<>();
+
+
+        // Iterate over students and their categories
+        for (Student student : students) {
+            for (Category studentCategory : student.getCategories()) {
+                // Check if the student category is a subcategory of the professor's main category
+                if (studentCategory.getParentCategory() == null) {
+                    // Count students for the corresponding subcategory
+                    mainCategoryCounts.put(studentCategory.getName(),
+                            mainCategoryCounts.getOrDefault(studentCategory.getName(), 0L) + 1);
+                }
+            }
+        }
+
+        // Convert the map to a list of DTOs
+        List<CategoryStudentCountDTO> result = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : mainCategoryCounts.entrySet()) {
+            result.add(new CategoryStudentCountDTO(entry.getKey(), entry.getValue()));
+        }
+
+        return result;
     }
 }

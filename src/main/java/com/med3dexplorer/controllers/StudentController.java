@@ -1,5 +1,6 @@
 package com.med3dexplorer.controllers;
 
+import com.med3dexplorer.dto.CategoryStudentCountDTO;
 import com.med3dexplorer.dto.StudentDTO;
 import com.med3dexplorer.models.Student;
 import com.med3dexplorer.services.implementations.StudentServiceImpl;
@@ -62,5 +63,11 @@ public class StudentController {
     @GetMapping("/count")
         public Long getCategoriesCount() {
         return studentService.getStudentsCount();
+    }
+
+    @GetMapping("/main-categories/student-counts")
+    public ResponseEntity<List<CategoryStudentCountDTO>> getStudentsCountByMainCategories() {
+        List<CategoryStudentCountDTO> categoryStudentCounts = studentService.getStudentsCountByMainCategories();
+        return ResponseEntity.ok(categoryStudentCounts);
     }
 }

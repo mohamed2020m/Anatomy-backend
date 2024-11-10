@@ -105,4 +105,11 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         threeDObjectRepository.delete(threeDObject);
     }
 
+    public Long getThreeDObjectCountByProfessor(Long professorId) {
+        return threeDObjectRepository.threeDObjectCountByProfessorId(professorId);
+    }
+
+    public List<Object[]> getThreeDObjectByProfessorSubCategories(Long professorId) {
+        return threeDObjectRepository.findThreeDObjectCountsByProfessorSubCategories(professorId);
+    }
 }
