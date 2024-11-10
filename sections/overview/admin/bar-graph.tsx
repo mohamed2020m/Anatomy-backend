@@ -82,7 +82,7 @@ export function BarGraph({  data = [] }: BarGraphProps) {
                 />
               }
             />
-            <Bar dataKey="students" fill="hsl(var(--chart-1))" />
+            <Bar dataKey="students" fill="#cc9c8c" />
           </BarChart>
         </ChartContainer>
       </CardContent>
