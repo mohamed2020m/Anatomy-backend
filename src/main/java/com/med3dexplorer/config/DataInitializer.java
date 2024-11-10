@@ -3,6 +3,7 @@ package com.med3dexplorer.config;
 import com.med3dexplorer.dto.RegisterUserDTO;
 import com.med3dexplorer.models.Category;
 import com.med3dexplorer.models.Professor;
+import com.med3dexplorer.models.Student;
 import com.med3dexplorer.models.ThreeDObject;
 import com.med3dexplorer.repositories.*;
 import com.med3dexplorer.services.implementations.AuthenticationServiceImpl;
@@ -122,7 +123,7 @@ public class DataInitializer {
             createProfessor(authenticationService, userRepository, "amira.wahab@example.com", "Amira", "Wahab", chemistryCategory);
             createProfessor(authenticationService, userRepository, "yasir.hamdi@example.com", "Yasir", "Hamdi", chemistryCategory);
 
-            // Create Students with Arabic names
+            // Create Students
             createStudent(authenticationService, userRepository, "mahmoud.ali@student.com", "Mahmoud", "Ali");
             createStudent(authenticationService, userRepository, "rania.omar@student.com", "Rania", "Omar");
             createStudent(authenticationService, userRepository, "ibrahim.hassan@student.com", "Ibrahim", "Hassan");
@@ -134,7 +135,7 @@ public class DataInitializer {
             createStudent(authenticationService, userRepository, "yasser.salim@student.com", "Yasser", "Salim");
             createStudent(authenticationService, userRepository, "dina.farid@student.com", "Dina", "Farid");
 
-            // Create 3D Objects for each category
+            // Create 3D Objects for each sub-category
             // Anatomy Objects
             Professor anatomyProf = professorRepository.findByEmail("ahmad.khalil@example.com").orElseThrow();
             create3DObject(threeDObjectRepository, "Heart Model", "Detailed 3D model of the human heart",
@@ -159,6 +160,73 @@ public class DataInitializer {
                     "benzene.glb", "benzene.jpg", organicChemistry, chemistryProf);
             create3DObject(threeDObjectRepository, "NaCl Crystal Structure", "Sodium chloride crystal lattice",
                     "nacl.glb", "nacl.jpg", inorganicChemistry, chemistryProf);
+
+
+            // Assign Students to Sub-Categories
+            Student student01 = studentRepository.findByEmail("mahmoud.ali@student.com").orElseThrow();
+            student01.getCategories().add(anatomyCategory);
+            student01.getCategories().add(cardiovascularSystem);
+            student01.getCategories().add(geologyCategory);
+
+            Student student02 = studentRepository.findByEmail("rania.omar@student.com").orElseThrow();
+            student02.getCategories().add(anatomyCategory);
+            student02.getCategories().add(digestiveSystem);
+            student02.getCategories().add(geologyCategory);
+
+            Student student03 = studentRepository.findByEmail("ibrahim.hassan@student.com").orElseThrow();
+            student03.getCategories().add(anatomyCategory);
+            student03.getCategories().add(nervousSystem);
+            student03.getCategories().add(geologyCategory);
+
+            Student student04 = studentRepository.findByEmail("layla.mohamed@student.com").orElseThrow();
+            student04.getCategories().add(anatomyCategory);
+            student04.getCategories().add(skeletalSystem);
+            student04.getCategories().add(geologyCategory);
+
+            Student student05 = studentRepository.findByEmail("tariq.ahmad@student.com").orElseThrow();
+            student05.getCategories().add(anatomyCategory);
+            student05.getCategories().add(skeletalSystem);
+            student05.getCategories().add(geologyCategory);
+
+            Student student06 = studentRepository.findByEmail("noor.kareem@student.com").orElseThrow();
+            student06.getCategories().add(anatomyCategory);
+            student06.getCategories().add(skeletalSystem);
+            student06.getCategories().add(geologyCategory);
+
+            Student student07 = studentRepository.findByEmail("zaid.mansour@student.com").orElseThrow();
+            student07.getCategories().add(anatomyCategory);
+            student07.getCategories().add(skeletalSystem);
+            student07.getCategories().add(geologyCategory);
+
+            Student student08 = studentRepository.findByEmail("hana.bashir@student.com").orElseThrow();
+            student08.getCategories().add(chemistryCategory);
+            student08.getCategories().add(volcanology);
+            student08.getCategories().add(geologyCategory);
+            student08.getCategories().add(skeletalSystem);
+
+            Student student09 = studentRepository.findByEmail("yasser.salim@student.com").orElseThrow();
+            student09.getCategories().add(chemistryCategory);
+            student09.getCategories().add(tectonics);
+            student09.getCategories().add(skeletalSystem);
+            student08.getCategories().add(geologyCategory);
+
+            Student student10 = studentRepository.findByEmail("dina.farid@student.com").orElseThrow();
+            student10.getCategories().add(chemistryCategory);
+            student10.getCategories().add(nervousSystem);
+            student10.getCategories().add(geologyCategory);
+
+            studentRepository.save(student01);
+            studentRepository.save(student02);
+            studentRepository.save(student03);
+            studentRepository.save(student04);
+            studentRepository.save(student05);
+            studentRepository.save(student06);
+            studentRepository.save(student07);
+            studentRepository.save(student08);
+            studentRepository.save(student09);
+            studentRepository.save(student10);
+
+
         };
     }
 
