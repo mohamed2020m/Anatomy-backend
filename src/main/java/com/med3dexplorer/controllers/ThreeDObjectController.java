@@ -49,7 +49,15 @@ public class ThreeDObjectController {
         }
     }
 
+    @GetMapping("/count-by/{professorId}")
+    public Long getThreeDObjectCountByProfessor(@PathVariable Long professorId) {
+        return threeDObjectService.getThreeDObjectCountByProfessor(professorId);
+    }
 
+    @GetMapping("/{professorId}/by-categories")
+    public List<Object[]> getProfessorsByCategory(@PathVariable Long professorId) {
+        return threeDObjectService.getThreeDObjectByProfessorSubCategories(professorId);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ThreeDObjectDTO> updateThreeDObject(@PathVariable Long id, @RequestBody ThreeDObjectDTO threeDObjectDTO) {

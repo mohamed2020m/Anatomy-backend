@@ -1,6 +1,7 @@
 package com.med3dexplorer.services.interfaces;
 
 import com.med3dexplorer.dto.CategoryDTO;
+import com.med3dexplorer.dto.CategoryStudentCountDTO;
 import com.med3dexplorer.dto.ProfessorDTO;
 import com.med3dexplorer.exceptions.UserNotFoundException;
 
@@ -28,4 +29,6 @@ public interface ProfessorService {
     List<CategoryDTO> getSubCategoriesOfProfessor(Long professorId);
 
     Long getSubCategoriesCountByProfessorId(Long professorId);
+
+    List<CategoryStudentCountDTO> getCategoryStudentCounts(Long professorId);
 }

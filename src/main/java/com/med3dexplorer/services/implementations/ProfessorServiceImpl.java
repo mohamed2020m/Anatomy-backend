@@ -135,6 +135,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 
         List<Student> students = studentRepository.findAllById(studentIds);
+
         if (students.isEmpty()) {
             throw new UserNotFoundException("No students found with provided IDs");
         }
@@ -147,7 +148,14 @@ public class ProfessorServiceImpl implements ProfessorService {
                 student.getCategories().add(category);
                 student.setUpdatedAt(LocalDateTime.now());
             }
+
+            if(student.getCategories().stream().noneMatch(c -> c.getId().equals(category.getParentCategory().getId()))){
+                student.getCategories().add(category.getParentCategory());
+            }
+
         }
+
+
 
         studentRepository.saveAll(students);
     }
@@ -157,6 +165,7 @@ public class ProfessorServiceImpl implements ProfessorService {
         return professorRepository.countSubCategoriesByProfessorId(professorId);
     }
 
+    @Override
     public List<CategoryStudentCountDTO> getCategoryStudentCounts(Long professorId) {
         // Get the professor by ID
         Professor professor = professorRepository.findById(professorId)
