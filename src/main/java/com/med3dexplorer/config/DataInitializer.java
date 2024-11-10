@@ -70,6 +70,8 @@ public class DataInitializer {
                     "Models of brain, spinal cord, and neural networks","nervous-system.jpg", anatomyCategory);
             Category skeletalSystem = createSubCategory(categoryRepository, "Skeletal System",
                     "Models of bones, joints, and skeletal structures", "skeletal-system.jpg", anatomyCategory);
+            Category respiratorySystem = createSubCategory(categoryRepository, "Respiratory System",
+                    "Models of lung, joints, and skeletal structures", "respiratory-system.jpg", anatomyCategory);
 
             // 2. Geology Category
             Category geologyCategory = categoryRepository.findByName("Geology")
@@ -144,6 +146,8 @@ public class DataInitializer {
                     "brain.glb", "brain.jpg", nervousSystem, anatomyProf);
             create3DObject(threeDObjectRepository, "Skeletal System", "Complete human skeletal system",
                     "skeleton.glb", "skeleton.jpg", skeletalSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Lung Model", "Detailed 3D model of the human lung",
+                    "Lung.glb", "lung.jpg", skeletalSystem, anatomyProf);
 
             // Geology Objects
             Professor geologyProf = professorRepository.findByEmail("zainab.malik@example.com").orElseThrow();
