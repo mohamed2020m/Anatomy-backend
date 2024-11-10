@@ -290,14 +290,24 @@ export default function OverViewPage() {
                 </Card>
                 
                 
-                <div className="col-span-4 md:col-span-3">
+                {/* <div className="col-span-4 md:col-span-3">
                   <PieGraph apiData={professorByCategory}/>
                 </div>
 
                 <div className="col-span-4 md:col-span-3">
                   <BarGraph data={studentsCategories}/>
-                </div>
+                </div> */}
 
+              </div>
+
+              {/* Chart Section */}
+              <div className="flex flex-wrap gap-4 md:flex-nowrap">
+                  <div className="flex-1">
+                    <PieGraph apiData={professorByCategory} />
+                  </div>
+                  <div className="flex-1">
+                    <BarGraph data={studentsCategories} />
+                  </div>
               </div>
 
             </TabsContent>

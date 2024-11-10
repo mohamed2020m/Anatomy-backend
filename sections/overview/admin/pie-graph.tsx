@@ -25,11 +25,11 @@ const apiData = [
   ["Subcategory 2", 11]
 ];
 
-// Function to generate colors dynamically
 function generateColors(count: number): string[] {
-  const hueStep = 360 / count;
-  return Array.from({ length: count }, (_, i) => `hsl(${i * hueStep}, 70%, 50%)`);
+  const predefinedColors = ["#281e18", "#dbab94", "#5c5e63", "#9f8576", "#846856", "#959595", "#bb671c", "#cc9c8c"];
+  return predefinedColors.slice(0, count);
 }
+
 
 // Define types
 type CategoryData = [string, number];
