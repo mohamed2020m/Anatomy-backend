@@ -39,16 +39,22 @@ type PieGraphProps = {
   apiData: CategoryData[];
 };
 
+
 export function PieGraph({  apiData = [] }: PieGraphProps) {
 
-  //console.log("Data for Pie Chart 2 : ", apiData);
+  // Generate dynamic colors for chartData
+  const chartData = React.useMemo(() => {
+    const colors = generateColors(apiData.length);
+    return apiData.map(([category, count], index) => ({
+      category,
+      count,
+      fill: colors[index]
+    }));
+  }, [apiData]);
 
-  // Transform API data into the required structure
-  const chartData = apiData.map(([category, count], index) => ({
-    category,
-    count,
-    fill: generateColors(apiData.length)[index]
-  }));
+  const total = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + (curr.count || 0), 0);
+  }, [chartData]);
 
   const chartConfig = {
     total: { label: '3D Objects' },
@@ -61,9 +67,6 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
   } satisfies ChartConfig;
 
 
-  const total = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.count, 0);
-  }, []);
 
   return (
     <Card className="flex flex-col">

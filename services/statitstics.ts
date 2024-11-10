@@ -24,9 +24,50 @@ export const fetchProfessorCount = async (accessToken : string) => {
     }
   };
 
+  export const fetchObjectsCount = async (accessToken : string, professorId : number) => {
+    try {
+        
+      const response = await fetch(`${API_URL}/threeDObjects/count-by/${professorId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch professor count:', error);
+      throw error;
+    }
+  };
+
   export const fetchMainCategoryCount = async (accessToken : string) => {
     try {
         const response = await fetch(`${API_URL}/categories/main/count`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch professor count:', error);
+      throw error;
+    }
+  };
+
+  export const fetchStudentsByMainCategories = async (accessToken : string) => {
+    try {
+        const response = await fetch(`${API_URL}/students/main-categories/student-counts`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -67,6 +108,26 @@ export const fetchProfessorCount = async (accessToken : string) => {
   export const fetchSubCategoriesByStudents = async (accessToken : string, professorId: number) => {
     try {
         const response = await fetch(`${API_URL}/professors/${professorId}/sub-categories/student-counts`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch professor count:', error);
+      throw error;
+    }
+  };
+
+  export const fetchObjectsBySubCategories = async (accessToken : string, professorId: number) => {
+    try {
+        const response = await fetch(`${API_URL}/threeDObjects/${professorId}/by-categories`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${accessToken}`,
