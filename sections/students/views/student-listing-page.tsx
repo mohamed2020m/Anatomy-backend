@@ -23,14 +23,14 @@ export default async function ProfessorsListingPage({}: TProfessorsListingPage) 
   // Showcasing the use of search params cache in nested RSCs
   const page = searchParamsCache.get('page');
   const search = searchParamsCache.get('q');
-  const gender = searchParamsCache.get('gender');
+  const category = searchParamsCache.get('category');
   const pageLimit = searchParamsCache.get('limit');
 
   const filters = {
     page,
     limit: pageLimit,
     ...(search && { search }),
-    ...(gender && { genders: gender })
+    ...(category && { category })
   };
 
   

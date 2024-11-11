@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { TrendingUp } from 'lucide-react';
 import { Label, Pie, PieChart } from 'recharts';
 
 import {
@@ -26,11 +25,11 @@ const apiData = [
   ["Subcategory 2", 11]
 ];
 
-// Function to generate colors dynamically
 function generateColors(count: number): string[] {
-  const hueStep = 360 / count;
-  return Array.from({ length: count }, (_, i) => `hsl(${i * hueStep}, 70%, 50%)`);
+  const predefinedColors = ["#281e18", "#dbab94", "#5c5e63", "#9f8576", "#846856", "#959595", "#bb671c", "#cc9c8c"];
+  return predefinedColors.slice(0, count);
 }
+
 
 // Define types
 type CategoryData = [string, number];
@@ -39,37 +38,37 @@ type PieGraphProps = {
   apiData: CategoryData[];
 };
 
-export function PieGraph({  apiData = [] }: PieGraphProps) {
+export function PieGraph({ apiData = [] }: PieGraphProps) {
+  // Generate dynamic colors for chartData
+  const chartData = React.useMemo(() => {
+    const colors = generateColors(apiData.length);
+    return apiData.map(([category, count], index) => ({
+      category,
+      count,
+      fill: colors[index]
+    }));
+  }, [apiData]);
 
-  //console.log("Data for Pie Chart 2 : ", apiData);
+  const total = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + (curr.count || 0), 0);
+  }, [chartData]);
 
-  // Transform API data into the required structure
-  const chartData = apiData.map(([category, count], index) => ({
-    category,
-    count,
-    fill: generateColors(apiData.length)[index]
-  }));
-
+  // Chart configuration setup
   const chartConfig = {
     professors: { label: 'Professors' },
     ...Object.fromEntries(
-      chartData.map((item, index) => [
+      chartData.map(item => [
         item.category,
         { label: item.category, color: item.fill }
       ])
     )
   } satisfies ChartConfig;
 
-
-  const total = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.count, 0);
-  }, []);
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-      <CardTitle>Professor Distribution by Category</CardTitle>
-      <CardDescription>Category Statistics</CardDescription>
+        <CardTitle>Professor Distribution by Category</CardTitle>
+        <CardDescription>Professors Statistics</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -122,9 +121,6 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-       {/*  <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div> */}
         <div className="leading-none text-muted-foreground">
           Total Professors: {total}
         </div>
@@ -132,3 +128,4 @@ export function PieGraph({  apiData = [] }: PieGraphProps) {
     </Card>
   );
 }
+

@@ -21,6 +21,7 @@ import {
   fetchProfessorCount,
   fetchAdministratorsCount,
   fetchStudentsCount,
+  fetchStudentsByMainCategories,
   fetchProfessorsByCategories } from '@/services/statitstics';
 
 
@@ -32,6 +33,7 @@ export default function OverViewPage() {
   const [administratorsCount, setAdministratorsCount] = useState(0);
   const [studentsCount, setStudentsCount] = useState(0);
   const [professorByCategory, setProfessorByCategory] = useState<[string, number][]>([]);
+  const [studentsCategories, setStudentsCategories] = useState<[string, number][]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingCat, setLoadingCat] = useState(true);
 
@@ -59,6 +61,23 @@ export default function OverViewPage() {
       try {
         const count = await fetchAdministratorsCount(session.user.access_token);
         setAdministratorsCount(count);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!session) return;
+      setLoading(true);
+      try {
+        const data = await fetchStudentsByMainCategories(session.user.access_token);
+        setStudentsCategories(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -134,7 +153,7 @@ export default function OverViewPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-2xl font-bold tracking-tight">
-              Welcome back, {session.user.firstname} 👋
+              Welcome back, {session.user.name} 👋
             </h2>
             <div className="hidden items-center space-x-2 md:flex">
               <CalendarDateRangePicker />
@@ -271,10 +290,24 @@ export default function OverViewPage() {
                 </Card>
                 
                 
-                <div className="col-span-4 md:col-span-3">
+                {/* <div className="col-span-4 md:col-span-3">
                   <PieGraph apiData={professorByCategory}/>
                 </div>
 
+                <div className="col-span-4 md:col-span-3">
+                  <BarGraph data={studentsCategories}/>
+                </div> */}
+
+              </div>
+
+              {/* Chart Section */}
+              <div className="flex flex-wrap gap-4 md:flex-nowrap">
+                  <div className="flex-1">
+                    <PieGraph apiData={professorByCategory} />
+                  </div>
+                  <div className="flex-1">
+                    <BarGraph data={studentsCategories} />
+                  </div>
               </div>
 
             </TabsContent>
