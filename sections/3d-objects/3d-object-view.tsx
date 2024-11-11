@@ -70,10 +70,6 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
         const data = await response.json();
         setObjectDetails(data);
         setGlbUrl(`http://localhost:8080/api/v1/files/download/${data.object}`);
-<<<<<<< HEAD
-      
-=======
->>>>>>> 26d35731be6d7b3eabbb78ba1af8dbde40e6a912
         setIsLoading(false);
       } catch (error) {
         setError(error.message || 'An error occurred');

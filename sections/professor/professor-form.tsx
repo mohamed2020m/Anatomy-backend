@@ -11,7 +11,13 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
@@ -110,7 +116,7 @@ React.useEffect(() => {
     });
 
     form.reset();
-    router.push(''); // Redirect after add
+    router.back(); // Redirect after add
   } catch (error) {
     toast({
       title: 'Error',
@@ -188,18 +194,18 @@ React.useEffect(() => {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <select
-                        {...field}
-                        className="form-select"
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
+                      <Select onValueChange={(value) => field.onChange(parseInt(value))}>
+                        <SelectTrigger className="form-select">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories && categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
