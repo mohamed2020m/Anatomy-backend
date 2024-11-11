@@ -17,7 +17,7 @@ const formSchema = z.object({
   name: z.string().min(1, "Le nom est requis")
 });
 
-const MESHY_API_TOKEN = '-';
+const MESHY_API_TOKEN = 'msy_NlLU59AQXv36JAQ1NpA647TncV9tC7JM9y9H';
 const MESHY_API_URL = "https://api.meshy.ai/v1";
 
 const AiGenerationForm = () => {
