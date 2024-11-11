@@ -4,6 +4,7 @@ import ThreeDObjectsForm from '../3d-objects-form';
 import ThreeDObjectView from '../3d-object-view';
 import PageContainer from '@/components/layout/page-container';
 import { getSession } from 'next-auth/react';
+import TwoSidedCard from '../two-sided-card';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/prof' },
@@ -27,7 +28,7 @@ export default function ThreeDObjectsViewPage({
       <PageContainer scrollable>
         <div className="flex-1 space-y-4 p-8">
           {threeDObjectId==null ? (
-            <ThreeDObjectsForm />
+            <TwoSidedCard/>
           ) : (
             <ThreeDObjectView threeDObjectId={threeDObjectId} />
           )}
