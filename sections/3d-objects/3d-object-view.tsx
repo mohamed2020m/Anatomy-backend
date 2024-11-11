@@ -41,8 +41,8 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
     });
 
     return (
-      <mesh ref={mesh} scale={scales}>
-        <primitive object={gltf.scene} position={[0, 0, 0]} />
+      <mesh ref={mesh} scale={[3.5, 3.5, 3.5]}>
+        <primitive object={gltf.scene} position={[0, -2.8, 0]} scale={[3.5, 3.5, 3.5]} />
       </mesh>
     );
   }
@@ -67,10 +67,10 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
         });
 
         if (!response.ok) throw new Error('Failed to fetch object details');
-
         const data = await response.json();
         setObjectDetails(data);
-        setGlbUrl(`http://localhost:8080/api/v1/files/download/${objectDetails.object}`);
+        setGlbUrl(`http://localhost:8080/api/v1/files/download/${data.object}`);
+      
         setIsLoading(false);
       } catch (error) {
         setError(error.message || 'An error occurred');
@@ -79,11 +79,13 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
     };
 
     fetchDetails();
+    console.log('object details',objectDetails)
   }, [threeDObjectId, session, status]);
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
+
 
   if (isLoading) return <div className="flex items-center justify-center h-64">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
