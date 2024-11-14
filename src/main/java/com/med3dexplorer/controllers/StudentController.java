@@ -1,12 +1,17 @@
 package com.med3dexplorer.controllers;
 
 import com.med3dexplorer.dto.CategoryStudentCountDTO;
+import com.med3dexplorer.dto.RegisterUserDTO;
+import com.med3dexplorer.dto.ResponseMessage;
 import com.med3dexplorer.dto.StudentDTO;
 import com.med3dexplorer.models.Student;
+import com.med3dexplorer.services.implementations.AuthenticationServiceImpl;
 import com.med3dexplorer.services.implementations.StudentServiceImpl;
+import com.med3dexplorer.utils.ExcelUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +22,14 @@ import java.util.stream.Collectors;
 public class StudentController {
 
     private StudentServiceImpl studentService;
+    private ExcelUtility excelService;
+    private AuthenticationServiceImpl authenticationService;
 
-    public StudentController(StudentServiceImpl  studentService) {
-            this. studentService =  studentService;
-        }
+    public StudentController(StudentServiceImpl  studentService, ExcelUtility excelService, AuthenticationServiceImpl authenticationService) {
+        this. studentService =  studentService;
+        this.excelService = excelService;
+        this.authenticationService = authenticationService;
+    }
 
 
     @PostMapping
@@ -69,5 +78,19 @@ public class StudentController {
     public ResponseEntity<List<CategoryStudentCountDTO>> getStudentsCountByMainCategories() {
         List<CategoryStudentCountDTO> categoryStudentCounts = studentService.getStudentsCountByMainCategories();
         return ResponseEntity.ok(categoryStudentCounts);
+    }
+
+    @PostMapping("/upload-excel")
+    public ResponseEntity<?> uploadExcelFile(@RequestParam("file") MultipartFile file) {
+        try {
+            List<RegisterUserDTO> students = excelService.parseExcelFile(file.getInputStream());
+            for (RegisterUserDTO student : students) {
+                authenticationService.signup(student);
+            }
+            return ResponseEntity.ok(new ResponseMessage("success", "Students added successfully."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseMessage("error", e.getMessage()));
+        }
     }
 }
