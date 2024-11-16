@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #daac95;
+            color: #2d1a10;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .body {
+            padding: 20px;
+        }
+        .body h2 {
+            font-size: 20px;
+            color: #2d1a10;
+        }
+        .body p {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .footer {
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #666666;
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: #2d1a10;
+            background-color: #daac95;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .cta-button:hover {
+            background-color: #f1d4c5;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <h1>Welcome to Med3D Explorer!</h1>
+    </div>
+    <div class="body">
+        <h2>Dear [[${name}]],</h2>
+        <p>We are excited to inform you that you have been successfully added to the <strong>Med3D Explorer</strong> platform!</p>
+        <p><strong>Med3D Explorer</strong> is your gateway to immersive 3D learning experiences in the fields of anatomy, geology, and more. As a registered student, you can now:</p>
+        <ul>
+            <li>Access a wide range of 3D educational objects.</li>
+            <li>Mark your favorite objects for quick reference.</li>
+            <li>Track your learning progress with personalized statistics.</li>
+        </ul>
+        <p><strong>Get Started:</strong></p>
+        <ol>
+            <li>Log in to your account using the credentials provided during registration.</li>
+            <li>Explore the various categories to discover interactive 3D objects designed for your learning journey.</li>
+        </ol>
+        <p>If you encounter any issues or need assistance, feel free to reach out to us at <a href="mailto:support@med3dexplorer.com">support@med3dexplorer.com</a>.</p>
+        <p>We wish you a fruitful learning experience!</p>
+        <a class="cta-button" href="#">Visit Med3D Explorer</a>
+    </div>
+    <div class="footer">
+        <p>Warm regards,</p>
+        <p>The Med3D Explorer Team</p>
+    </div>
+</div>
+</body>
+</html>

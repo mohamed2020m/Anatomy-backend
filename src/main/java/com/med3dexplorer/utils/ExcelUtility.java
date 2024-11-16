@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Service
 public class ExcelUtility {
+
+    @Autowired
+    private EmailService emailService;
 
 
     public List<RegisterUserDTO> parseExcelFile(InputStream is) {
@@ -31,6 +35,8 @@ public class ExcelUtility {
                 student.setPassword(String.valueOf(row.getCell(3).getNumericCellValue()));
                 student.setRole("STUD");
                 students.add(student);
+
+                emailService.sendEmail(student.getEmail(), student.getFirstName() + " " + student.getLastName());
             }
         } catch (Exception e) {
             throw new IllegalStateException("Failed to parse Excel file: " + e.getMessage());
