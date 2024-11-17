@@ -1,3 +1,5 @@
+import base64
+import time
 from PyPDF2 import PdfReader
 from typing import List
 import io
@@ -21,3 +23,17 @@ def split_text_into_chunks(text: str, min_chunk_length: int = 200) -> List[str]:
     valid_chunks = [chunk for chunk in chunks if len(chunk) >= min_chunk_length]
     
     return valid_chunks
+
+
+def save_to_tmp(file_name, file_extension, content) -> str:
+    timestamp = int(time.time() * 1000)
+    filename = f"{file_name}_{timestamp}{file_extension}"
+    
+    with open(f"tmp/{filename}", "wb") as f:
+        f.write(content)
+    
+    return filename
+
+async def encode_file_to_base64(file_content: bytes) -> str:
+    """Convert file content to base64 string"""
+    return base64.b64encode(file_content).decode('utf-8')

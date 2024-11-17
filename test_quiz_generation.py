@@ -168,19 +168,22 @@ def generate_question_and_answer(content):
 # Inject the mocked chain to replace actual LLMChain behavior
 def test_generate_question_and_answer():    
 
-    generate_question_and_answer(sample_content)
+    # generate_question_and_answer(sample_content)
     
     # Run the function with the sample content
-    # question, options, correct_answer, explanation = generate_question_and_answer(sample_content)
+    question, options, correct_answer, explanation = generate_question_and_answer(sample_content)
     
-    # # Display the results for inspection
-    # print("Generated Question:", question)
+    # Display the results for inspection
+    print("Generated Question:", question)
     
-    # print("Options:", options)
+    print("Options:", options)
 
-    # print("Correct Answer:", correct_answer)
+    print("Correct Answer:", correct_answer)
     
-    # print("Explanation:", explanation)
+    print("Explanation:", explanation)
 
 # Call the test function to run it
 test_generate_question_and_answer()
+
+
+
