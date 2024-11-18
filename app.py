@@ -1,8 +1,8 @@
 import os
 from fastapi import FastAPI, Form, UploadFile, File, HTTPException
 from typing import List
-import Obj3dTextGenerator
-from QuizGeneratorPipeline import QuizGenerator, Question
+from obj3dTextGenerator import Obj3dTextGenerator
+from quizGeneratorPipeline import QuizGenerator, Question
 from helpers import extract_text_from_pdf, save_to_tmp, split_text_into_chunks
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pathlib import Path
