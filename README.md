@@ -17,4 +17,4 @@ To access the api documentation, you can access the following link: `http://loca
 
 # Authors
 
-@2024 - **TerraViva Team**
+2024 - **@TerraViva Team**
