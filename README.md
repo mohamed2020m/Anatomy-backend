@@ -1,6 +1,6 @@
 # Terraviva Quiz Generator
 
-Currently, this model has two main fonctions, 
+Currently, This project has two main components, 
 - Generating description of an object 3D 
 - and generation of a Quiz from a document.
 
