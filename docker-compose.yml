@@ -1,12 +1,12 @@
 services:
   postgres:
     image: postgres:14-alpine
-    container_name: med3DExplorer
+    container_name: terraViva
     ports:
       - 5432:5432
     volumes:
       - ~/apps/postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: leeuw
-      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: terraViva
+      POSTGRES_PASSWORD: terraViva
       POSTGRES_DB: terraViva
