@@ -12,6 +12,13 @@ import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
@@ -110,7 +117,8 @@ React.useEffect(() => {
     });
 
     form.reset();
-    router.push(''); // Redirect after add
+    //router.push(''); // Redirect after add
+    router.back(); // Redirect after add
   } catch (error) {
     toast({
       title: 'Error',
@@ -188,6 +196,7 @@ React.useEffect(() => {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
+<<<<<<< HEAD
                       <select
                         {...field}
                         className="form-select"
@@ -200,6 +209,20 @@ React.useEffect(() => {
                           </option>
                         ))}
                       </select>
+=======
+                      <Select onValueChange={(value) => field.onChange(parseInt(value))}>
+                        <SelectTrigger className="form-select">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories && categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+>>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
                     </FormControl>
                     <FormMessage />
                   </FormItem>

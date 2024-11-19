@@ -145,6 +145,7 @@ export default function ProfessorUpdate({ professorId }: { professorId: number }
       });
 
       //router.push('dashboard/professor'); // Redirect after update
+      router.back(); // Redirect after update
     } catch (error) {
       toast({
         title: 'Error',

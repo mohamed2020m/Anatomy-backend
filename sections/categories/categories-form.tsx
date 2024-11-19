@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { FileUploader } from '@/components/file-uploader';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
@@ -47,6 +48,7 @@ const formSchema = z.object({
 
 export default function CategoriesForm() {
   const session = useSession();
+  const router = useRouter();
   // console.log("session: ", session.data.user.access_token);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -130,7 +132,7 @@ export default function CategoriesForm() {
 
       // Reset the form after successful submission
       form.reset();
-
+      router.back(); // Redirect after add
     } catch (error) {
       // Show error toast
       toast({
