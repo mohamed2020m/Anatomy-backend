@@ -2,6 +2,7 @@ package com.terraViva.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,7 +51,9 @@ public class SecurityConfiguration {
                             "/api/v1/files/download/**",
                             "/api/v1/files/upload/**",
                             "/swagger-ui/**",
-                            "/v3/api-docs/**"
+                            "/v3/api-docs/**",
+                            "/api/v1/quizzes/**",
+                            "/api/v1/scores/**"
 //                            "/api/v1/administrators/**",
 //                            "/api/v1/categories/**",
 //                            "/api/v1/threeDObjects/**",
@@ -66,6 +69,15 @@ public class SecurityConfiguration {
                     .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
                     .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasAnyRole("ADMIN","STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
+
+                    // quizzes
+//                    .requestMatchers(HttpMethod.GET, "/api/v1/quizzes/**").hasAnyRole("STUDENT", "PROF")
+//                    .requestMatchers(HttpMethod.POST, "/api/v1/quizzes/**").hasRole("PROF")
+//                    .requestMatchers(HttpMethod.PUT, "/api/v1/quizzes/**").hasRole("PROF")
+//                    .requestMatchers(HttpMethod.DELETE, "/api/v1/quizzes/**").hasRole("PROF")
+
+                    // scores
+//                    .requestMatchers("/api/v1/scores").hasAnyRole("PROF", "STUD")
                     .anyRequest()
                     .authenticated()
             )

@@ -11,7 +11,7 @@
     <groupId>com.terraViva</groupId>
     <artifactId>TerraViva</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Med3D Explorer</name>
+    <name>TerraViva</name>
     <description>TerraViva is your gateway to immersive 3D learning experiences in the fields of anatomy, geology, and more</description>
     <url/>
     <licenses>
