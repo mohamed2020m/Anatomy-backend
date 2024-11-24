@@ -5,6 +5,7 @@ import com.terraViva.exceptions.UserNotFoundException;
 import com.terraViva.mapper.CategoryDTOConverter;
 import com.terraViva.models.Category;
 import com.terraViva.repositories.CategoryRepository;
+import com.terraViva.repositories.ThreeDObjectRepository;
 import com.terraViva.services.interfaces.CategoryService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryDTOConverter categoryDTOConverter;
     private CategoryRepository categoryRepository;
+    private final ThreeDObjectRepository threeDObjectRepository;
 
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOConverter categoryDTOConverter) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryDTOConverter categoryDTOConverter, ThreeDObjectRepository threeDObjectRepository) {
         this.categoryDTOConverter = categoryDTOConverter;
         this.categoryRepository = categoryRepository;
+        this.threeDObjectRepository = threeDObjectRepository;
     }
 
     @Override
@@ -117,5 +120,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Long getMainCategoriesCount() {
         return categoryRepository.countMainCategories();
+    }
+
+    @Override
+    public Long getSubCategoryCountByCategoryId(Long categoryId) {
+        return categoryRepository.countByParentId(categoryId);
+    }
+
+    @Override
+    public Long getThreeDObjectCountByCategoryId(Long categoryId) {
+        return threeDObjectRepository.countByCategoryId(categoryId);
     }
 }

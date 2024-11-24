@@ -63,17 +63,30 @@ public class SecurityConfiguration {
 //                            "/api/v1/me/**"
                     ).permitAll()
                     .requestMatchers("/api/v1/administrators/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
-                    .requestMatchers("/api/v1/threeDObjects/**").hasAnyRole("PROF")
+//                    .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
+//                    .requestMatchers("/api/v1/threeDObjects/**").hasAnyRole("PROF")
                     .requestMatchers("/api/v1/professors/**").hasAnyRole("ADMIN", "PROF")
                     .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
                     .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasAnyRole("ADMIN","STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
 
+                    // categories
+                     .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAnyRole("ADMIN", "STUD", "PROF")
+                     .requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
+                     .requestMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
+                     .requestMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
+
+                    // objects 3d
+                    .requestMatchers(HttpMethod.GET, "/api/v1/threeDObjects/**").hasAnyRole( "STUD", "PROF")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/threeDObjects/**").hasRole("PROF")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/threeDObjects/**").hasRole("PROF")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/threeDObjects/**").hasRole("PROF")
+
                     // quizzes
-//                    .requestMatchers(HttpMethod.GET, "/api/v1/quizzes/**").hasAnyRole("STUDENT", "PROF")
+//                    .requestMatchers(HttpMethod.GET, "/api/v1/quizzes/**").hasAnyRole("STUD", "PROF")
 //                    .requestMatchers(HttpMethod.POST, "/api/v1/quizzes/**").hasRole("PROF")
 //                    .requestMatchers(HttpMethod.PUT, "/api/v1/quizzes/**").hasRole("PROF")
+//                    .requestMatchers(HttpMethod.PATCH, "/api/v1/quizzes/**").hasRole("PROF")
 //                    .requestMatchers(HttpMethod.DELETE, "/api/v1/quizzes/**").hasRole("PROF")
 
                     // scores

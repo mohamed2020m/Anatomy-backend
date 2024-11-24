@@ -28,4 +28,9 @@ public interface ThreeDObjectRepository extends JpaRepository<ThreeDObject, Long
             "ORDER BY COUNT(obj) DESC")
     List<Object[]> findThreeDObjectCountsByProfessorSubCategories(@Param("professorId") Long professorId);
 
+    @Query("SELECT COUNT(o) FROM ThreeDObject o WHERE o.category.id = :categoryId")
+    Long countByCategoryId(@Param("categoryId") Long categoryId);
+
+    @Query("SELECT o FROM ThreeDObject o WHERE o.category.id = :categoryId")
+    List<ThreeDObject> getThreeDObjectBySubCategory(Long categoryId);
 }

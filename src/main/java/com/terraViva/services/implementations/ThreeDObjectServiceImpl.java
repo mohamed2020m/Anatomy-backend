@@ -97,8 +97,6 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         return threeDObjectDTOConverter.toDto(updatedThreeDObject);
     }
 
-
-
     @Override
     public void deleteThreeDObject(Long threeDObjectId) throws ThreeDObjectNotFoundException {
         ThreeDObject threeDObject=threeDObjectRepository.findById(threeDObjectId).orElseThrow(() -> new ThreeDObjectNotFoundException("ThreeDObject not found"));
@@ -111,5 +109,10 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
     public List<Object[]> getThreeDObjectByProfessorSubCategories(Long professorId) {
         return threeDObjectRepository.findThreeDObjectCountsByProfessorSubCategories(professorId);
+    }
+
+    @Override
+    public List<ThreeDObject> getThreeDObjectByCategory(Long categoryId) {
+        return threeDObjectRepository.getThreeDObjectBySubCategory(categoryId);
     }
 }

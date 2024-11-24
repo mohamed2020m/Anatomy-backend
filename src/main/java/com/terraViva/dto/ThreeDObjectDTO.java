@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThreeDObjectDTO {
-
     private Long id;
     private String name;
     private String description;
@@ -25,5 +24,4 @@ public class ThreeDObjectDTO {
     private Professor professor;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }
