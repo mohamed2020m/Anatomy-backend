@@ -103,14 +103,17 @@ export async function GET(req: Request) {
     }
 
     const fileStats = fs.statSync(filePath);
-    const fileUrl = `/imagetemp/${fileName}`;
 
-    return NextResponse.json({
-      fileName,
-      fileUrl,
-      size: fileStats.size,
-      createdAt: fileStats.birthtime,
-      updatedAt: fileStats.mtime,
+    // Lire le contenu du fichier
+    const fileBuffer = fs.readFileSync(filePath);
+    const fileMimeType = getMimeType(filePath); // Fonction pour déterminer le type MIME du fichier
+
+    return new Response(fileBuffer, {
+      headers: {
+        'Content-Type': fileMimeType,
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Length': fileStats.size.toString(),
+      },
     });
   } catch (error) {
     console.error('Erreur lors de la récupération du fichier:', error);
@@ -118,5 +121,21 @@ export async function GET(req: Request) {
       { error: 'Erreur lors de la récupération du fichier' },
       { status: 500 }
     );
+  }
+}
+
+// Fonction pour obtenir le type MIME en fonction de l'extension du fichier
+function getMimeType(filePath: string): string {
+  const ext = path.extname(filePath).toLowerCase();
+  switch (ext) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream'; // Par défaut pour les fichiers inconnus
   }
 }

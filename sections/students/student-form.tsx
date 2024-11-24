@@ -8,17 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-<<<<<<< HEAD
-import { toast } from '@/components/ui/use-toast';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-
-
-const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
-
-
-// Define schema based
-=======
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
@@ -28,7 +17,6 @@ import { FileUploader } from '@/components/file-uploader';
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
 // Schema for student
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
 const formSchema = z.object({
   firstName: z.string().min(2, { message: 'First name must be at least 2 characters.' }),
   lastName: z.string().min(2, { message: 'Last name must be at least 2 characters.' }),
@@ -36,8 +24,6 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
-<<<<<<< HEAD
-=======
 // Schema for file upload
 const uploadSchema = z.object({
   excelFile: z
@@ -47,15 +33,10 @@ const uploadSchema = z.object({
 });
 
 
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
 export default function StudentForm() {
   const session = useSession();
   const router = useRouter();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,10 +47,6 @@ export default function StudentForm() {
     }
   });
 
-<<<<<<< HEAD
-  async function createStudent(data: { firstName: string; lastName: string; email: string; password: string }, token: string) {
-    const response = await fetch(`${API_URL}/students`, {
-=======
   const uploadForm = useForm<z.infer<typeof uploadSchema>>({
     resolver: zodResolver(uploadSchema),
     defaultValues: {
@@ -79,7 +56,6 @@ export default function StudentForm() {
 
   async function createStudent(data: { firstName: string; lastName: string; email: string; password: string }, token: string) {
     const response = await fetch(`${API_URL}/auth/signup`, {
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -88,12 +64,6 @@ export default function StudentForm() {
       body: JSON.stringify(data)
     });
 
-<<<<<<< HEAD
-    //const responseData = await response.json();
-    //console.log("Response data:", responseData);
-
-=======
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
     if (!response.ok) {
       throw new Error('Failed to create student');
     }
@@ -102,40 +72,6 @@ export default function StudentForm() {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-<<<<<<< HEAD
-  try {
-    const access_token = session.data?.user?.access_token;
-    if (!access_token) {
-      throw new Error('Unauthorized');
-    }
-
-    // Prepare student data
-    const studentData = {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-    };
-
-    const res = await createStudent(studentData, access_token);
-
-    toast({
-      title: 'Success',
-      description: res.message || 'Student created successfully',
-      variant: 'success',
-    });
-
-    form.reset();
-    router.push(''); // Redirect after add
-  } catch (error) {
-    toast({
-      title: 'Error',
-      description: (error as Error)?.message || 'Failed to create student.',
-      variant: 'destructive',
-    });
-  }
-}
-=======
     try {
       const access_token = session.data?.user?.access_token;
       if (!access_token) {
@@ -205,7 +141,6 @@ export default function StudentForm() {
     }
   }
   
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
 
   return (
     <Card className="mx-auto w-full">
@@ -213,68 +148,6 @@ export default function StudentForm() {
         <CardTitle className="text-left text-2xl font-bold">Student Information</CardTitle>
       </CardHeader>
       <CardContent>
-<<<<<<< HEAD
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter first name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter last name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Enter password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-            </div>
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
-=======
         <Tabs defaultValue="add" className="w-full">
           <TabsList>
             <TabsTrigger value="add">Form</TabsTrigger>
@@ -371,7 +244,6 @@ export default function StudentForm() {
 
 
         </Tabs>
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
       </CardContent>
     </Card>
   );

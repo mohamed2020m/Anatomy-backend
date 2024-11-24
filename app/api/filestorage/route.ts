@@ -82,7 +82,8 @@ export async function DELETE(req: Request) {
   }
 }
 
-// Définir une fonction pour gérer les requêtes GET (Récupération d'un fichier temporaire par nom)
+
+
 export async function GET(req: Request) {
   try {
     // Extraire le nom du fichier depuis les paramètres de la requête
@@ -107,14 +108,17 @@ export async function GET(req: Request) {
     }
 
     const fileStats = fs.statSync(filePath);
-    const fileUrl = `/temp/${fileName}`;
 
-    return NextResponse.json({
-      fileName,
-      fileUrl,
-      size: fileStats.size, // Taille en octets
-      createdAt: fileStats.birthtime, // Date de création
-      updatedAt: fileStats.mtime, // Date de dernière modification
+    // Lire le contenu du fichier
+    const fileBuffer = fs.readFileSync(filePath);
+    const mimeType = 'model/gltf-binary'; // Type MIME pour les fichiers .glb
+
+    return new Response(fileBuffer, {
+      headers: {
+        'Content-Type': mimeType,
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Length': fileStats.size.toString(),
+      },
     });
   } catch (error) {
     console.error('Erreur lors de la récupération du fichier:', error);

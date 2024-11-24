@@ -11,7 +11,6 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 import {
   Select,
   SelectContent,
@@ -117,7 +116,6 @@ React.useEffect(() => {
     });
 
     form.reset();
-    //router.push(''); // Redirect after add
     router.back(); // Redirect after add
   } catch (error) {
     toast({
@@ -196,20 +194,6 @@ React.useEffect(() => {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-<<<<<<< HEAD
-                      <select
-                        {...field}
-                        className="form-select"
-                        onChange={(e) => field.onChange(parseInt(e.target.value))}
-                      >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-=======
                       <Select onValueChange={(value) => field.onChange(parseInt(value))}>
                         <SelectTrigger className="form-select">
                           <SelectValue placeholder="Select a category" />
@@ -222,7 +206,6 @@ React.useEffect(() => {
                           ))}
                         </SelectContent>
                       </Select>
->>>>>>> 0ab838df3b6f8d3ee1034473e929d0be1503456e
                     </FormControl>
                     <FormMessage />
                   </FormItem>
