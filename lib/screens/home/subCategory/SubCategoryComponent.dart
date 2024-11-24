@@ -29,7 +29,8 @@ class SubCategoryComponent extends StatelessWidget {
       splashColor: Colors.blue.withOpacity(0.2),
       onTap: () {
         // Navigate to the subcategory screen
-        categoryProvider.setCurretntCategory(category);
+        // categoryProvider.setCurretntCategory(category);
+        categoryProvider.setCurretntSubCategory(category);
         Navigator.push(
           context,
           MaterialPageRoute(

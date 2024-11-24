@@ -10,4 +10,9 @@ class UserDetailController {
     final user = await userInfo.getUserRequested();
     return user;
   }
+
+  Future<String> updateUserInfo(String firstName, String lastName) async {
+    final user = await userInfo.updateUserRequested(firstName, lastName);
+    return user;
+  }
 }

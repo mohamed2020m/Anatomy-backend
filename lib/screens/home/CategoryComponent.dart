@@ -10,11 +10,12 @@ import '../../network/Endpoints.dart';
 import '../../provider/dataCenter.dart';
 import '../../service/serviceLocator.dart';
 
-class CategoryComponent extends StatelessWidget {
+class CategoryComponent extends StatelessWidget { 
   CategoryComponent({
     Key? key,
     required this.category,
   }) : super(key: key);
+  
   Category category;
   final categoryController = getIt<CategoryController>();
 

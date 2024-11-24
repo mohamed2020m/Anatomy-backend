@@ -12,4 +12,9 @@ class ObjectsParCategoryController {
     final allObjects = await objectsParCategoryRepository.getObjectsParCategoryRequested(idCategory);
     return allObjects;
   }
+
+  Future<List<ThreeDObject>> getLatestObject3D() async {
+    final latestObject3D = await objectsParCategoryRepository.getLatestObject3D();
+    return latestObject3D;
+  }
 }

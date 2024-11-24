@@ -1,4 +1,5 @@
 import 'package:TerraViva/models/ThreeDObject.dart';
+import 'package:TerraViva/screens/home/subCategory/CategoryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
@@ -111,7 +112,7 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                             image: NetworkImage(headers: {
                                               "Authorization":
                                                   "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW16YUBlemguY29tIiwiaWF0IjoxNzAwNTA3Mjg0LCJleHAiOjE3MDA1OTM2ODR9.SgdHWmv-RUQz_G9avMdZm2omhRgmeYat97vF46StWJE"
-                                            }, "${Endpoints.baseUrl}/files/download/${categoryProvider.currentCategory.image}"),
+                                            }, "${Endpoints.baseUrl}/files/download/${categoryProvider.currentSubCategory.image}"),
                                             fit: BoxFit.scaleDown)),
                                   ),
                                   // Container(
@@ -143,7 +144,7 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                               //TODO: category name
                                               child: Text(
                                                 categoryProvider
-                                                    .currentCategory.name,
+                                                    .currentSubCategory.name,
                                                 textAlign: TextAlign.left,
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w700,
@@ -153,7 +154,7 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                             ),
                                             Container(
                                               child: ReadMoreText(
-                                                categoryProvider.currentCategory
+                                                categoryProvider.currentSubCategory
                                                     .description,
                                                 trimLines: 3,
                                                 trimMode: TrimMode.Line,
@@ -170,7 +171,7 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                               ),
                                             ),
                                             FutureBuilder<int>(
-                                              future: categoryController.getObject3dCountByCategory(categoryProvider.currentCategory.id),
+                                              future: categoryController.getObject3dCountByCategory(categoryProvider.currentSubCategory.id),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
@@ -255,7 +256,7 @@ class _CoursViewRoutState extends State<CoursViewRout> {
         // padding: EdgeInsets.only(top: 8),
         margin: const EdgeInsets.only(left: 15, right: 15),
         child: FutureBuilder(
-          future: objectsController.getAllobjectsParCategory(categoryProvider.currentCategory.id),
+          future: objectsController.getAllobjectsParCategory(categoryProvider.currentSubCategory.id),
           builder: (context, snapshot) {
             print("snapshot2: ${snapshot.data}");
             if (snapshot.connectionState == ConnectionState.waiting) {

@@ -6,11 +6,10 @@ import '../../app_skoleton/appSkoleton.dart';
 import '../../controller/categoryController.dart';
 import '../../controller/searchController2.dart';
 import '../../models/Category.dart';
-import '../../models/Object3d.dart';
+// import '../../models/Object3d.dart';
 import '../../network/Endpoints.dart';
 import '../../provider/dataCenter.dart';
 import '../../service/serviceLocator.dart';
-import '../home/objects/dCategoryScreen.dart';
 import '../home/objects/ObjectViewScreen.dart';
 
 class SearchScreen extends StatefulWidget {

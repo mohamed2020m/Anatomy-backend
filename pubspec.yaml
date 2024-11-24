@@ -111,6 +111,12 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
+
+  fonts:
+    - family: Anton
+      fonts:
+        - asset: fonts/Anton,Cabin,Edu_AU_VIC_WA_NT_Arrows/Anton/Anton-Regular.ttf
+
 flutter_icons:
   android: true
   ios: true

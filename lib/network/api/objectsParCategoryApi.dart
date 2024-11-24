@@ -32,6 +32,29 @@ class ObjectsParCategoryApi {
     }
   }
 
+  Future<Response> getLatestObject3D() async {
+    try {
+      final token = await storage.read(key: "token");
+      if (token == null) {
+        throw Exception("Token is missing");
+      }
+
+      final Response response = await dioClient.get(
+        '${Endpoints.baseUrl}${Endpoints.threeDObjects}/last-five',
+        options: Options(headers: {
+          "Authorization": 'Bearer $token'
+        }
+      ));
+
+      print("getobjectsParCategoryApi Response: ${response.data}");
+      return response;
+    } catch (e) {
+      print("Error in getobjectsParCategoryApi: $e");
+      rethrow;
+    }
+  }
+
+
   // Future<Response> getobjectsParCategoryApi(int idCategory) async {
   //   try {
   //     final Response response = await dioClient.get(

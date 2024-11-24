@@ -8,10 +8,23 @@ class ObjectsParCategoryRepository {
   final ObjectsParCategoryApi objectsParCategoryApi;
 
   ObjectsParCategoryRepository(this.objectsParCategoryApi);
+
   Future<List<ThreeDObject>> getObjectsParCategoryRequested(int idCategory) async {
     try {
       final response =
           await objectsParCategoryApi.getobjectsParCategoryApi(idCategory);
+      List<ThreeDObject> allObjects = (response.data as List).map((e) => ThreeDObject.fromJson(e)).toList();
+      return allObjects;
+    } on DioException catch (e) {
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
+    }
+  }
+
+  Future<List<ThreeDObject>> getLatestObject3D() async {
+    try {
+      final response =
+          await objectsParCategoryApi.getLatestObject3D();
       List<ThreeDObject> allObjects = (response.data as List).map((e) => ThreeDObject.fromJson(e)).toList();
       return allObjects;
     } on DioException catch (e) {

@@ -1,3 +1,6 @@
+import 'package:TerraViva/controller/objectsParCategoryController.dart';
+import 'package:TerraViva/models/ThreeDObject.dart';
+import 'package:TerraViva/screens/home/LatestObjectsComponent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/Category.dart';
@@ -31,6 +34,7 @@ class HomeState extends State<Home> {
   }
 
   final categoryController = getIt<CategoryController>();
+  final object3dController = getIt<ObjectsParCategoryController>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,48 @@ class HomeState extends State<Home> {
                     size: size,
                   ),
 
-                  /// AppBar
+                  FutureBuilder<List<ThreeDObject>>(
+                      future: object3dController.getLatestObject3D(),
+                      builder: (context, objectsSnapshot) {
+                        if (objectsSnapshot.hasData && objectsSnapshot.data!.isNotEmpty) {
+                          return LatestObjectsComponent(
+                            objects: objectsSnapshot.data!,
+                            onTapObject: (object) {
+                              var categoryProvider = Provider.of<DataCenter>(context, listen: false);
+                              categoryProvider.setCurretntObject3d(object);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ObjectViewScreen(object3d: object),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20, bottom: 10, left: 10),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'All Categories',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                      
+                        ],
+                      ),
+                    ),
+                  // list categories:
                   FutureBuilder<List<Category>>(
                     future: categoryController.getAllCategory(),
                     builder: (context, snapshot) {
@@ -366,7 +411,8 @@ class HomeState extends State<Home> {
                                         itemCount: snapshot.data!.length,
                                         itemBuilder: (context, index) {
                                           return CategoryComponent(
-                                            category: snapshot.data!.elementAt(index),
+                                            category:
+                                                snapshot.data!.elementAt(index),
                                           );
                                         },
                                       )

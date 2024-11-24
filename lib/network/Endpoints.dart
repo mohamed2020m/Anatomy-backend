@@ -15,7 +15,7 @@ class Endpoints {
   static const String search = '/objet3d/search';
   static const String login = "/auth/login";
   static const String logout = "/auth/logout";
+  static const String userInfo = "/me";
   static const String creatsUser = "/auth/register";
-  static const String userInfo = "/auth/user/";
   //BigItemSection.categoryId
 }

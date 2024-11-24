@@ -41,6 +41,10 @@ class _CategoryScreenState extends State<CategoryScreen>
     );
     animationController?.forward();
     var categoryProvider = Provider.of<DataCenter>(context, listen: true);
+
+    print("currentCategory.name: ${categoryProvider.currentCategory.name}");
+    print("currentCategory.id: ${categoryProvider.currentCategory.id}");
+
     var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(

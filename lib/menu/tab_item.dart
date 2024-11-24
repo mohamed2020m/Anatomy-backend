@@ -1,8 +1,9 @@
 
-enum TabItem { searche, saved, profil }
+enum TabItem { home, notes, quizzes, favorites}
 
 const Map<TabItem, String> tabName = {
-  TabItem.searche: 'Home',
-  TabItem.saved: 'Saved',
-  TabItem.profil: 'Profile',
+  TabItem.home: 'Home',
+  TabItem.notes: 'Notes',
+  TabItem.quizzes: 'Quizzes',
+  TabItem.favorites: 'Favorites',
 };

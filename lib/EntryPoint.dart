@@ -1,3 +1,5 @@
+import 'package:TerraViva/screens/favorite/Favorite.dart';
+import 'package:TerraViva/screens/quizzes/QuizScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:TerraViva/screens/profil/Profil.dart';
 import 'package:TerraViva/screens/saved/savedScreen.dart';
@@ -12,13 +14,15 @@ class EntryPoint extends StatefulWidget {
 
 class _EntryPointState extends State<EntryPoint> {
   int _selectedIndex = 0;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  final screens = [const Home(), const SavedScreen(), Profil()];
+
+  final screens = [const Home(), const SavedScreen(), const QuizScreen(), const Favorite()];
 
   @override
   Widget build(BuildContext context) {
@@ -27,31 +31,37 @@ class _EntryPointState extends State<EntryPoint> {
         //   title: Text(appbar[_selectedIndex]),
         // ),
         body: SafeArea(
-            child: IndexedStack(
-          index: _selectedIndex,
-          children: screens,
-        )),
+          child: IndexedStack(
+            index: _selectedIndex,
+            children: screens,
+          )
+        ),
         bottomNavigationBar: BottomNavigationBar(
           iconSize: 30,
           type: BottomNavigationBarType.fixed,
           selectedFontSize: 12.0,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(IconData(0xf1c2, fontFamily: 'MaterialIcons')),
-              label: 'Saved',
+              icon: Icon(Icons.bookmark_border),
+              label: 'Notes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.quiz),
+              label: 'Quizzes',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_border),
+              label: 'Favorites',
             ),
             // BottomNavigationBarItem(
-            //   icon: Icon(Icons.school),
-            //   label: 'School',
+            //   icon: Icon(Icons.person_outline),
+            //   label: 'Profile',
             // ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              label: 'Profil',
-            ),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: const Color.fromARGB(255, 35, 133, 172),
