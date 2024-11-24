@@ -1,6 +1,6 @@
+import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:dio/dio.dart';
-import '../../models/Object3d.dart';
-import '../api/categoryApi.dart';
+// import '../../models/Object3d.dart';
 import '../api/objectsParCategoryApi.dart';
 import '../dioException.dart';
 
@@ -8,13 +8,13 @@ class ObjectsParCategoryRepository {
   final ObjectsParCategoryApi objectsParCategoryApi;
 
   ObjectsParCategoryRepository(this.objectsParCategoryApi);
-  Future<List<Object3d>> getObjectsParCategoryRequested(int idCategory) async {
+  Future<List<ThreeDObject>> getObjectsParCategoryRequested(int idCategory) async {
     try {
       final response =
           await objectsParCategoryApi.getobjectsParCategoryApi(idCategory);
-      List<Object3d> allObjects = (response.data as List).map((e) => Object3d.fromJson(e)).toList();
+      List<ThreeDObject> allObjects = (response.data as List).map((e) => ThreeDObject.fromJson(e)).toList();
       return allObjects;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }

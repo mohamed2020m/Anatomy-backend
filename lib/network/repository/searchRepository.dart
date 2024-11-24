@@ -22,7 +22,7 @@ class SearchRepository {
           .toList());
       print(allResult);
       return allResult;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }
@@ -34,7 +34,7 @@ class SearchRepository {
       List<Category> allCategory =
           (response.data as List).map((e) => Category.fromJson(e)).toList();
       return allCategory;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }
@@ -47,7 +47,7 @@ class SearchRepository {
           (response.data as List).map((e) => Object3d.fromJson(e)).toList();
 
       return allCours;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }

@@ -14,7 +14,7 @@ class CreateUserRepository {
           firstname, lastname, email, password);
       //String message = response.data["message"] as String;
       return "ok";
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage =
           DioExceptions(e, "error : Something went wrong ! ").toString();
       throw errorMessage;

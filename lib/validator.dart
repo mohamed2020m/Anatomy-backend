@@ -3,7 +3,7 @@ class Validator {
     Pattern pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
     RegExp regex = RegExp(pattern as String);
     if (!regex.hasMatch(value)) {
-      return "Format d'adresse e-mail non valide";
+      return "Invalid email address format";
     } else {
       return null;
     }
@@ -18,10 +18,10 @@ class Validator {
   }
 
   static String? validatePassword(String value) {
-    Pattern pattern = r'^.{8,}$';
+    Pattern pattern = r'^.{6,}$';
     RegExp regex = RegExp(pattern as String);
     if (!regex.hasMatch(value)) {
-      return "Mot de passe doit être d'au moins 8 caractères.";
+      return "Password must be at least 8 characters long.";
     } else {
       return null;
     }

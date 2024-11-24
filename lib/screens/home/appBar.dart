@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
       width: size.width,
       // height: size.height / 9,
       child: Column(
@@ -21,15 +21,15 @@ class CustomAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 10),
-            child: Text('Explorer',
+            margin: const EdgeInsets.only(bottom: 10),
+            child: const Text('Explorer',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0),
                     fontSize: 30,
                     fontWeight: FontWeight.bold)),
           ),
-          Container(
+          SizedBox(
               height: size.height / 18,
               child: InkWell(
                   // ignore: avoid_print
@@ -45,7 +45,7 @@ class CustomAppBar extends StatelessWidget {
                     //   }
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchScreen()),
+                      MaterialPageRoute(builder: (context) => const SearchScreen()),
                     );
                   },
                   child: IgnorePointer(
@@ -53,7 +53,7 @@ class CustomAppBar extends StatelessWidget {
                       readOnly: true,
                       decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color.fromARGB(255, 242, 242, 242),
+                          fillColor: const Color.fromARGB(255, 242, 242, 242),
                           contentPadding: const EdgeInsets.all(10),
                           suffixIcon: const Icon(
                             Icons.search,

@@ -11,9 +11,11 @@ class LogInRepository {
   Future getUserRequested(String email, String password) async {
     try {
       final response = await loginApi.logInApi(email, password,);
-      storeToken(response.data["access_token"],'token');
+      print("response: ${response.data}");
+
+      storeToken(response.data["accessToken"], 'token');
       storeToken('${response.data["user_id"]}','id');
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }

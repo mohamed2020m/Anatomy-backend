@@ -1,9 +1,10 @@
 import 'dart:math';
+import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:babylonjs_viewer/babylonjs_viewer.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/models/Object3d.dart';
+// import 'package:TerraViva/models/Object3d.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import '../../../controller/noteController.dart';
@@ -15,7 +16,7 @@ import '../../../service/serviceLocator.dart';
 
 class ObjectViewScreen extends StatefulWidget {
   ObjectViewScreen({Key? key, required this.object3d}) : super(key: key);
-  late Object3d object3d;
+  late ThreeDObject object3d;
 
   @override
   _ObjectViewScreenState createState() => _ObjectViewScreenState();
@@ -30,15 +31,15 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
 
   void saveObject(BuildContext context) {
     var savedProvider = Provider.of<DataCenter>(context, listen: false);
-    Object3d obj = widget.object3d.clone();
+    ThreeDObject obj = widget.object3d.clone();
     FileDownloader.downloadFile(
-        url: '${Endpoints.baseUrl}/files/download/${widget.object3d.data}',
+        url: '${Endpoints.baseUrl}/files/download/${widget.object3d.object}',
         onProgress: (String? fileName, double? progress) {
           print('FILE fileName HAS PROGRESS $progress');
         },
         onDownloadCompleted: (String path) {
           print('FILE DOWNLOADED TO PATH: $path');
-          obj.data = 'file://${path}';
+          obj.object = 'file://$path';
           FileDownloader.downloadFile(
               url:
                   '${Endpoints.baseUrl}/files/download/${widget.object3d.image}',
@@ -52,8 +53,8 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                 savedProvider.setSaved();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Container(
-                      padding: EdgeInsets.only(top: 0, bottom: 2),
-                      child: Text(
+                      padding: const EdgeInsets.only(top: 0, bottom: 2),
+                      child: const Text(
                         "Object saved with success.",
                         style: TextStyle(
                             fontSize: 16,
@@ -61,8 +62,8 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                             color: Colors.white),
                       )),
                   behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color.fromARGB(255, 75, 138, 220),
-                  margin: EdgeInsets.only(bottom: 20, left: 25, right: 25),
+                  backgroundColor: const Color.fromARGB(255, 75, 138, 220),
+                  margin: const EdgeInsets.only(bottom: 20, left: 25, right: 25),
                 ));
               },
               onDownloadError: (String error) {});
@@ -70,8 +71,8 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
         onDownloadError: (String error) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Container(
-                padding: EdgeInsets.only(top: 0, bottom: 2),
-                child: Text(
+                padding: const EdgeInsets.only(top: 0, bottom: 2),
+                child: const Text(
                   "Object failed to download.",
                   style: TextStyle(
                       fontSize: 16,
@@ -79,8 +80,8 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                       color: Colors.white),
                 )),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color.fromARGB(255, 160, 23, 23),
-            margin: EdgeInsets.only(bottom: 20, left: 25, right: 25),
+            backgroundColor: const Color.fromARGB(255, 160, 23, 23),
+            margin: const EdgeInsets.only(bottom: 20, left: 25, right: 25),
           ));
         });
   }
@@ -101,7 +102,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
   Widget build(BuildContext context) {
     var object3dProvider = Provider.of<DataCenter>(context, listen: true);
 
-    print("\n\n\n******** ${Endpoints.baseUrl}/files/download/${widget.object3d.data} \n\n\n");
+    print("\n\n\n******** ${Endpoints.baseUrl}/files/download/${widget.object3d.object} \n\n\n");
 
     return ScaffoldMessenger(
       child: Scaffold(
@@ -117,7 +118,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                         maxHeight: MediaQuery.of(context).size.height / 3,
                         minHeight: MediaQuery.of(context).size.height / 3),
                     isScrollControlled: true,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(24.0),
                             topRight: Radius.circular(24.0))),
@@ -131,10 +132,10 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     bottom: 10, left: 16, top: 10),
                                 height: 30,
-                                child: Text('Description',
+                                child: const Text('Description',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -142,11 +143,11 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                         fontWeight: FontWeight.bold)),
                               ),
                               Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     bottom: 10, left: 16, top: 10),
                                 child: Text(widget.object3d.description,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400)),
@@ -161,11 +162,11 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
           ],
           title: Text(
             object3dProvider.currentObject3d.name,
-            style: TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: FontWeight.w500),
           ),
           centerTitle: true,
           toolbarHeight: 50,
-          backgroundColor: Color.fromARGB(255, 246, 246, 246),
+          backgroundColor: const Color.fromARGB(255, 246, 246, 246),
           shadowColor: Colors.transparent,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
@@ -180,11 +181,11 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
         body: Center(
             child: BabylonJSViewer(
                 src:
-                  '${Endpoints.baseUrl}/files/download/${widget.object3d.data}')),
+                  '${Endpoints.baseUrl}/files/download/${widget.object3d.object}')),
         floatingActionButton: CircularMenu(
             toggleButtonBoxShadow: [
               BoxShadow(
-                offset: Offset(0.0, 6.0),
+                offset: const Offset(0.0, 6.0),
                 color: Colors.grey.withOpacity(0),
                 blurRadius: 5.0,
               ),
@@ -199,12 +200,12 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                   icon: Icons.note_add,
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0.0, 6.0),
+                      offset: const Offset(0.0, 6.0),
                       color: Colors.grey.withOpacity(0),
                       blurRadius: 5.0,
                     ),
                   ],
-                  color: Color.fromARGB(255, 146, 42, 172),
+                  color: const Color.fromARGB(255, 146, 42, 172),
                   onTap: () {
                     key.currentState?.reverseAnimation();
                     showModalBottomSheet<void>(
@@ -215,7 +216,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                             minHeight:
                                 MediaQuery.of(context).size.height - 100),
                         isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(24.0),
                                 topRight: Radius.circular(24.0))),
@@ -243,12 +244,12 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                             Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   bottom: 10,
                                                   left: 10,
                                                   top: 10),
                                               height: 30,
-                                              child: Text('Notes',
+                                              child: const Text('Notes',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                       color: Color.fromARGB(
@@ -257,7 +258,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                       fontWeight:
                                                           FontWeight.bold)),
                                             ),
-                                            Container(
+                                            SizedBox(
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height -
@@ -274,7 +275,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                       background: Container(
                                                         height: 100,
                                                         margin:
-                                                            EdgeInsets.all(10),
+                                                            const EdgeInsets.all(10),
                                                         decoration:
                                                             BoxDecoration(
                                                           borderRadius:
@@ -282,12 +283,12 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                                   .circular(8),
                                                           color: Colors.blue,
                                                         ),
-                                                        child: Padding(
+                                                        child: const Padding(
                                                           padding:
-                                                              const EdgeInsets
+                                                              EdgeInsets
                                                                   .all(10),
                                                           child: Row(
-                                                            children: const [
+                                                            children: [
                                                               Icon(
                                                                   Icons
                                                                       .favorite,
@@ -316,16 +317,16 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                         ),
                                                         height: 100,
                                                         margin:
-                                                            EdgeInsets.all(10),
-                                                        child: Padding(
+                                                            const EdgeInsets.all(10),
+                                                        child: const Padding(
                                                           padding:
-                                                              const EdgeInsets
+                                                              EdgeInsets
                                                                   .all(10),
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .end,
-                                                            children: const [
+                                                            children: [
                                                               Icon(Icons.delete,
                                                                   color: Colors
                                                                       .white),
@@ -428,7 +429,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
 
                                                       child: Container(
                                                           padding:
-                                                              EdgeInsets.all(
+                                                              const EdgeInsets.all(
                                                                   10),
                                                           decoration:
                                                               BoxDecoration(
@@ -437,14 +438,14 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                                     .circular(
                                                                         8),
                                                             color:
-                                                                Color.fromARGB(
+                                                                const Color.fromARGB(
                                                                     85,
                                                                     57,
                                                                     170,
                                                                     245),
                                                           ),
                                                           margin:
-                                                              EdgeInsets.only(
+                                                              const EdgeInsets.only(
                                                                   top: 5,
                                                                   bottom: 5,
                                                                   left: 10,
@@ -481,14 +482,14 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                                           'Show more',
                                                                       trimExpandedText:
                                                                           'Show less',
-                                                                      moreStyle: TextStyle(
+                                                                      moreStyle: const TextStyle(
                                                                           fontSize:
                                                                               15,
                                                                           fontWeight: FontWeight
                                                                               .bold,
                                                                           color:
                                                                               Colors.blue),
-                                                                      lessStyle: TextStyle(
+                                                                      lessStyle: const TextStyle(
                                                                           fontSize:
                                                                               15,
                                                                           fontWeight: FontWeight
@@ -506,9 +507,9 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                   Container(
                                     height: 70,
                                     // You can set the height as needed
-                                    color: Color.fromARGB(255, 240, 242, 245),
+                                    color: const Color.fromARGB(255, 240, 242, 245),
                                     padding:
-                                        EdgeInsets.only(top: 10, bottom: 10),
+                                        const EdgeInsets.only(top: 10, bottom: 10),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -525,7 +526,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                           decoration: InputDecoration(
                                               border: InputBorder.none,
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
+                                                borderSide: const BorderSide(
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
                                                     width:
@@ -545,7 +546,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                                               .width -
                                                           100),
                                               filled: true,
-                                              fillColor: Color.fromARGB(
+                                              fillColor: const Color.fromARGB(
                                                   255, 255, 255, 255),
                                               contentPadding:
                                                   const EdgeInsets.all(5),
@@ -567,16 +568,16 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
                                             noteController.clear();
                                             setState(() {});
                                           },
-                                          child: Container(
+                                          child: SizedBox(
                                               width: 50,
                                               child: Text(
                                                 "save",
                                                 style:
                                                     noteController.text.isEmpty
-                                                        ? TextStyle(
+                                                        ? const TextStyle(
                                                             fontSize: 20,
                                                             color: Colors.grey)
-                                                        : TextStyle(
+                                                        : const TextStyle(
                                                             fontSize: 20,
                                                             color: Colors.blue),
                                               )),
@@ -598,13 +599,13 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
               CircularMenuItem(
                   boxShadow: [
                     BoxShadow(
-                      offset: Offset(0.0, 6.0),
+                      offset: const Offset(0.0, 6.0),
                       color: Colors.grey.withOpacity(0),
                       blurRadius: 5.0,
                     ),
                   ],
                   icon: Icons.save_alt,
-                  color: Color.fromARGB(255, 146, 42, 172),
+                  color: const Color.fromARGB(255, 146, 42, 172),
                   onTap: () {
                     saveObject(context);
                   }),

@@ -1,3 +1,5 @@
+import 'package:TerraViva/models/ThreeDObject.dart';
+import 'package:TerraViva/screens/home/subCategory/CategoryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../app_skoleton/appSkoleton.dart';
@@ -8,11 +10,11 @@ import '../../models/Object3d.dart';
 import '../../network/Endpoints.dart';
 import '../../provider/dataCenter.dart';
 import '../../service/serviceLocator.dart';
-import '../home/objects/CategoryScreen.dart';
+import '../home/objects/dCategoryScreen.dart';
 import '../home/objects/ObjectViewScreen.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({
+  const SearchScreen({
     Key? key,
   }) : super(key: key);
   @override
@@ -58,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         centerTitle: true,
         toolbarHeight: 50,
-        backgroundColor: Color.fromARGB(255, 246, 246, 246),
+        backgroundColor: const Color.fromARGB(255, 246, 246, 246),
         shadowColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -74,30 +76,30 @@ class _SearchScreenState extends State<SearchScreen> {
       //   centerTitle: true,
       // ),
       body: Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10),
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.only(left: 15, right: 15),
+                margin: const EdgeInsets.only(left: 15, right: 15),
                 child: Column(
                   children: [
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width / 1.1,
                             height: MediaQuery.of(context).size.height / 18,
                             child: TextField(
                               controller: controller,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 0, 0, 0),
                               ),
                               onChanged: search,
                               autofocus: true,
                               decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color.fromARGB(255, 242, 242, 242),
+                                  fillColor: const Color.fromARGB(255, 242, 242, 242),
                                   contentPadding: const EdgeInsets.all(10),
                                   suffixIcon: const Icon(
                                     Icons.search,
@@ -147,7 +149,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                            margin: EdgeInsets.only(left: 15),
+                            margin: const EdgeInsets.only(left: 15),
                             width: size.width / 1.5,
                             height: size.height / 9,
                             child: Column(
@@ -164,7 +166,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       margin: const EdgeInsets.only(bottom: 5),
                                       radius: BorderRadius.circular(15)),
                                 ])),
-                        Spacer(),
+                        const Spacer(),
                         AppSkoleton(
                             width: size.width / 5.5,
                             height: size.height / 10,
@@ -195,15 +197,15 @@ class _SearchScreenState extends State<SearchScreen> {
                         height: 64,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 image: AssetImage("assets/images/error.png"),
                                 fit: BoxFit.cover)),
                       )),
                       Flexible(
                           child: Container(
                         margin:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 16),
-                        child: Text(
+                            const EdgeInsets.only(left: 15, right: 15, bottom: 16),
+                        child: const Text(
                           "Essayons a nouveau de charger votre données",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -213,8 +215,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       Flexible(
                           child: Container(
                         margin:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                        child: Text(
+                            const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                        child: const Text(
                           "An error occurred while loading your data. Press Retry to load your data again.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -226,33 +228,33 @@ class _SearchScreenState extends State<SearchScreen> {
                       Flexible(
                           child: Container(
                         margin:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                            const EdgeInsets.only(left: 15, right: 15, bottom: 20),
                         child: Text(
                           error.toString(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               height: 1.3,
                               fontWeight: FontWeight.w500),
                         ),
                       )),
                       Flexible(
-                          child: Container(
+                          child: SizedBox(
                               width: 120,
                               height: 50,
                               child: TextButton(
-                                child: Text("Réessayer",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold)),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 0, 87, 209)),
+                                  backgroundColor: WidgetStateProperty.all(
+                                      const Color.fromARGB(255, 0, 87, 209)),
                                 ),
                                 onPressed: () {
                                   search("");
                                 },
+                                child: const Text("Réessayer",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
                               )))
                     ],
                   );
@@ -274,13 +276,13 @@ class _SearchScreenState extends State<SearchScreen> {
                             margin: const EdgeInsets.only(bottom: 8, top: 84),
                             width: 64,
                             height: 64,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
                                         "assets/images/no-results.png"),
                                     fit: BoxFit.cover)),
                           ),
-                          Text(
+                          const Text(
                             'No results found.',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 0, 0, 0),
@@ -305,6 +307,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     } else if (searchType == SearchType.object3d) {
                       return object3dList(snapshot.data![index], size);
                     }
+                    return null;
                   }));
         }
         return Container();
@@ -324,41 +327,41 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         },
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
             bottom: BorderSide(color: Color.fromARGB(64, 201, 194, 194)),
           )),
-          padding: EdgeInsets.only(left: 0, right: 15, top: 4, bottom: 4),
-          margin: EdgeInsets.only(left: 25),
+          padding: const EdgeInsets.only(left: 0, right: 15, top: 4, bottom: 4),
+          margin: const EdgeInsets.only(left: 25),
           child: Row(
             // crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: size.width / 1.5,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 5),
+                      margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
                         category.name,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 4),
+                      padding: const EdgeInsets.only(left: 4),
                       width: size.width / 1.5,
                       child: Text(
                         category.description,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(fontWeight: FontWeight.normal),
+                        style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
                     ),
                     FutureBuilder<int>(
@@ -367,7 +370,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Container(
-                            margin: EdgeInsets.only(top: 8),
+                            margin: const EdgeInsets.only(top: 8),
                             child: AppSkoleton(
                               width: 80,
                               height: 20,
@@ -378,12 +381,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           );
                         } else if (snapshot.hasData) {
                           return Container(
-                            margin: EdgeInsets.only(top: 8),
+                            margin: const EdgeInsets.only(top: 8),
                             //TODO: objetc count
                             child: Text(
                               '${snapshot.data} objects',
                               textAlign: TextAlign.left,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.blue,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
@@ -402,7 +405,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Container(
                 width: size.width / 5.5,
                 decoration: BoxDecoration(
@@ -418,7 +421,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ));
   }
 
-  Widget object3dList(Object3d object3d, Size size) {
+  Widget object3dList(ThreeDObject object3d, Size size) {
     var coursInfo = Provider.of<DataCenter>(context, listen: false);
     return InkWell(
         onTap: () {
@@ -431,44 +434,44 @@ class _SearchScreenState extends State<SearchScreen> {
                       )));
         },
         child: Container(
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           padding: const EdgeInsets.only(left: 0, right: 15, top: 4, bottom: 4),
-          margin: EdgeInsets.only(left: 25),
+          margin: const EdgeInsets.only(left: 25),
           child: Row(
             // crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: size.width / 1.5,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 5),
+                      margin: const EdgeInsets.only(bottom: 5),
                       child: Text(
                         object3d.name,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 4),
+                      padding: const EdgeInsets.only(left: 4),
                       width: size.width / 1.5,
                       child: Text(
                         object3d.description,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: TextStyle(fontWeight: FontWeight.normal),
+                        style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
                     ),
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Container(
                 width: 64,
                 height: 64,
@@ -494,7 +497,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Container(
             margin: const EdgeInsets.only(left: 15, bottom: 8),
-            child: Text(
+            child: const Text(
               "Categories",
               style: TextStyle(
                   color: Color.fromARGB(255, 75, 138, 220),
@@ -512,8 +515,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     return categoryList(list[index], size);
                   })
               : Container(
-                  margin: EdgeInsets.only(left: 30),
-                  child: Text("(No results found.)"))
+                  margin: const EdgeInsets.only(left: 30),
+                  child: const Text("(No results found.)"))
         ],
       );
     } else if (index == 1) {
@@ -523,8 +526,8 @@ class _SearchScreenState extends State<SearchScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.only(left: 15, top: 15, bottom: 8),
-            child: Text("3d Objects",
+            margin: const EdgeInsets.only(left: 15, top: 15, bottom: 8),
+            child: const Text("3d Objects",
                 style: TextStyle(
                     color: Color.fromARGB(255, 75, 138, 220),
                     fontSize: 22,
@@ -540,8 +543,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     return object3dList(list[index], size);
                   })
               : Container(
-                  margin: EdgeInsets.only(left: 30),
-                  child: Text("(No results found.)"))
+                  margin: const EdgeInsets.only(left: 30),
+                  child: const Text("(No results found.)"))
         ],
       );
     } else {
@@ -596,10 +599,10 @@ class _SearchScreenState extends State<SearchScreen> {
     return Container(
       decoration: BoxDecoration(
           color: isSelected
-              ? Color.fromARGB(255, 75, 138, 220)
-              : Color.fromRGBO(255, 255, 255, 1),
+              ? const Color.fromARGB(255, 75, 138, 220)
+              : const Color.fromRGBO(255, 255, 255, 1),
           borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-          border: Border.all(color: Color.fromARGB(255, 75, 138, 220))),
+          border: Border.all(color: const Color.fromARGB(255, 75, 138, 220))),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -608,7 +611,7 @@ class _SearchScreenState extends State<SearchScreen> {
           onTap: () {
             setState(() {
               searchType = searchTypeData;
-              if (!isSelected && controller.text.length > 0) {
+              if (!isSelected && controller.text.isNotEmpty) {
                 if (searchType == SearchType.tous) {
                   setState(() {
                     future = homeController.getAllResult();
@@ -623,7 +626,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   });
                 }
               }
-              ;
             });
           },
           child: Padding(
@@ -638,8 +640,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   fontSize: 12,
                   letterSpacing: 0.27,
                   color: isSelected
-                      ? Color.fromRGBO(255, 255, 255, 1)
-                      : Color.fromARGB(255, 75, 138, 220),
+                      ? const Color.fromRGBO(255, 255, 255, 1)
+                      : const Color.fromARGB(255, 75, 138, 220),
                 ),
               ),
             ),

@@ -36,8 +36,10 @@ Future<void> setup() async {
   getIt.registerSingleton(LogInApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(LogInRepository(getIt.get<LogInApi>()));
   getIt.registerSingleton(LoginController());
+  
   //logout
-  getIt.registerSingleton(LogOutApi(dioClient: getIt<DioClient>()));
+  // getIt.registerSingleton(LogOutApi(dioClient: getIt<DioClient>()));
+  getIt.registerSingleton(LogOutApi());
   getIt.registerSingleton(LogOutRepository(getIt.get<LogOutApi>()));
   getIt.registerSingleton(LogoutController());
 
@@ -50,6 +52,7 @@ Future<void> setup() async {
   getIt.registerSingleton(UserDetailApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(UserDetailRepository(getIt<UserDetailApi>()));
   getIt.registerSingleton(UserDetailController());
+
   //category
   getIt.registerSingleton(CategoryApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(CategoryRepository(getIt.get<CategoryApi>()));

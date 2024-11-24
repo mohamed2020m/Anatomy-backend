@@ -1,3 +1,4 @@
+import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
@@ -15,14 +16,14 @@ import 'ObjectViewScreen.dart';
 // import 'package:templates/main.dart';
 // import 'package:flutter/material.dart';
 
-class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+class SubCategoryScreen extends StatefulWidget {
+  const SubCategoryScreen({Key? key}) : super(key: key);
 
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen>
+class _CategoryScreenState extends State<SubCategoryScreen>
     with TickerProviderStateMixin {
   AnimationController? animationController;
 
@@ -32,6 +33,7 @@ class _CategoryScreenState extends State<CategoryScreen>
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
   }
+
   final categoryController = getIt<CategoryController>();
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _CategoryScreenState extends State<CategoryScreen>
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 50,
-          backgroundColor: Color.fromARGB(255, 246, 246, 246),
+          backgroundColor: const Color.fromARGB(255, 246, 246, 246),
           shadowColor: Colors.transparent,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
@@ -74,7 +76,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                                 color: Colors.white,
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
-                                    color: Color.fromRGBO(58, 81, 96, 1)
+                                    color: const Color.fromRGBO(58, 81, 96, 1)
                                         .withOpacity(0.06),
                                     offset: const Offset(0, 2.1),
                                     blurRadius: 8.0,
@@ -87,9 +89,9 @@ class _CategoryScreenState extends State<CategoryScreen>
                                 ],
                               ),
                               // color: Colors.red,
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 20, bottom: 10),
-                              margin: EdgeInsets.only(bottom: 8),
+                              margin: const EdgeInsets.only(bottom: 8),
                               child: SizedBox(
                                   //  height: size.height /5,
                                   child: Row(
@@ -106,15 +108,10 @@ class _CategoryScreenState extends State<CategoryScreen>
                                         //TODO: category image
                                         image: DecorationImage(
                                             //image: AssetImage("assets/img01.png"),
-                                            image: NetworkImage(
-                                                headers: {
-                                                  "Authorization":
-                                                      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW16YUBlemguY29tIiwiaWF0IjoxNzAwNTA3Mjg0LCJleHAiOjE3MDA1OTM2ODR9.SgdHWmv-RUQz_G9avMdZm2omhRgmeYat97vF46StWJE"
-                                                },
-                                                Endpoints.baseUrl +
-                                                    "/files/download/" +
-                                                    categoryProvider
-                                                        .currentCategory.image),
+                                            image: NetworkImage(headers: {
+                                              "Authorization":
+                                                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW16YUBlemguY29tIiwiaWF0IjoxNzAwNTA3Mjg0LCJleHAiOjE3MDA1OTM2ODR9.SgdHWmv-RUQz_G9avMdZm2omhRgmeYat97vF46StWJE"
+                                            }, "${Endpoints.baseUrl}/files/download/${categoryProvider.currentCategory.image}"),
                                             fit: BoxFit.scaleDown)),
                                   ),
                                   // Container(
@@ -132,7 +129,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                                   //   ),
                                   // ),
 
-                                  Container(
+                                  SizedBox(
                                       width: size.width / 1.5,
                                       child: SingleChildScrollView(
                                         child: Column(
@@ -141,14 +138,14 @@ class _CategoryScreenState extends State<CategoryScreen>
                                               CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 8),
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 8),
                                               //TODO: category name
                                               child: Text(
                                                 categoryProvider
                                                     .currentCategory.name,
                                                 textAlign: TextAlign.left,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 18,
                                                 ),
@@ -162,51 +159,59 @@ class _CategoryScreenState extends State<CategoryScreen>
                                                 trimMode: TrimMode.Line,
                                                 trimCollapsedText: ' Voir plus',
                                                 trimExpandedText: ' Voir moins',
-                                                moreStyle: TextStyle(
+                                                moreStyle: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.blue),
-                                                lessStyle: TextStyle(
+                                                lessStyle: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.blue),
                                               ),
                                             ),
                                             FutureBuilder<int>(
-                      future: categoryController.getCategoryCount(categoryProvider
-                                                    .currentCategory.id),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container(
-                            margin:
-                                EdgeInsets.only(top: 8),
-                            child: AppSkoleton(
-                              width: 80,
-                              height: 20,
-                              margin: const EdgeInsets.only(
-                                  bottom: 8, right: 5, left: 5),
-                              radius: BorderRadius.circular(5),
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          return Container(
-                            margin: EdgeInsets.only(top: 8),
-                            //TODO: objetc count
-                            child: Text(
-                              '${snapshot.data} objects',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                              ),
-                            ),
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
+                                              future: categoryController.getObject3dCountByCategory(categoryProvider.currentCategory.id),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
+                                                    child: AppSkoleton(
+                                                      width: 80,
+                                                      height: 20,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              bottom: 8,
+                                                              right: 5,
+                                                              left: 5),
+                                                      radius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                  );
+                                                } else if (snapshot.hasData) {
+                                                  return Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            top: 8),
+                                                    //TODO: objetc count
+                                                    child: Text(
+                                                      '${snapshot.data} objects',
+                                                      textAlign: TextAlign.left,
+                                                      style: const TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                return Container();
+                                              },
+                                            ),
                                           ],
                                         ),
                                       )),
@@ -237,7 +242,7 @@ class _CoursViewRoutState extends State<CoursViewRout> {
   Future<List<Object3d>> fetchSimpleList() async {
     // Simulate fetching data from an API or database.
     await Future.delayed(
-        Duration(seconds: 3)); // Simulate a delay of 2 seconds.
+        const Duration(seconds: 3)); // Simulate a delay of 2 seconds.
 
     // Return a simple list of integers.
     return [];
@@ -248,20 +253,26 @@ class _CoursViewRoutState extends State<CoursViewRout> {
     var categoryProvider = Provider.of<DataCenter>(context, listen: true);
     return Container(
         // padding: EdgeInsets.only(top: 8),
-        margin: EdgeInsets.only(left: 15, right: 15),
+        margin: const EdgeInsets.only(left: 15, right: 15),
         child: FutureBuilder(
-          future: objectsController
-              .getAllobjectsParCategory(categoryProvider.currentCategory.id),
+          future: objectsController.getAllobjectsParCategory(categoryProvider.currentCategory.id),
           builder: (context, snapshot) {
+            print("snapshot2: ${snapshot.data}");
             if (snapshot.connectionState == ConnectionState.waiting) {
               return GridView(
                 padding: const EdgeInsets.all(8),
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15.0,
+                  crossAxisSpacing: 20.0,
+                  childAspectRatio: 0.8,
+                ),
                 children: List<Widget>.generate(
                   5,
                   (int index) {
-                    final int count = 5;
+                    const int count = 5;
                     final Animation<double> animation =
                         Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
@@ -277,15 +288,11 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                     );
                   },
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15.0,
-                  crossAxisSpacing: 20.0,
-                  childAspectRatio: 0.8,
-                ),
               );
             } else if (snapshot.hasError) {
               final error = snapshot.error;
+              print("error: $error");
+
               return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -300,14 +307,15 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       height: 64,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               image: AssetImage("assets/images/error.png"),
                               fit: BoxFit.cover)),
                     )),
                     Flexible(
                         child: Container(
-                      margin: EdgeInsets.only(left: 15, right: 15, bottom: 16),
-                      child: Text(
+                      margin: const EdgeInsets.only(
+                          left: 15, right: 15, bottom: 16),
+                      child: const Text(
                         "Essayons a nouveau de charger votre données",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -316,8 +324,9 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                     )),
                     Flexible(
                         child: Container(
-                      margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                      child: Text(
+                      margin: const EdgeInsets.only(
+                          left: 15, right: 15, bottom: 20),
+                      child: const Text(
                         "une erreur s'est produit lors du chargement de vos données. Appuyer sur Réessayer pour charger a nouveau vos données.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -327,20 +336,20 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       ),
                     )),
                     Flexible(
-                        child: Container(
+                        child: SizedBox(
                             width: 120,
                             height: 50,
                             child: TextButton(
-                              child: Text("Réessayer",
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                    const Color.fromARGB(255, 0, 87, 209)),
+                              ),
+                              onPressed: () => setState(() {}),
+                              child: const Text("Réessayer",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color.fromARGB(255, 0, 87, 209)),
-                              ),
-                              onPressed: () => setState(() {}),
                             )))
                   ],
                 ),
@@ -359,12 +368,12 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       height: 64,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               image:
                                   AssetImage("assets/images/empty-folder.png"),
                               fit: BoxFit.cover)),
                     ),
-                    Container(
+                    const SizedBox(
                       width: 250,
                       child: Text(
                         'There is no item available for this category.',
@@ -382,12 +391,17 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                 padding: const EdgeInsets.all(8),
                 physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15.0,
+                  crossAxisSpacing: 20.0,
+                  childAspectRatio: 0.8,
+                ),
                 children: List<Widget>.generate(
                   snapshot.data!.length,
                   (int index) {
                     final int count = snapshot.data!.length;
-                    final Animation<double> animation =
-                        Tween<double>(begin: 0.0, end: 1.0).animate(
+                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                         parent: widget.animationController!,
                         curve: Interval((1 / count) * index, 1.0,
@@ -401,12 +415,6 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       animationController: widget.animationController,
                     );
                   },
-                ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15.0,
-                  crossAxisSpacing: 20.0,
-                  childAspectRatio: 0.8,
                 ),
               );
             }
@@ -426,7 +434,7 @@ class ObjectsView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback? callback;
-  final Object3d? object3d;
+  final ThreeDObject? object3d;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
@@ -443,20 +451,22 @@ class ObjectsView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              splashColor: Color.fromARGB(0, 255, 0, 0),
+              splashColor: const Color.fromARGB(0, 255, 0, 0),
               onTap: () {
                 //TODO: navigate to object screen
                 object3dProvider.setCurretntObject3d(object3d!);
                 Navigator.push<dynamic>(
                     context,
                     MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => ObjectViewScreen(object3d: object3d!)));
+                        builder: (BuildContext context) =>
+                            ObjectViewScreen(object3d: object3d!)));
               },
               child: Container(
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Color.fromRGBO(58, 81, 96, 1).withOpacity(0.08),
+                      color:
+                          const Color.fromRGBO(58, 81, 96, 1).withOpacity(0.08),
                       offset: const Offset(-6.1, 6.1),
                       blurRadius: 4.0,
                     ),
@@ -467,8 +477,9 @@ class ObjectsView extends StatelessWidget {
                     // blurRadius: 8.0),
                   ],
                   border: Border.all(
-                      color: Color.fromARGB(193, 212, 224, 230), width: 2),
-                  color: Color.fromARGB(193, 255, 255, 255),
+                      color: const Color.fromARGB(193, 212, 224, 230),
+                      width: 2),
+                  color: const Color.fromARGB(193, 255, 255, 255),
                   borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                   // border: new Border.all(
                   //     color: DesignCourseAppTheme.notWhite),
@@ -489,7 +500,7 @@ class ObjectsView extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                   letterSpacing: 0.27,
@@ -501,9 +512,9 @@ class ObjectsView extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color.fromARGB(193, 212, 224, 230),
-                          borderRadius: const BorderRadius.only(
+                          borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(5.0),
                               bottomRight: Radius.circular(5.0)),
                           // border: new Border.all(
@@ -521,9 +532,8 @@ class ObjectsView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                       //image: AssetImage(category!.image),
-                                      image: NetworkImage(Endpoints.baseUrl +
-                                          "/files/download/" +
-                                          object3d!.image),
+                                      image: NetworkImage(
+                                          "${Endpoints.baseUrl}/files/download/${object3d!.image}"),
                                       fit: BoxFit.cover)),
                             ),
                           ),
@@ -563,7 +573,7 @@ class SkoletonView extends StatelessWidget {
             transform: Matrix4.translationValues(
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
-              splashColor: Color.fromARGB(0, 255, 0, 0),
+              splashColor: const Color.fromARGB(0, 255, 0, 0),
               child: SizedBox(
                 height: 280,
                 child: Stack(
@@ -575,10 +585,10 @@ class SkoletonView extends StatelessWidget {
                           Expanded(
                             child: Container(
                               //TODO:
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color.fromARGB(0, 56, 55, 55),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16.0)),
                               ),
                               child: Column(
                                 children: <Widget>[

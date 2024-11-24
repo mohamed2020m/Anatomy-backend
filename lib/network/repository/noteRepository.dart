@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
 
-import '../../models/Category.dart';
 import '../../models/note.dart';
 import '../api/noteApi.dart';
 import '../dioException.dart';
-import '../api/categoryApi.dart';
 
 class NoteRepository {
   final NoteApi noteApi;

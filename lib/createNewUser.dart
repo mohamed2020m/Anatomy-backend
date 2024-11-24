@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/service/serviceLocator.dart';
+import 'package:TerraViva/service/serviceLocator.dart';
 import 'controller/createUserController.dart';
 import 'loginScreen.dart';
 import 'validator.dart';
@@ -28,7 +28,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
     if (_formKey.currentState!.validate()) {
       showDialog(
           barrierDismissible: false,
-          barrierColor: Color.fromARGB(0, 0, 0, 0),
+          barrierColor: const Color.fromARGB(0, 0, 0, 0),
           context: context,
           builder: (BuildContext context) => WillPopScope(
                 onWillPop: () async => false,
@@ -38,8 +38,8 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                   height: 100,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(90),
-                      color: Color.fromARGB(36, 81, 86, 90)),
-                  child: Center(
+                      color: const Color.fromARGB(36, 81, 86, 90)),
+                  child: const Center(
                       child: CupertinoActivityIndicator(
                     radius: 20,
                   )),
@@ -55,7 +55,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  insetPadding: EdgeInsets.symmetric(horizontal: 70),
+                  insetPadding: const EdgeInsets.symmetric(horizontal: 70),
                   buttonPadding: EdgeInsets.zero,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -69,7 +69,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                       Container(
                         margin: const EdgeInsets.only(
                             left: 8, right: 8, bottom: 24),
-                        child: Text(
+                        child: const Text(
                           //TODO:
                           "Your account is created successfully.",
                           textAlign: TextAlign.center,
@@ -87,7 +87,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                                   context,
                                   MaterialPageRoute<dynamic>(
                                       builder: (BuildContext context) =>
-                                          LoginScreen()));
+                                          const LoginScreen()));
                             },
                             child: Container(
                               decoration: const BoxDecoration(
@@ -117,7 +117,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  insetPadding: EdgeInsets.symmetric(horizontal: 70),
+                  insetPadding: const EdgeInsets.symmetric(horizontal: 70),
                   buttonPadding: EdgeInsets.zero,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -186,18 +186,18 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           title: TextButton.icon(
             style: ButtonStyle(
               // minimumSize : MaterialStateProperty.all(Size(0,0)),
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              overlayColor: WidgetStateProperty.all(Colors.transparent),
               splashFactory: NoSplash.splashFactory,
             ),
             onPressed: () {
               //TODO:
               Navigator.pop(context);
             },
-            label: Text(
+            label: const Text(
               "Retour",
               style: TextStyle(color: Colors.indigo, fontSize: 15),
             ),
-            icon: Container(
+            icon: const SizedBox(
                 width: 10,
                 height: 30,
                 child:
@@ -215,7 +215,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 30,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
                 child: SingleChildScrollView(
@@ -230,7 +230,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                               bottom: 8,
                             ),
                             width: 128,
-                            child: Image(
+                            child: const Image(
                                 image: AssetImage("assets/images/logo.jpg")),
                           ),
                         ),
@@ -245,7 +245,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                           ),
                         ),
                         SizedBox(height: size.height * 0.01),
-                        Center(
+                        const Center(
                           child: Text(
                             "Create an account",
                             style: TextStyle(
@@ -257,7 +257,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                         SizedBox(height: size.height * 0.06),
                         TextFormField(
                           onChanged: ((value) {
-                            if (value.length != 0) {
+                            if (value.isNotEmpty) {
                               setState(() {
                                 lastnameListner = true;
                               });
@@ -283,7 +283,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                         SizedBox(height: size.height * 0.02),
                         TextFormField(
                           onChanged: ((value) {
-                            if (value.length != 0) {
+                            if (value.isNotEmpty) {
                               setState(() {
                                 firstnameListner = true;
                               });
@@ -309,7 +309,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                         SizedBox(height: size.height * 0.02),
                         TextFormField(
                           onChanged: ((value) {
-                            if (value.length != 0) {
+                            if (value.isNotEmpty) {
                               setState(() {
                                 emailListner = true;
                               });
@@ -335,7 +335,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                         SizedBox(height: size.height * 0.02),
                         TextFormField(
                           onChanged: ((value) {
-                            if (value.length != 0) {
+                            if (value.isNotEmpty) {
                               setState(() {
                                 passwdListner = true;
                               });

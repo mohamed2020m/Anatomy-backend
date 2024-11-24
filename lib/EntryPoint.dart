@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/screens/profil/Profil.dart';
-import 'package:my_app/screens/saved/savedScreen.dart';
+import 'package:TerraViva/screens/profil/Profil.dart';
+import 'package:TerraViva/screens/saved/savedScreen.dart';
 
 import 'screens/home/Home.dart';
 
@@ -18,7 +18,7 @@ class _EntryPointState extends State<EntryPoint> {
     });
   }
 
-  final screens = [const Home(), SavedScreen(), Profil()];
+  final screens = [const Home(), const SavedScreen(), Profil()];
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _EntryPointState extends State<EntryPoint> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Color.fromARGB(255, 35, 133, 172),
+          selectedItemColor: const Color.fromARGB(255, 35, 133, 172),
           onTap: _onItemTapped,
         ));
   }

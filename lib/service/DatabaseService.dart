@@ -1,5 +1,6 @@
 // import 'package:flutter/services.dart';
-import 'package:my_app/models/Object3d.dart';
+import 'package:TerraViva/models/Object3d.dart';
+import 'package:TerraViva/models/ThreeDObject.dart';
 
 import 'package:path/path.dart';
 // import 'dart:io';
@@ -10,17 +11,17 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseService {
-  static const _databaseName = "objects3d";
+  static const _databaseName = "threeDObject";
   static const _databaseVersion = 2;
   DatabaseService._privateConstructor();
   static final DatabaseService instance = DatabaseService._privateConstructor();
 
   late Database _db;
   Future<Database> get database async {
-    if (_db != null) return _db;
-    // lazily instantiate the db the first time it is accessed
-    _db = await init();
     return _db;
+    // lazily instantiate the db the first time it is accessed
+    // _db = await init();
+    // return _db;
   }
 
   Database get db => _db;
@@ -45,18 +46,17 @@ class DatabaseService {
             name TEXT NOT NULL,
             image TEXT NOT NULL,
             description TEXT NOT NULL,
-            data TEXT NOT NULL,
-            isAnimated INTEGER NOT NULL
+            object TEXT NOT NULL
           );
           ''');
-    print("creating tables!!!!!!!!");
+
+    print("creating threeDObject table");
   }
 
   // user service !!
-
   Future<int> insertObject(Map<String, dynamic> row) async {
     await init();
-    row["isAnimated"] == "true" ? row["isAnimated"] = 1 : row["isAnimated"] = 0;
+    // row["isAnimated"] == "true" ? row["isAnimated"] = 1 : row["isAnimated"] = 0;
 
     return await _db.insert("objects", row);
   }
@@ -66,13 +66,13 @@ class DatabaseService {
     return _db.query('user', orderBy: "id", where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<List<Object3d>> getAllSavedObjects() async {
+  Future<List<ThreeDObject>> getAllSavedObjects() async {
     await init();
-    List<Object3d> objects = [];
+    List<ThreeDObject> objects = [];
     List<Map<String, dynamic>> result =
         await _db.query('objects', orderBy: "id");
     for (var item in result) {
-      objects.add(Object3d.fromMap(item));
+      objects.add(ThreeDObject.fromMap(item));
     }
     return objects;
   }

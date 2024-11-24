@@ -1,9 +1,7 @@
-import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:babylonjs_viewer/babylonjs_viewer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:my_app/models/user.dart';
+import 'package:TerraViva/models/user.dart';
 import 'dart:math' as math;
 import '../../app_skoleton/appSkoleton.dart';
 import '../../controller/logOutController.dart';
@@ -16,6 +14,8 @@ class Profil extends StatelessWidget {
   final loginController = getIt<LogoutController>();
   final userDetailController = getIt<UserDetailController>();
 
+  Profil({super.key});
+
   deleteToken() async {
     await storage.delete(key: 'token');
   }
@@ -23,7 +23,7 @@ class Profil extends StatelessWidget {
   Future logout(BuildContext context) async {
     showDialog(
         barrierDismissible: false,
-        barrierColor: Color.fromARGB(0, 0, 0, 0),
+        barrierColor: const Color.fromARGB(0, 0, 0, 0),
         context: context,
         builder: (BuildContext context) => WillPopScope(
               onWillPop: () async => false,
@@ -33,8 +33,8 @@ class Profil extends StatelessWidget {
                 height: 100,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(90),
-                    color: Color.fromARGB(36, 81, 86, 90)),
-                child: Center(
+                    color: const Color.fromARGB(36, 81, 86, 90)),
+                child: const Center(
                     child: CupertinoActivityIndicator(
                   radius: 20,
                 )),
@@ -112,13 +112,13 @@ class Profil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Profil",
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         centerTitle: true,
         toolbarHeight: 50,
-        backgroundColor: Color.fromARGB(255, 246, 246, 246),
+        backgroundColor: const Color.fromARGB(255, 246, 246, 246),
         shadowColor: Colors.transparent,
         automaticallyImplyLeading: false,
       ),
@@ -127,7 +127,7 @@ class Profil extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              margin: EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 8),
               child: AppSkoleton(
                 width: 80,
                 height: 20,
@@ -140,12 +140,12 @@ class Profil extends StatelessWidget {
               // profil info (image+nom+prenom+email)
               Center(
                 child: Container(
-                  margin: EdgeInsets.only(top: 16),
+                  margin: const EdgeInsets.only(top: 16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        child: Hero(
+                        child: const Hero(
                           transitionOnUserGestures: false,
                           tag: "HmzEzh",
                           child: CircleAvatar(
@@ -161,16 +161,16 @@ class Profil extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 16, bottom: 4),
+                margin: const EdgeInsets.only(top: 16, bottom: 4),
                 child: Text(
                   "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                 ),
               ),
               Container(
-                  child: Text("${snapshot.data!.email}",
+                  child: Text(snapshot.data!.email,
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400)))
+                          const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)))
             ]);
           }
           return Container();
@@ -182,7 +182,7 @@ class Profil extends StatelessWidget {
           height: 50,
           child: Material(
               borderRadius: BorderRadius.circular(8),
-              color: Color.fromARGB(255, 233, 233, 233),
+              color: const Color.fromARGB(255, 233, 233, 233),
               child: InkWell(
                   borderRadius: BorderRadius.circular(8),
                   //TODO:
@@ -191,7 +191,7 @@ class Profil extends StatelessWidget {
                         context: context,
                         builder: (context) => AlertDialog(
                               insetPadding:
-                                  EdgeInsets.symmetric(horizontal: 60),
+                                  const EdgeInsets.symmetric(horizontal: 60),
                               buttonPadding: EdgeInsets.zero,
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
@@ -282,11 +282,11 @@ class Profil extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
+                      const Text(
                         "Log out",
                         style: TextStyle(fontSize: 16),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         margin: const EdgeInsets.only(left: 12, right: 16),
                         child: const Icon(

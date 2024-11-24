@@ -7,7 +7,7 @@ class AppSkoleton extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final BorderRadiusGeometry radius;
 
-  AppSkoleton(
+  const AppSkoleton(
       {Key? key,
       required this.width,
       required this.height,

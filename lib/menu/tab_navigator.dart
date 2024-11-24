@@ -5,17 +5,17 @@ import '../screens/saved/savedScreen.dart';
 import 'tab_item.dart';
 
 class TabNavigator extends StatelessWidget {
-  TabNavigator({required this.navigatorKey, required this.tabItem});
+  const TabNavigator({super.key, required this.navigatorKey, required this.tabItem});
   final GlobalKey<NavigatorState>? navigatorKey;
   final TabItem tabItem;
 
   @override
   Widget build(BuildContext context) {
     late Widget child;
-    if (tabItem == TabItem.searche)
-      child = Home();
-    else if (tabItem == TabItem.saved)
-      child = SavedScreen();
+    if (tabItem == TabItem.searche) {
+      child = const Home();
+    } else if (tabItem == TabItem.saved)
+      child = const SavedScreen();
     else if (tabItem == TabItem.profil) child = Profil();
     return Navigator(
       key: navigatorKey,

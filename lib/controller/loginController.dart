@@ -7,6 +7,7 @@ class LoginController {
   // -------------- Methods ---------------
   Future login(String email, String password) async {
     final user = await loginRepository.getUserRequested(email, password);
+    print("user: $user");
     return user;
   }
 }

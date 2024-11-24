@@ -9,8 +9,8 @@ class LogOutRepository {
   LogOutRepository(this.logoutApi);
   Future logout() async {
     try {
-      final response = await logoutApi.logOutApi();
-    } on DioError catch (e) {
+      final response = await logoutApi.logOut();
+    } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }

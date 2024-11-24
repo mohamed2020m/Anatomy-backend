@@ -53,8 +53,8 @@ class HomeState extends State<Home> {
                         return Column(
                           children: [
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 60),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 60),
                               child: Row(
                                 children: [
                                   AppSkoleton(
@@ -64,7 +64,7 @@ class HomeState extends State<Home> {
                                         bottom: 8, right: 5, left: 5),
                                     radius: BorderRadius.circular(5),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   AppSkoleton(
                                     width: 50,
                                     height: 12,
@@ -76,20 +76,20 @@ class HomeState extends State<Home> {
                               ),
                             ),
                             Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 15, right: 15, top: 10),
                                 height: size.height / 4.5,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 238, 238, 238),
+                                        color: const Color.fromARGB(
+                                            255, 238, 238, 238),
                                         width: 2)),
                                 child: Row(
                                   children: [
                                     Container(
                                       width: 156,
-                                      decoration: BoxDecoration(
+                                      decoration: const BoxDecoration(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           borderRadius: BorderRadius.only(
@@ -100,7 +100,7 @@ class HomeState extends State<Home> {
                                     AppSkoleton(
                                         width: size.width - 34 - 156,
                                         height: size.height / 4.5,
-                                        radius: BorderRadius.only(
+                                        radius: const BorderRadius.only(
                                           topRight: Radius.circular(18),
                                           bottomRight: Radius.circular(18),
                                         ),
@@ -108,8 +108,8 @@ class HomeState extends State<Home> {
                                   ],
                                 )),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 30),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 30),
                               child: Row(
                                 children: [
                                   AppSkoleton(
@@ -119,7 +119,7 @@ class HomeState extends State<Home> {
                                         bottom: 8, right: 5, left: 5),
                                     radius: BorderRadius.circular(5),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   AppSkoleton(
                                     width: 50,
                                     height: 12,
@@ -131,8 +131,8 @@ class HomeState extends State<Home> {
                               ),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 10),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 10),
                               height: size.height / 7,
                               child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
@@ -149,8 +149,8 @@ class HomeState extends State<Home> {
                                   }),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 30),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 30),
                               child: Row(
                                 children: [
                                   AppSkoleton(
@@ -160,7 +160,7 @@ class HomeState extends State<Home> {
                                         bottom: 8, right: 5, left: 5),
                                     radius: BorderRadius.circular(5),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   AppSkoleton(
                                     width: 40,
                                     height: 12,
@@ -172,8 +172,8 @@ class HomeState extends State<Home> {
                               ),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 10),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 10),
                               height: size.height / 5.5,
                               child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
@@ -190,8 +190,8 @@ class HomeState extends State<Home> {
                                   }),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 30),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 30),
                               child: Row(
                                 children: [
                                   AppSkoleton(
@@ -201,7 +201,7 @@ class HomeState extends State<Home> {
                                         bottom: 8, right: 5, left: 5),
                                     radius: BorderRadius.circular(5),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   AppSkoleton(
                                     width: 40,
                                     height: 12,
@@ -213,8 +213,8 @@ class HomeState extends State<Home> {
                               ),
                             ),
                             Container(
-                              margin:
-                                  EdgeInsets.only(left: 15, right: 15, top: 10),
+                              margin: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 10),
                               height: size.height / 5.5,
                               child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
@@ -239,7 +239,8 @@ class HomeState extends State<Home> {
                           margin: EdgeInsets.only(top: size.height / 4),
                           child: AlertDialog(
                             alignment: Alignment.center,
-                            insetPadding: EdgeInsets.symmetric(horizontal: 70),
+                            insetPadding:
+                                const EdgeInsets.symmetric(horizontal: 70),
                             buttonPadding: EdgeInsets.zero,
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
@@ -254,7 +255,7 @@ class HomeState extends State<Home> {
                                 Container(
                                   margin: const EdgeInsets.only(
                                       left: 8, right: 8, bottom: 8),
-                                  child: Text(
+                                  child: const Text(
                                     "impossible de charger les données",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -265,7 +266,7 @@ class HomeState extends State<Home> {
                                 Container(
                                   margin: const EdgeInsets.only(
                                       left: 8, right: 8, bottom: 16),
-                                  child: Text(
+                                  child: const Text(
                                     "Veuillez recommencer",
                                     textAlign: TextAlign.center,
                                   ),
@@ -325,12 +326,12 @@ class HomeState extends State<Home> {
                                 height: 64,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
+                                    image: const DecorationImage(
                                         image: AssetImage(
                                             "assets/images/empty-folder.png"),
                                         fit: BoxFit.cover)),
                               ),
-                              Container(
+                              const SizedBox(
                                 width: 250,
                                 child: Text(
                                   'Y\'a aucun chapitre disponible pour ce cours',
@@ -347,7 +348,7 @@ class HomeState extends State<Home> {
                         return SizedBox(
                             width: size.width,
                             child: SingleChildScrollView(
-                                physics: ScrollPhysics(),
+                                physics: const ScrollPhysics(),
                                 // physics: const BouncingScrollPhysics(),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -355,17 +356,17 @@ class HomeState extends State<Home> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             top: 20, bottom: 10, left: 10),
                                       ),
                                       ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: snapshot.data!.length,
                                         itemBuilder: (context, index) {
                                           return CategoryComponent(
-                                            category:
-                                                snapshot.data!.elementAt(index),
+                                            category: snapshot.data!.elementAt(index),
                                           );
                                         },
                                       )

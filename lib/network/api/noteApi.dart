@@ -11,7 +11,7 @@ class NoteApi {
   Future<Response> getNotes(int id) async {
     try {
       final Response response = await dioClient.get(
-          Endpoints.baseUrl + Endpoints.object3d + id.toString() + "/notes",
+          "${Endpoints.baseUrl}${Endpoints.threeDObjects}$id/notes",
           options: Options(headers: {
             "Authorization": 'Bearer ${await storage.read(key: "token")}'
           }));
@@ -24,7 +24,7 @@ class NoteApi {
   Future<Response> addNote(String input, int idObject3d) async {
     try {
       final Response response = await dioClient.post(
-          Endpoints.baseUrl + Endpoints.note + "add",
+          "${Endpoints.baseUrl}${Endpoints.note}add",
           data: {
             "user": {"id": await storage.read(key: "id")},
             "objet": {"id": idObject3d},
@@ -42,7 +42,7 @@ class NoteApi {
   Future<void> deleteNote(int noteId) async {
     try {
       await dioClient.delete(
-          Endpoints.baseUrl + Endpoints.note + "delete/" + noteId.toString(),
+          "${Endpoints.baseUrl}${Endpoints.note}delete/$noteId",
           options: Options(headers: {
             "Authorization": 'Bearer ${await storage.read(key: "token")}'
           }));

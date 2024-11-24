@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
@@ -56,9 +57,9 @@ class _SavedScreenScreenState extends State<SavedScreen>
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 50,
-          backgroundColor: Color.fromARGB(255, 246, 246, 246),
+          backgroundColor: const Color.fromARGB(255, 246, 246, 246),
           shadowColor: Colors.transparent,
-          title: Text(
+          title: const Text(
             "Saved 3d Objects",
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
@@ -97,7 +98,7 @@ class _CoursViewRoutState extends State<CoursViewRout> {
 
           // padding: EdgeInsets.only(top: 8),
 
-          margin: EdgeInsets.only(left: 15, right: 15),
+          margin: const EdgeInsets.only(left: 15, right: 15),
           child: FutureBuilder(
             future: dbService.getAllSavedObjects(),
             builder: (context, snapshot) {
@@ -106,10 +107,16 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                   padding: const EdgeInsets.all(8),
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15.0,
+                    crossAxisSpacing: 20.0,
+                    childAspectRatio: 0.8,
+                  ),
                   children: List<Widget>.generate(
                     5,
                     (int index) {
-                      final int count = 5;
+                      const int count = 5;
                       final Animation<double> animation =
                           Tween<double>(begin: 0.0, end: 1.0).animate(
                         CurvedAnimation(
@@ -124,12 +131,6 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                         animationController: widget.animationController,
                       );
                     },
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 15.0,
-                    crossAxisSpacing: 20.0,
-                    childAspectRatio: 0.8,
                   ),
                 );
               } else if (snapshot.hasError) {
@@ -149,15 +150,15 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                         height: 64,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 image: AssetImage("assets/images/error.png"),
                                 fit: BoxFit.cover)),
                       )),
                       Flexible(
                           child: Container(
                         margin:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 16),
-                        child: Text(
+                            const EdgeInsets.only(left: 15, right: 15, bottom: 16),
+                        child: const Text(
                           "Essayons a nouveau de charger votre données",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -167,8 +168,8 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       Flexible(
                           child: Container(
                         margin:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                        child: Text(
+                            const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                        child: const Text(
                           "une erreur s'est produit lors du chargement de vos données. Appuyer sur Réessayer pour charger a nouveau vos données.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -178,20 +179,20 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                         ),
                       )),
                       Flexible(
-                          child: Container(
+                          child: SizedBox(
                               width: 120,
                               height: 50,
                               child: TextButton(
-                                child: Text("Réessayer",
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(
+                                      const Color.fromARGB(255, 0, 87, 209)),
+                                ),
+                                onPressed: () => setState(() {}),
+                                child: const Text("Réessayer",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 0, 87, 209)),
-                                ),
-                                onPressed: () => setState(() {}),
                               )))
                     ],
                   ),
@@ -210,12 +211,12 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                         height: 64,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 image: AssetImage(
                                     "assets/images/empty-folder.png"),
                                 fit: BoxFit.cover)),
                       ),
-                      Container(
+                      const SizedBox(
                         width: 250,
                         child: Text(
                           'There is no item available .',
@@ -233,6 +234,12 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                   padding: const EdgeInsets.all(8),
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15.0,
+                    crossAxisSpacing: 20.0,
+                    childAspectRatio: 0.8,
+                  ),
                   children: List<Widget>.generate(
                     snapshot.data!.length,
                     (int index) {
@@ -253,12 +260,6 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                       );
                     },
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 15.0,
-                    crossAxisSpacing: 20.0,
-                    childAspectRatio: 0.8,
-                  ),
                 );
               }
               return Container();
@@ -278,7 +279,7 @@ class ObjectsView extends StatelessWidget {
       : super(key: key);
 
   final VoidCallback? callback;
-  final Object3d? object3d;
+  final ThreeDObject? object3d;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
@@ -295,7 +296,7 @@ class ObjectsView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              splashColor: Color.fromARGB(0, 255, 0, 0),
+              splashColor: const Color.fromARGB(0, 255, 0, 0),
               onTap: () {
                 print(object3d!.image);
                 //TODO: navigate to object screen
@@ -310,7 +311,7 @@ class ObjectsView extends StatelessWidget {
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Color.fromRGBO(58, 81, 96, 1).withOpacity(0.08),
+                      color: const Color.fromRGBO(58, 81, 96, 1).withOpacity(0.08),
                       offset: const Offset(-6.1, 6.1),
                       blurRadius: 4.0,
                     ),
@@ -321,8 +322,8 @@ class ObjectsView extends StatelessWidget {
                     // blurRadius: 8.0),
                   ],
                   border: Border.all(
-                      color: Color.fromARGB(193, 212, 224, 230), width: 2),
-                  color: Color.fromARGB(193, 255, 255, 255),
+                      color: const Color.fromARGB(193, 212, 224, 230), width: 2),
+                  color: const Color.fromARGB(193, 255, 255, 255),
                   borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                   // border: new Border.all(
                   //     color: DesignCourseAppTheme.notWhite),
@@ -343,7 +344,7 @@ class ObjectsView extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                   letterSpacing: 0.27,
@@ -355,9 +356,9 @@ class ObjectsView extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color.fromARGB(193, 212, 224, 230),
-                          borderRadius: const BorderRadius.only(
+                          borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(5.0),
                               bottomRight: Radius.circular(5.0)),
                           // border: new Border.all(
@@ -380,9 +381,7 @@ class ObjectsView extends StatelessWidget {
                                             "Authorization":
                                                 "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW16YUBlemguY29tIiwiaWF0IjoxNzAwNTA3Mjg0LCJleHAiOjE3MDA1OTM2ODR9.SgdHWmv-RUQz_G9avMdZm2omhRgmeYat97vF46StWJE"
                                           },
-                                          Endpoints.baseUrl +
-                                              "/files/download/" +
-                                              object3d!.image),
+                                          "${Endpoints.baseUrl}/files/download/${object3d!.image}"),
                                       fit: BoxFit.cover)),
                             ),
                           ),
@@ -422,7 +421,7 @@ class SkoletonView extends StatelessWidget {
             transform: Matrix4.translationValues(
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
-              splashColor: Color.fromARGB(0, 255, 0, 0),
+              splashColor: const Color.fromARGB(0, 255, 0, 0),
               child: SizedBox(
                 height: 280,
                 child: Stack(
@@ -434,9 +433,9 @@ class SkoletonView extends StatelessWidget {
                           Expanded(
                             child: Container(
                               //TODO:
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color.fromARGB(0, 56, 55, 55),
-                                borderRadius: const BorderRadius.all(
+                                borderRadius: BorderRadius.all(
                                     Radius.circular(16.0)),
                               ),
                               child: Column(
