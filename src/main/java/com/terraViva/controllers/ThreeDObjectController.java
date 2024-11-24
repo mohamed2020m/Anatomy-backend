@@ -76,4 +76,10 @@ public class ThreeDObjectController {
         threeDObjectService.deleteThreeDObject(id);
         return new ResponseEntity("ThreeDObject deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/last-five")
+    public ResponseEntity<List<ThreeDObjectDTO>> getLastFiveThreeDObjects() {
+        List<ThreeDObjectDTO> lastFiveThreeDObjects = threeDObjectService.getLastFiveThreeDObjects();
+        return ResponseEntity.ok(lastFiveThreeDObjects);
+    }
 }

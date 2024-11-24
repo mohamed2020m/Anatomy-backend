@@ -33,4 +33,6 @@ public interface ThreeDObjectRepository extends JpaRepository<ThreeDObject, Long
 
     @Query("SELECT o FROM ThreeDObject o WHERE o.category.id = :categoryId")
     List<ThreeDObject> getThreeDObjectBySubCategory(Long categoryId);
+
+    List<ThreeDObject> findTop5ByOrderByCreatedAtDesc();
 }

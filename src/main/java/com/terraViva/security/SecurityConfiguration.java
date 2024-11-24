@@ -66,11 +66,17 @@ public class SecurityConfiguration {
 //                    .requestMatchers("/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
 //                    .requestMatchers("/api/v1/threeDObjects/**").hasAnyRole("PROF")
                     .requestMatchers("/api/v1/professors/**").hasAnyRole("ADMIN", "PROF")
-                    .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
+//                    .requestMatchers("/api/v1/students/**").hasAnyRole("ADMIN", "PROF", "STUD")
                     .requestMatchers("/api/v1/notes/**", "/api/v1/favourites/**").hasAnyRole("ADMIN","STUD")
                     .requestMatchers("/api/v1/me").hasAnyRole("ADMIN", "PROF", "STUD")
 
-                    // categories
+                    // students
+                    .requestMatchers(HttpMethod.GET, "/api/v1/students/**").hasAnyRole("ADMIN", "PROF")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/students/**").hasAnyRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/students/**").hasAnyRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/students/**").hasAnyRole("ADMIN")
+
+                     // categories
                      .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAnyRole("ADMIN", "STUD", "PROF")
                      .requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")
                      .requestMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasAnyRole("ADMIN", "PROF")

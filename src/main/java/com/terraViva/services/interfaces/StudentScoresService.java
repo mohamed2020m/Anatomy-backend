@@ -1,5 +1,6 @@
 package com.terraViva.services.interfaces;
 
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.models.StudentScores;
 
 import java.util.List;

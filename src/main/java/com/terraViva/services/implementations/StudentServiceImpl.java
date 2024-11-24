@@ -2,6 +2,7 @@ package com.terraViva.services.implementations;
 
 import com.terraViva.dto.CategoryStudentCountDTO;
 import com.terraViva.dto.StudentDTO;
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.exceptions.UserNotFoundException;
 import com.terraViva.mapper.StudentDTOConverter;
 import com.terraViva.models.Category;
@@ -13,6 +14,7 @@ import com.terraViva.services.interfaces.StudentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -120,5 +122,21 @@ public class StudentServiceImpl implements StudentService {
         }
 
         return result;
+    }
+
+    @Override
+    public void updateStudentInfo(String username, UpdateUserInfoRequestDTO updateUserInfoRequest) {
+        Student student = studentRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("Student not found"));
+
+        if (updateUserInfoRequest.getFirstName() != null) {
+            student.setFirstName(updateUserInfoRequest.getFirstName());
+        }
+        if (updateUserInfoRequest.getLastName() != null) {
+            student.setLastName(updateUserInfoRequest.getLastName());
+        }
+
+        student.setUpdatedAt(LocalDateTime.now());
+        studentRepository.save(student);
     }
 }

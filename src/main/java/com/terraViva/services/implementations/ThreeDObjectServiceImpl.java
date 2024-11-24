@@ -115,4 +115,11 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
     public List<ThreeDObject> getThreeDObjectByCategory(Long categoryId) {
         return threeDObjectRepository.getThreeDObjectBySubCategory(categoryId);
     }
+
+    public List<ThreeDObjectDTO> getLastFiveThreeDObjects() {
+        List<ThreeDObject> lastFiveThreeDObjects = threeDObjectRepository.findTop5ByOrderByCreatedAtDesc();
+        return lastFiveThreeDObjects.stream()
+                .map(threeDObject -> threeDObjectDTOConverter.toDto(threeDObject))
+                .collect(Collectors.toList());
+    }
 }
