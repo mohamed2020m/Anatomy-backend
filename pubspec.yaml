@@ -82,7 +82,7 @@ flutter:
     - assets/images/error.png
     - assets/images/no-results.png
     - assets/images/man.png
-    - assets/images/logo.jpg
+    # - assets/images/logo.jpg
     - assets/images/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -120,9 +120,8 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.png"
-  adaptive_icon_background: "#FF3F51B5"
-  adaptive_icon_foreground: "assets/images/logo.png"
-  android_icon_size: 72
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon/icon_forground.png"
 
   
