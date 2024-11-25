@@ -90,6 +90,8 @@ public class DataInitializer {
                     "Models of tectonic plates and their movements", null, geologyCategory);
             Category volcanology = createSubCategory(categoryRepository, "Volcanology",
                     "Models of volcanic structures and formations", null ,geologyCategory);
+            Category earthScience = createSubCategory(categoryRepository, "Earth Science",
+                    "Models of earth structures and formations", null ,geologyCategory);
 
             // 3. Chemistry Category
             Category chemistryCategory = categoryRepository.findByName("Chemistry")
@@ -107,6 +109,8 @@ public class DataInitializer {
                     "Models of organic compounds and molecules", null, chemistryCategory);
             Category inorganicChemistry = createSubCategory(categoryRepository, "Inorganic Chemistry",
                     "Models of inorganic compounds and crystal structures", null ,chemistryCategory);
+            Category biochemistry = createSubCategory(categoryRepository, "Biochemistry",
+                    "Models of biochemistry compounds and  structures", null ,chemistryCategory);
 
             // Create Professors
             // Anatomy Professors
@@ -147,6 +151,13 @@ public class DataInitializer {
                     "skeleton.glb", "skeleton.jpg", skeletalSystem, anatomyProf);
             create3DObject(threeDObjectRepository, "Lung Model", "Detailed 3D model of the human lung",
                     "Lung.glb", "lung.jpg", skeletalSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Eye Model", "Detailed 3D model of the human eye",
+                    "eye.glb", "eye.jpg", skeletalSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Large Intestine", "Detailed 3D model of the human large intestine",
+                    "large-intestine.glb", "large-intestine.jpg", skeletalSystem, anatomyProf);
+            create3DObject(threeDObjectRepository, "Kidney", "Detailed 3D model of the human kidney",
+                    "kidney.glb", "kidney.jpg", skeletalSystem, anatomyProf);
+
 
             // Geology Objects
             Professor geologyProf = professorRepository.findByEmail("zainab.malik@example.com").orElseThrow();
@@ -156,6 +167,10 @@ public class DataInitializer {
                     "volcano.glb", "volcano.jpg", volcanology, geologyProf);
             create3DObject(threeDObjectRepository, "Tectonic Plates", "Interactive model of tectonic plates",
                     "tectonics.glb", "tectonics.jpg", tectonics, geologyProf);
+            create3DObject(threeDObjectRepository, "Earth Layers", "Cross-section of Earth's internal structure",
+                    "earth-layers.glb", "earth-layers.jpg", earthScience, geologyProf);
+            create3DObject(threeDObjectRepository, "Earth", "3D model of earth structure",
+                    "earth.glb", "earth.jpg", earthScience, geologyProf);
 
             // Chemistry Objects
             Professor chemistryProf = professorRepository.findByEmail("mustafa.saeed@example.com").orElseThrow();
@@ -163,7 +178,12 @@ public class DataInitializer {
                     "benzene.glb", "benzene.jpg", organicChemistry, chemistryProf);
             create3DObject(threeDObjectRepository, "NaCl Crystal Structure", "Sodium chloride crystal lattice",
                     "nacl.glb", "nacl.jpg", inorganicChemistry, chemistryProf);
-
+            create3DObject(threeDObjectRepository, "DNA Double Helix", "3D model of DNA structure",
+                    "dna.glb", "dna.jpg", biochemistry, chemistryProf);
+            create3DObject(threeDObjectRepository, "Ethanol Structure", "3D model of ethanol molecule",
+                    "ethanol.glb", "ethanol.jpg", organicChemistry, chemistryProf);
+            create3DObject(threeDObjectRepository, "Glucose Molecule", "3D structure of glucose",
+                    "glucose.glb", "glucose.jpg", organicChemistry, chemistryProf);
 
             // Assign Students to Sub-Categories
             Student student01 = studentRepository.findByEmail("mahmoud.ali@student.com").orElseThrow();
