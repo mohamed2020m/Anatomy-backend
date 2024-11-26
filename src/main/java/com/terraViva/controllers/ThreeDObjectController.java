@@ -2,6 +2,7 @@ package com.terraViva.controllers;
 
 import com.terraViva.dto.ThreeDObjectDTO;
 import com.terraViva.exceptions.ThreeDObjectNotFoundException;
+import com.terraViva.models.Note;
 import com.terraViva.models.ThreeDObject;
 import com.terraViva.services.implementations.ThreeDObjectServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,6 @@ public class ThreeDObjectController {
         return ResponseEntity.ok(threeDObjectService.getThreeDObjectById(id));
     }
 
-
     @GetMapping
     public ResponseEntity<List<ThreeDObjectDTO>> getAllThreeDObjects() {
         return ResponseEntity.ok(threeDObjectService.getAllThreeDObjects());
@@ -62,6 +62,11 @@ public class ThreeDObjectController {
     @GetMapping("/by-category/{categoryId}")
     public List<ThreeDObject> getThreeDObjectByCategory(@PathVariable Long categoryId) {
         return threeDObjectService.getThreeDObjectByCategory(categoryId);
+    }
+
+    @GetMapping("{threeDObjectId}/student/{studentId}/notes")
+    public List<Note> getNotesByThreeDObjects(@PathVariable Long studentId, @PathVariable Long threeDObjectId) {
+        return threeDObjectService.getNotesByThreeDObjects(studentId, threeDObjectId);
     }
 
     @PutMapping("/{id}")

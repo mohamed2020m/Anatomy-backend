@@ -1,9 +1,9 @@
 package com.terraViva.services.implementations;
 
-
 import com.terraViva.dto.ThreeDObjectDTO;
 import com.terraViva.exceptions.ThreeDObjectNotFoundException;
 import com.terraViva.mapper.ThreeDObjectDTOConverter;
+import com.terraViva.models.Note;
 import com.terraViva.models.Professor;
 import com.terraViva.models.ThreeDObject;
 import com.terraViva.repositories.ProfessorRepository;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-
 public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
 
@@ -43,7 +42,6 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         ThreeDObjectDTO resultDTO = threeDObjectDTOConverter.toDto(savedObject);
         return resultDTO;
     }
-
 
     @Override
     public ThreeDObjectDTO getThreeDObjectById(Long threeDObjectId) throws ThreeDObjectNotFoundException {
@@ -114,6 +112,11 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
     @Override
     public List<ThreeDObject> getThreeDObjectByCategory(Long categoryId) {
         return threeDObjectRepository.getThreeDObjectBySubCategory(categoryId);
+    }
+
+    @Override
+    public List<Note> getNotesByThreeDObjects(Long studentId, Long threeDObjectId) {
+        return threeDObjectRepository.getNotesByThreeDObjects(studentId, threeDObjectId);
     }
 
     public List<ThreeDObjectDTO> getLastFiveThreeDObjects() {

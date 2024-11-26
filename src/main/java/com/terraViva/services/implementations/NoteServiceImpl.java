@@ -1,6 +1,5 @@
 package com.terraViva.services.implementations;
 
-
 import com.terraViva.dto.NoteDTO;
 import com.terraViva.exceptions.NoteNotFoundException;
 import com.terraViva.mapper.NoteDTOConverter;
@@ -16,18 +15,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-
 public class NoteServiceImpl implements NoteService{
-
     private final NoteDTOConverter  noteDTOConverter;
     private NoteRepository  noteRepository;
-
 
     public NoteServiceImpl(NoteRepository noteRepository, NoteDTOConverter noteDTOConverter) {
         this.noteDTOConverter = noteDTOConverter;
         this.noteRepository = noteRepository;
     }
-
 
     @Override
     public NoteDTO saveNote(NoteDTO noteDTO){
@@ -52,23 +47,28 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
+    public List<NoteDTO> getNotesByStudent(Long studentId){
+        List<Note> notes = noteRepository.findByStudentId(studentId);
+        List<NoteDTO> noteDTOs = notes.stream().map(note -> noteDTOConverter.toDto(note)).collect(Collectors.toList());
+        return noteDTOs;
+    }
+
+    @Override
     public NoteDTO updateNote(NoteDTO noteDTO) throws NoteNotFoundException {
         Note existingNote = noteRepository.findById(noteDTO.getId())
                 .orElseThrow(() -> new NoteNotFoundException("Note not found with id: " + noteDTO.getId()));
         if (noteDTO.getContent() != null) {
             existingNote.setContent(noteDTO.getContent());
         }
+
         existingNote.setUpdatedAt(LocalDateTime.now());
         Note updatedNote = noteRepository.save(existingNote);
         return noteDTOConverter.toDto(updatedNote);
     }
-
 
     @Override
     public void deleteNote(Long noteId) throws NoteNotFoundException {
         Note note=noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException("Note not found"));
         noteRepository.delete(note);
     }
-
-
 }

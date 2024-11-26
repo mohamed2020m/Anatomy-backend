@@ -56,6 +56,7 @@ public class AuthenticationController {
             String role = roles.isEmpty() ? null : roles.get(0);
 
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
+                    .setUser_id(authenticatedUser.getId())
                     .setAccessToken(accessToken)
                     .setExpiresIn(jwtService.getExpirationTime())
                     .setRole(Role.valueOf(role))

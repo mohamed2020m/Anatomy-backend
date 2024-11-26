@@ -31,12 +31,4 @@ public class Note {
 
     @ManyToOne
     private Student student;
-
-    /*    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
-
-    @ManyToOne
-    @JoinColumn(name = "object_id", nullable = false)
-    private ThreeDObject threeDObject;*/
 }
