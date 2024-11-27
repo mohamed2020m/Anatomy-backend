@@ -1,5 +1,6 @@
 import 'package:TerraViva/screens/favorite/Favorite.dart';
 import 'package:TerraViva/screens/quizzes/QuizScreen.dart';
+import 'package:TerraViva/screens/search/searchScreen.dart';
 import 'package:flutter/material.dart';
 import '../screens/home/Home.dart';
 import '../screens/profil/Profil.dart';
@@ -17,13 +18,16 @@ class TabNavigator extends StatelessWidget {
     if (tabItem == TabItem.home) {
       child = const Home();
     } else if (tabItem == TabItem.notes){
-      child = const SavedScreen();
+      child = const SavedNotesScreen();
     } 
     else if (tabItem == TabItem.favorites){
       child = const Favorite();
     } 
     else if(tabItem == TabItem.quizzes) {
       child = const QuizScreen();
+    }
+    else if(tabItem == TabItem.search){
+      child = const SearchScreen();
     }
     return Navigator(
       key: navigatorKey,

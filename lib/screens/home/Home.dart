@@ -1,3 +1,4 @@
+import 'package:TerraViva/components/ErrorDialog.dart';
 import 'package:TerraViva/controller/objectsParCategoryController.dart';
 import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:TerraViva/screens/home/LatestObjectsComponent.dart';
@@ -6,8 +7,6 @@ import 'package:provider/provider.dart';
 import '../../models/Category.dart';
 import '../../app_skoleton/appSkoleton.dart';
 import '../../controller/categoryController.dart';
-
-import '../../models/Object3d.dart';
 import '../../provider/dataCenter.dart';
 import '../../service/serviceLocator.dart';
 import 'CategoryComponent.dart';
@@ -50,46 +49,49 @@ class HomeState extends State<Home> {
                   ),
 
                   FutureBuilder<List<ThreeDObject>>(
-                      future: object3dController.getLatestObject3D(),
-                      builder: (context, objectsSnapshot) {
-                        if (objectsSnapshot.hasData && objectsSnapshot.data!.isNotEmpty) {
-                          return LatestObjectsComponent(
-                            objects: objectsSnapshot.data!,
-                            onTapObject: (object) {
-                              var categoryProvider = Provider.of<DataCenter>(context, listen: false);
-                              categoryProvider.setCurretntObject3d(object);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ObjectViewScreen(object3d: object),
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 10, left: 10),
-                    ),
+                    future: object3dController.getLatestObject3D(),
+                    builder: (context, objectsSnapshot) {
+                      if (objectsSnapshot.hasData &&
+                          objectsSnapshot.data!.isNotEmpty) {
+                        return LatestObjectsComponent(
+                          objects: objectsSnapshot.data!,
+                          onTapObject: (object) {
+                            var categoryProvider =
+                                Provider.of<DataCenter>(context, listen: false);
+                            categoryProvider.setCurretntObject3d(object);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ObjectViewScreen(object3d: object),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  Container(
+                    margin:
+                        const EdgeInsets.only(top: 20, bottom: 10, left: 10),
+                  ),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'All Categories',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'All Categories',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                      
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
                   // list categories:
                   FutureBuilder<List<Category>>(
                     future: categoryController.getAllCategory(),
@@ -280,85 +282,14 @@ class HomeState extends State<Home> {
                       } else if (snapshot.hasError) {
                         final error = snapshot.error;
                         return SingleChildScrollView(
-                            child: Container(
-                          margin: EdgeInsets.only(top: size.height / 4),
-                          child: AlertDialog(
-                            alignment: Alignment.center,
-                            insetPadding:
-                                const EdgeInsets.symmetric(horizontal: 70),
-                            buttonPadding: EdgeInsets.zero,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 0.0),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 8, right: 8, bottom: 8),
-                                  child: const Text(
-                                    "impossible de charger les données",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 8, right: 8, bottom: 16),
-                                  child: const Text(
-                                    "Veuillez recommencer",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        child: InkWell(
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(10),
-                                        bottomRight: Radius.circular(10),
-                                      ),
-                                      onTap: () {
-                                        //TODO:
-                                        //newCourses.setError(false);
-                                        // var categoryProvider = Provider.of<DataCenter>(context, listen: false);
-                                        // Object3d object3d = Object3d(id: 1,name:"lorem ipsum",description:"bla bla bla",image: "",data:"");
-                                        // categoryProvider.setCurretntObject3d(object3d);
-                                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ObjectViewScreen(object3d:object3d)));
-                                        setState(() {});
-                                      },
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                            border: Border(
-                                          top: BorderSide(
-                                              color: Colors.grey, width: 0.5),
-                                        )),
-                                        height: 50,
-                                        child: const Center(
-                                          child: Text("Réessayer",
-                                              style: TextStyle(
-                                                  color: Colors.blue,
-                                                  fontWeight: FontWeight.w600)),
-                                        ),
-                                      ),
-                                    ))
-                                  ],
-                                )
-                              ],
+                          child: Container(
+                            margin: EdgeInsets.only(top: size.height / 6),
+                            child: ErrorDialog(
+                              onRetry: () {
+                                setState(() {});
+                              },
                             ),
-                          ),
                         ));
-                        // return Center(
-                        //   child: Text(
-                        //     "Error: " + error.toString(),
-                        //   ),
-                        // );
                       } else if (snapshot.hasData) {
                         if (snapshot.data!.isEmpty) {
                           return Column(

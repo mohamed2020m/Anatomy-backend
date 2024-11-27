@@ -27,9 +27,7 @@ class CategoryComponent extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       splashColor: const Color.fromARGB(0, 255, 0, 0),
       onTap: () {
-        //TODO: navigate to object screen
         categoryProvider.setCurretntCategory(category);
-
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const CategoryScreen()));
       },

@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../Endpoints.dart';
-import '../dioClient.dart';
+// import 'package:dio/dio.dart';
+// import '../Endpoints.dart';
+// import '../dioClient.dart';
 
 // class LogOutApi {
 //   final DioClient dioClient;
@@ -30,6 +30,7 @@ class LogOutApi {
     try {
       // Remove the token from secure storage
       await storage.delete(key: "token");
+      await storage.delete(key: "user_id");
       print("Token deleted successfully");
     } catch (e) {
       // Handle errors if needed

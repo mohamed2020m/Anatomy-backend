@@ -1,5 +1,6 @@
 import 'package:TerraViva/screens/favorite/Favorite.dart';
 import 'package:TerraViva/screens/quizzes/QuizScreen.dart';
+import 'package:TerraViva/screens/search/searchScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:TerraViva/screens/profil/Profil.dart';
 import 'package:TerraViva/screens/saved/savedScreen.dart';
@@ -22,7 +23,7 @@ class _EntryPointState extends State<EntryPoint> {
   }
 
 
-  final screens = [const Home(), const SavedScreen(), const QuizScreen(), const Favorite()];
+  final screens = [const Home(), const SavedNotesScreen(), const QuizScreen(), const Favorite(), const SearchScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,7 @@ class _EntryPointState extends State<EntryPoint> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.bookmark_border),
               label: 'Notes',
@@ -53,14 +55,14 @@ class _EntryPointState extends State<EntryPoint> {
               icon: Icon(Icons.quiz),
               label: 'Quizzes',
             ),
-
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border),
               label: 'Favorites',
             ),
+
             // BottomNavigationBarItem(
-            //   icon: Icon(Icons.person_outline),
-            //   label: 'Profile',
+            //   icon: Icon(Icons.search),
+            //   label: 'Search',
             // ),
           ],
           currentIndex: _selectedIndex,

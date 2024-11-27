@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../controller/categoryController.dart';
-import '../controller/createUserController.dart';
 import '../controller/logOutController.dart';
 import '../controller/loginController.dart';
 import '../controller/noteController.dart';
@@ -11,7 +10,6 @@ import '../controller/searchController2.dart';
 import '../controller/userDetailController.dart';
 import '../network/api/SearchApi.dart';
 import '../network/api/categoryApi.dart';
-import '../network/api/createUserApi.dart';
 import '../network/api/logOutApi.dart';
 import '../network/api/loginApi.dart';
 import '../network/api/noteApi.dart';
@@ -19,7 +17,6 @@ import '../network/api/objectsParCategoryApi.dart';
 import '../network/api/userDetailApi.dart';
 import '../network/repository/categoryRepository.dart';
 import '../network/dioClient.dart';
-import '../network/repository/createUserRepository.dart';
 import '../network/repository/loginRepository.dart';
 import '../network/repository/logoutRepository.dart';
 import '../network/repository/noteRepository.dart';
@@ -43,11 +40,6 @@ Future<void> setup() async {
   getIt.registerSingleton(LogOutRepository(getIt.get<LogOutApi>()));
   getIt.registerSingleton(LogoutController());
 
-  // create user
-  getIt.registerSingleton(CreateUserApi(dioClient: getIt<DioClient>()));
-  getIt.registerSingleton(CreateUserRepository(getIt<CreateUserApi>()));
-  getIt.registerSingleton(CreateUserController());
-
    //user information
   getIt.registerSingleton(UserDetailApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(UserDetailRepository(getIt<UserDetailApi>()));
@@ -67,6 +59,7 @@ Future<void> setup() async {
   getIt.registerSingleton(NoteApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(NoteRepository(getIt.get<NoteApi>()));
   getIt.registerSingleton(NoteController());
+
 
   // search par category
   getIt.registerSingleton(SearchApi(dioClient: getIt<DioClient>()));

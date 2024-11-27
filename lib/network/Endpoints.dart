@@ -9,13 +9,11 @@ class Endpoints {
   static const Duration connectionTimeout = Duration(seconds: 60);
   static const String category = '/categories';
   static const String threeDObjects = '/threeDObjects';
-  static const String note = '/notes/';
-  static const String searchByCategory = '/category/searchByCategory';
-  static const String searchByObject3d = '/objet3d/searchByObject';
-  static const String search = '/objet3d/search';
+  static const String note = '/notes';
   static const String login = "/auth/login";
   static const String logout = "/auth/logout";
   static const String userInfo = "/me";
-  static const String creatsUser = "/auth/register";
-  //BigItemSection.categoryId
+  static const String searchByCategory = '/category/searchByCategory';
+  static const String searchByObject3d = '/objet3d/searchByObject';
+  static const String search = '/objet3d/search';
 }

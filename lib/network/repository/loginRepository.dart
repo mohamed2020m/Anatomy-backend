@@ -14,7 +14,7 @@ class LogInRepository {
       print("response: ${response.data}");
 
       storeToken(response.data["accessToken"], 'token');
-      storeToken('${response.data["user_id"]}','id');
+      storeToken('${response.data["user_id"]}','user_id');
     } on DioException catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;

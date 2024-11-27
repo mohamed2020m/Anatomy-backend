@@ -1,5 +1,4 @@
 import 'package:TerraViva/models/ThreeDObject.dart';
-import 'package:TerraViva/screens/home/subCategory/CategoryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
@@ -11,11 +10,6 @@ import '../../../network/Endpoints.dart';
 import '../../../provider/dataCenter.dart';
 import '../../../service/serviceLocator.dart';
 import 'ObjectViewScreen.dart';
-
-// import 'package:templates/design_course/design_course_app_theme.dart';
-// import 'package:templates/design_course/models/category.dart';
-// import 'package:templates/main.dart';
-// import 'package:flutter/material.dart';
 
 class SubCategoryScreen extends StatefulWidget {
   const SubCategoryScreen({Key? key}) : super(key: key);
