@@ -7,6 +7,7 @@ class LogInApi {
   final DioClient dioClient;
 
   LogInApi({required this.dioClient});
+  
   Future<Response> logInApi(String email, String password) async {
     try {
       final Response response = await dioClient.post(
@@ -18,4 +19,6 @@ class LogInApi {
       rethrow;
     }
   }
+
+
 }

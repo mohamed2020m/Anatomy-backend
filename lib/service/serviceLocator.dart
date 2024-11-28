@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../controller/categoryController.dart';
+import '../controller/quizController.dart';
 import '../controller/logOutController.dart';
 import '../controller/loginController.dart';
 import '../controller/noteController.dart';
@@ -10,12 +11,14 @@ import '../controller/searchController2.dart';
 import '../controller/userDetailController.dart';
 import '../network/api/SearchApi.dart';
 import '../network/api/categoryApi.dart';
+import '../network/api/quizApi.dart';
 import '../network/api/logOutApi.dart';
 import '../network/api/loginApi.dart';
 import '../network/api/noteApi.dart';
 import '../network/api/objectsParCategoryApi.dart';
 import '../network/api/userDetailApi.dart';
 import '../network/repository/categoryRepository.dart';
+import '../network/repository/quizRepository.dart';
 import '../network/dioClient.dart';
 import '../network/repository/loginRepository.dart';
 import '../network/repository/logoutRepository.dart';
@@ -49,6 +52,11 @@ Future<void> setup() async {
   getIt.registerSingleton(CategoryApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(CategoryRepository(getIt.get<CategoryApi>()));
   getIt.registerSingleton(CategoryController());
+
+  // Quiz
+  getIt.registerSingleton(QuizApi(dioClient: getIt<DioClient>()));
+  getIt.registerSingleton(QuizRepository(getIt.get<QuizApi>()));
+  getIt.registerSingleton(QuizController());
 
   //objects3d
   getIt.registerSingleton(ObjectsParCategoryApi(dioClient: getIt<DioClient>()));
