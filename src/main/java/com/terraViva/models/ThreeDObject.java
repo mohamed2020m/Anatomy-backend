@@ -33,15 +33,16 @@ public class ThreeDObject {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    @JsonIgnore
-    private List<Note> notes;
-
-    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    @JsonIgnore
-    private List<Favourite> favourites;
+//    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Note> notes;
+//
+//    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Favourite> favourites;
 
     @ManyToOne
+    @JsonIgnore
     private Professor professor;
 
     @ManyToOne
