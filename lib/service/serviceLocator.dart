@@ -1,7 +1,9 @@
+import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../controller/categoryController.dart';
+import '../controller/threeDObjectController.dart';
 import '../controller/quizController.dart';
 import '../controller/logOutController.dart';
 import '../controller/loginController.dart';
@@ -12,6 +14,7 @@ import '../controller/userDetailController.dart';
 import '../network/api/SearchApi.dart';
 import '../network/api/categoryApi.dart';
 import '../network/api/quizApi.dart';
+import '../network/api/threeDObjectApi.dart';
 import '../network/api/logOutApi.dart';
 import '../network/api/loginApi.dart';
 import '../network/api/noteApi.dart';
@@ -23,6 +26,7 @@ import '../network/dioClient.dart';
 import '../network/repository/loginRepository.dart';
 import '../network/repository/logoutRepository.dart';
 import '../network/repository/noteRepository.dart';
+import '../network/repository/threeDObjectRepository.dart';
 import '../network/repository/objectsParCategoryRepository.dart';
 import '../network/repository/searchRepository.dart';
 import '../network/repository/userDetailRepository.dart';
@@ -68,6 +72,10 @@ Future<void> setup() async {
   getIt.registerSingleton(NoteRepository(getIt.get<NoteApi>()));
   getIt.registerSingleton(NoteController());
 
+  // ThreeDObject
+  getIt.registerSingleton(ThreedObjectApi(dioClient: getIt<DioClient>()));
+  getIt.registerSingleton(ThreeDObjectRepository(getIt.get<ThreedObjectApi>()));
+  getIt.registerSingleton(ThreeDObjectController());
 
   // search par category
   getIt.registerSingleton(SearchApi(dioClient: getIt<DioClient>()));

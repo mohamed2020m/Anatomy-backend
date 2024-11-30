@@ -6,22 +6,22 @@ import '../service/serviceLocator.dart';
 
 class QuizController {
 
-  final userRepository = getIt.get<QuizRepository>();
+  final quizRepository = getIt.get<QuizRepository>();
 
   Future<List<Quiz>> getAllQuizes() async {
-    final allquizes = await userRepository.getAllQuizzes();
+    final allquizes = await quizRepository.getAllQuizzes();
     print("allquizes: $allquizes");
     return allquizes;
   }
 
   Future<List<Question>> getQuestionsOfQuiz(String quizId) async {
-    final allQuestions= await userRepository.getQuestionsOfQuiz(quizId);
+    final allQuestions= await quizRepository.getQuestionsOfQuiz(quizId);
     print("getQuestionsOfQuiz: $allQuestions");
     return allQuestions;
   }
 
   Future<void> saveScoreOfQuiz(String quizId, double score) async {
-    await userRepository.saveScoreOfQuiz(quizId, score);
+    await quizRepository.saveScoreOfQuiz(quizId, score);
   }
 
 }
