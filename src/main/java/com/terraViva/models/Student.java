@@ -18,7 +18,8 @@ public class Student extends User{
 
     @OneToMany(mappedBy="student", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
     @JsonIgnore
-    private List<Favourite> favourites = new ArrayList<>();
+    @ToString.Exclude
+    private List<Favourite> favourites;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore

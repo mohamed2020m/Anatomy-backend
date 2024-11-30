@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,12 +36,13 @@ public class ThreeDObject {
 //    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 //    @JsonIgnore
 //    private List<Note> notes;
-
-    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    @JsonIgnore
-    private List<Favourite> favourites;
+//
+//    @OneToMany(mappedBy="threeDObject",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Favourite> favourites;
 
     @ManyToOne
+    @JsonIgnore
     private Professor professor;
 
     @ManyToOne

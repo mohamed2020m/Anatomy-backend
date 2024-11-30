@@ -87,9 +87,9 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         if (threeDObjectDTO.getImage() != null) {
             existingThreeDObject.setImage(threeDObjectDTO.getImage());
         }
-        if (threeDObjectDTO.getProfessor() != null) {
-            existingThreeDObject.setProfessor(threeDObjectDTO.getProfessor());
-        }
+        //if (threeDObjectDTO.getProfessor() != null) {
+        //    existingThreeDObject.setProfessor(threeDObjectDTO.getProfessor());
+        //}
         existingThreeDObject.setUpdatedAt(LocalDateTime.now());
         ThreeDObject updatedThreeDObject = threeDObjectRepository.save(existingThreeDObject);
         return threeDObjectDTOConverter.toDto(updatedThreeDObject);

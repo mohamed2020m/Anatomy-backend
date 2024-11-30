@@ -1,9 +1,11 @@
 package com.terraViva.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,10 +27,12 @@ public class Favourite {
     private LocalDateTime updatedAt;
 
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JsonIgnore
+    @ToString.Exclude
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private ThreeDObject threeDObject;
 
 }
