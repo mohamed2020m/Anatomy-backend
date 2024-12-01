@@ -30,7 +30,7 @@ public class MCQQuestion {
     private Map<String, String> options;
 
     private String correctAnswer;
-
+    @Column(columnDefinition = "TEXT")
     private String explanation;
 
     @ManyToOne

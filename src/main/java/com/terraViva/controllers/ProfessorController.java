@@ -18,58 +18,58 @@ public class ProfessorController {
 
    
 
-        private ProfessorServiceImpl professorService;
+    private ProfessorServiceImpl professorService;
 
-        public  ProfessorController( ProfessorServiceImpl  professorService) {
-            this. professorService =  professorService;
-        }
-
-
-        @PostMapping
-        public ResponseEntity<ProfessorDTO> saveProfessor(@RequestBody ProfessorDTO professorDTO) {
-            return ResponseEntity.ok(professorService.saveProfessor(professorDTO));
-        }
-
-        @GetMapping("/{id}")
-        public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
-            return ResponseEntity.ok(professorService.getProfessorById(id));
-        }
+    public  ProfessorController( ProfessorServiceImpl  professorService) {
+    this. professorService =  professorService;
+    }
 
 
-        @GetMapping
-        public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
-            return ResponseEntity.ok(professorService.getAllProfessors());
-        }
+    @PostMapping
+    public ResponseEntity<ProfessorDTO> saveProfessor(@RequestBody ProfessorDTO professorDTO) {
+    return ResponseEntity.ok(professorService.saveProfessor(professorDTO));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfessorDTO> getProfessorById(@PathVariable Long id){
+    return ResponseEntity.ok(professorService.getProfessorById(id));
+    }
 
 
-        @PutMapping("/{id}")
-        public ResponseEntity<ProfessorDTO> updateProfessor(@PathVariable Long id, @RequestBody ProfessorDTO professorDTO) {
-            professorDTO.setId(id);
-            ProfessorDTO updatedProfessor = professorService.updateProfessor(professorDTO);
-            return ResponseEntity.ok(updatedProfessor);
-        }
+    @GetMapping
+    public ResponseEntity<List<ProfessorDTO>> getAllProfessors() {
+    return ResponseEntity.ok(professorService.getAllProfessors());
+    }
 
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<String> deleteProfessor(@PathVariable Long id){
-            professorService.deleteProfessor(id);
-            return new ResponseEntity("Professor deleted successfully", HttpStatus.OK);
-        }
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfessorDTO> updateProfessor(@PathVariable Long id, @RequestBody ProfessorDTO professorDTO) {
+    professorDTO.setId(id);
+    ProfessorDTO updatedProfessor = professorService.updateProfessor(professorDTO);
+    return ResponseEntity.ok(updatedProfessor);
+    }
 
-        @GetMapping("/count")
-        public Long getProfessorCount() {
-            return professorService.getProfessorsCount();
-        }
 
-        @GetMapping("/by-categories")
-        public List<Object[]> getProfessorsByCategory() {
-            return professorService.getProfessorsByCategory();
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProfessor(@PathVariable Long id){
+    professorService.deleteProfessor(id);
+    return new ResponseEntity("Professor deleted successfully", HttpStatus.OK);
+    }
 
-        @GetMapping("/{id}/sub-categories")
-        public List<CategoryDTO> getSubCategoriesOfProfessor(@PathVariable Long id) {
-            return professorService.getSubCategoriesOfProfessor(id);
-        }
+    @GetMapping("/count")
+    public Long getProfessorCount() {
+    return professorService.getProfessorsCount();
+    }
+
+    @GetMapping("/by-categories")
+    public List<Object[]> getProfessorsByCategory() {
+    return professorService.getProfessorsByCategory();
+    }
+
+    @GetMapping("/{id}/sub-categories")
+    public List<CategoryDTO> getSubCategoriesOfProfessor(@PathVariable Long id) {
+    return professorService.getSubCategoriesOfProfessor(id);
+    }
 
     @GetMapping("/{id}/sub-categories/count")
     public Long getSubCategoriesCountByProfessor(@PathVariable Long id) {

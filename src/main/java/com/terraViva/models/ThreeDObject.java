@@ -23,6 +23,7 @@ public class ThreeDObject {
     private Long id;
 
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String descriptionAudio;
     private String image;
