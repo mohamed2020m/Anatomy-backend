@@ -7,7 +7,7 @@ import { Mesh } from 'three';
 import { Canvas, useLoader, useFrame } from '@react-three/fiber';
 import { OrbitControls, Html, PerspectiveCamera } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { X, Maximize2, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, Maximize2, RotateCcw, ZoomIn, ZoomOut, ArrowLeft, ArrowBigLeftDash, Eye } from 'lucide-react';
 
 export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: number }) {
   const { data: session, status } = useSession();
@@ -41,9 +41,9 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
     });
 
     return (
-      <mesh ref={mesh} scale={[3.5, 3.5, 3.5]}>
-        <primitive object={gltf.scene} position={[0, -2.8, 0]} scale={[3.5, 3.5, 3.5]} />
-      </mesh>
+      <mesh ref={mesh} scale={[1, 1, 1]}>
+        <primitive object={gltf.scene} position={[0,0, 0]} scale={[1, 1, 1]} />
+      </mesh>  
     );
   }
 
@@ -97,12 +97,14 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
     <>
       <Card className="mx-auto w-full max-w-4xl shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-bold">Objet 3D Détails</CardTitle>
+          <CardTitle className="text-2xl font-bold">3D Object Details</CardTitle>
           <Button 
             onClick={() => setIsPopupOpen(true)}
             className="bg-primary hover:bg-primary/90"
           >
-            Voir en 3D
+            <Eye className="mr-2"/>
+            
+            View in 3D
           </Button>
         </CardHeader>
         <CardContent>
@@ -113,7 +115,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                   <h3 className="text-xl font-semibold">{objectDetails.name}</h3>
                   <p className="text-gray-600">{objectDetails.description}</p>
                   <div className="space-y-2">
-                    <div className="font-medium">Catégorie</div>
+                    <div className="font-medium">Category</div>
                     <div className="text-gray-600">{objectDetails.professor.category.name}</div>
                   </div>
                 </div>
@@ -126,7 +128,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                 </div>
               </div>
             ) : (
-              <p>Aucun détail disponible.</p>
+              <p>No details available.</p>
             )}
             <div className="flex gap-4 mt-6">
               <Button 
@@ -134,7 +136,8 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                 onClick={() => window.history.back()}
                 className="hover:bg-gray-100"
               >
-                Retour
+                <ArrowBigLeftDash className="mr-2" />
+                Back
               </Button>
             </div>
           </div>
@@ -151,7 +154,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
               <div className="bg-gray-800 rounded-lg h-full overflow-hidden shadow-2xl">
                 {/* En-tête du modal */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-700">
-                  <h2 className="text-xl font-semibold text-white">Visualisation 3D - {objectDetails?.name}</h2>
+                  <h2 className="text-xl font-semibold text-white">3D View - {objectDetails?.name}</h2>
                   <div className="flex gap-2">
                     <Button
                       variant="ghost"
@@ -192,7 +195,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                     {isLoading && (
                       <Html center>
                         <div className="bg-gray-800 text-white px-4 py-2 rounded-lg">
-                          Chargement...
+                        Loading ...
                         </div>
                       </Html>
                     )}
@@ -201,41 +204,12 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                       <Suspense fallback={null}>
                         <Load3DFile
                           fileUrl={glbUrl}
-                          scales={[2, 2, 2]}
+                          scales={[1, 1, 1]}
                           onLoadComplete={() => setIsLoading(false)}
                         />
                       </Suspense>
                     )}
                   </Canvas>
-
-                  {/* Contrôles flottants */}
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 rounded-full shadow-lg p-2 flex gap-2">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white"
-                      title="Réinitialiser la rotation"
-                    >
-                      <RotateCcw className="h-5 w-5" />
-                    </Button>
-                    <div className="w-px bg-gray-700" />
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white"
-                      title="Zoom avant"
-                    >
-                      <ZoomIn className="h-5 w-5" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white"
-                      title="Zoom arrière"
-                    >
-                      <ZoomOut className="h-5 w-5" />
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>

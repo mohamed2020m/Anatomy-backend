@@ -5,43 +5,56 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { FileUploader } from '@/components/file-uploader';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
+import { EyeIcon,Edit2Icon} from 'lucide-react';
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
-const MAX_FILE_SIZE = 5000000;
+const MAX_FILE_SIZE = 500000000000;
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
   'image/png',
-  'image/webp',
+  'image/webp'
 ];
 
 const ACCEPTED_3D_TYPES = [
   'model/gltf-binary',
   'model/gltf+json',
   '.glb',
-  '.gltf',
+  '.gltf'
 ];
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: 'Le nom doit contenir au moins 2 caractères.'
   }),
-  description: z.string({
-    required_error: 'Veuillez ajouter une description pour l\'objet 3D.'
-  }).max(255, {
-    message: 'La description ne doit pas dépasser 255 caractères.'
-  }),
+  description: z
+    .string({
+      required_error: "Veuillez ajouter une description pour l'objet 3D."
+    })
+    .max(15000, {
+      message: 'La description ne doit pas dépasser 15000 caractères.'
+    }),
   image: z
     .any()
-    .refine((files) => files?.length == 1, 'L\'image est requise.')
+    .refine((files) => files?.length == 1, "L'image est requise.")
     .refine(
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
       `La taille maximum du fichier est 5MB.`
@@ -57,22 +70,19 @@ const formSchema = z.object({
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
       `La taille maximum du fichier est 5MB.`
     )
-    .refine(
-      (files) => {
-        const fileType = files?.[0]?.type;
-        const fileName = files?.[0]?.name;
-        return ACCEPTED_3D_TYPES.some(type => 
-          fileType === type || fileName.toLowerCase().endsWith(type)
-        );
-      },
-      'Formats acceptés: .glb, .gltf'
-    )
+    .refine((files) => {
+      const fileType = files?.[0]?.type;
+      const fileName = files?.[0]?.name;
+      return ACCEPTED_3D_TYPES.some(
+        (type) => fileType === type || fileName.toLowerCase().endsWith(type)
+      );
+    }, 'Formats acceptés: .glb, .gltf')
 });
 
 const ThreeDObjectsForm = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id; // Récupération de l'ID de l'utilisateur
-
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,11 +90,17 @@ const ThreeDObjectsForm = () => {
       description: '',
       image: null,
       object: null,
-      professor:null,
+      professor: null
     }
   });
 
-  const uploadFile = async (file: File, token: string, type: 'image' | 'objects') => {
+  const [generatedDescription, setGeneratedDescription] = useState('');
+
+  const uploadFile = async (
+    file: File,
+    token: string,
+    type: 'image' | 'objects'
+  ) => {
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -92,7 +108,7 @@ const ThreeDObjectsForm = () => {
       const response = await fetch(`${API_URL}/files/upload`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: formData
       });
@@ -109,31 +125,34 @@ const ThreeDObjectsForm = () => {
     }
   };
 
-  const createThreeDObject = async (data: {
-    id: number,
-    name: string;
-    description: string;
-    image: string,
-    object: string,
-    professor:any
-  }, token: string) => {
+  const createThreeDObject = async (
+    data: {
+      id: number;
+      name: string;
+      description: string;
+      image: string;
+      object: string;
+      professor: any;
+    },
+    token: string
+  ) => {
     try {
       const response = await fetch(`${API_URL}/threeDObjects`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       });
 
       if (!response.ok) {
-        throw new Error('Échec de la création de l\'objet 3D');
+        throw new Error("Échec de la création de l'objet 3D");
       }
 
       return await response.json();
     } catch (error) {
-      console.error('Erreur lors de la création de l\'objet 3D:', error);
+      console.error("Erreur lors de la création de l'objet 3D:", error);
       throw error;
     }
   };
@@ -156,8 +175,8 @@ const ThreeDObjectsForm = () => {
         description: values.description,
         image: imagePath.replace('/', '-'),
         object: objectPath.replace('/', '-'),
-        professor:{
-          id:userId
+        professor: {
+          id: userId
         }
       };
 
@@ -166,15 +185,64 @@ const ThreeDObjectsForm = () => {
       toast({
         title: 'Succès',
         description: res.message,
-        variant: 'success',
+        variant: 'success'
       });
 
       form.reset();
+      setGeneratedDescription('');
     } catch (error) {
       toast({
         title: 'Erreur',
-        description: (error as Error)?.message || 'Échec de la création de l\'objet 3D.',
-        variant: 'destructive',
+        description:
+          (error as Error)?.message || "Échec de la création de l'objet 3D.",
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!form.getValues('image') || form.getValues('image').length === 0) {
+      toast({
+        title: 'Erreur',
+        description: 'Veuillez télécharger une image',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    const imageFile = form.getValues('image')[0]; 
+    formData.append('obj', imageFile);
+
+    console.log(formData); 
+
+    try {
+      const response = await fetch(`http://localhost:8000/object_3d-to-text`, {
+        method: 'POST',
+        headers: {},
+        body: formData
+      });
+
+      if (!response.ok) {
+        toast({
+          title: 'Erreur',
+          description: 'Une erreur est survenue',
+          variant: 'destructive'
+        });
+      }
+
+      const data = await response.json();
+      console.log("Reponse de l api:", data);
+      setGeneratedDescription(data.description);
+      console.log("Genereted Desc:", generatedDescription);
+      form.setValue('description', generatedDescription);
+      console.log("debug:",form.getFieldState)
+    } catch (error) {
+      console.error('Erreur lors de la génération de la description', error);
+      toast({
+        title: 'Erreur',
+        description: 'Une erreur est survenue',
+        variant: 'destructive'
       });
     }
   };
@@ -183,44 +251,26 @@ const ThreeDObjectsForm = () => {
     <Card className="mx-auto w-full">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">
-          Informations de l'objet 3D
+        3D Object Information
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nom</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Entrez le nom" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Entrez la description du produit"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Give your object a name ..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="image"
@@ -245,7 +295,7 @@ const ThreeDObjectsForm = () => {
               name="object"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Modèle 3D (.glb, .gltf)</FormLabel>
+                  <FormLabel>3D Model(.glb, .gltf)</FormLabel>
                   <FormControl>
                     <FileUploader
                       value={field.value}
@@ -259,8 +309,70 @@ const ThreeDObjectsForm = () => {
                 </FormItem>
               )}
             />
-            
-            <Button type="submit">Soumettre</Button>
+
+            <div className="w-full max-w-4xl space-y-4">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="mb-2 flex items-center justify-between">
+                      <FormLabel className="text-lg font-medium">
+                        3D Model Description
+                      </FormLabel>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsPreviewMode(!isPreviewMode)}
+                          className="flex items-center gap-2"
+                        >
+                          {isPreviewMode ? (
+                            <>
+                              <Edit2Icon className="h-4 w-4" />
+                              Edit Mode
+                            </>
+                          ) : (
+                            <>
+                              <EyeIcon className="h-4 w-4" />
+                              Preview
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={handleGenerateDescription}
+                          className="flex items-center gap-2"
+                        >
+                          <EyeIcon className="h-4 w-4" />
+                          Generate
+                        </Button>
+                      </div>
+                    </div>
+                    <FormControl>
+                      <div className="min-h-[500px] rounded-md border">
+                        {isPreviewMode ? (
+                          <div className="prose min-h-[500px] max-w-none overflow-y-auto p-4">
+                            <ReactMarkdown>
+                              {field.value || generatedDescription || ''}
+                            </ReactMarkdown>
+                          </div>
+                        ) : (
+                          <Textarea
+                            placeholder="Enter the detailed description of the 3D object ..."
+                            className="min-h-[500px] border-0 p-4 text-base"
+                            {...field}
+                            value={field.value || generatedDescription}
+                          />
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </CardContent>

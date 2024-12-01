@@ -11,7 +11,7 @@ export default function ProfileViewPage() {
     <PageContainer>
       <div className="space-y-4">
         <Breadcrumbs items={breadcrumbItems} />
-        <ProfileCreateForm categories={[]} initialData={null} />
+        <ProfileCreateForm />
       </div>
     </PageContainer>
   );

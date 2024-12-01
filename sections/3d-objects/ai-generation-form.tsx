@@ -11,14 +11,17 @@ import { CirclePlus, Eye, FileDown } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { toast } from '@/components/ui/use-toast';
+
 import {
   uploadFile,
   createThreeDObject,
   pollModelStatus,
   storeImageTemporarily,
-  storeFileTemporarily,
+  storeModelTemporarily,
   fetchTempImage,
-  fetchTempGlb
+  fetchTempGlb,
+  uploadFilesSpring,
+  testPost
 } from './ai-generation';
 import { BlurPageLoader } from './blur-page-loader';
 
@@ -30,13 +33,15 @@ import {
 } from '@/components/ui/dialog';
 import ThreeDObjectView from './Load3DFile';
 
-const MESHY_API_TOKEN = 'msy_oKkPyfAgt72h3PXdhyueB2RUSDIy3MVGwK3O';
+const MESHY_API_TOKEN = 'msy_ll3cT4DEdm9QxtfoinlxmDNd9xCFIRKzcawf';
 const MESHY_API_URL = 'https://api.meshy.ai/v1';
 
 const AiGenerationForm = () => {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   const [loading, setLoading] = useState(false);
   const [modelUrl, setModelUrl] = useState('');
-  const [tempFileUrl, setTempFileUrl] = useState('');
   const [error, setError] = useState('');
   const [showViewer, setShowViewer] = useState(false);
   const [formData, setFormData] = useState({
@@ -44,8 +49,15 @@ const AiGenerationForm = () => {
     description: '',
     name: ''
   });
-  const { data: session } = useSession();
-  const userId = session?.user?.id; // Récupération de l'ID de l'utilisateur
+
+  const [imageTempUrl, setImageTempUrl] = useState('');
+  const [modelTempUrl, setModelTempUrl] = useState('');
+  /*
+  const [imagePath, setImagePath] = useState('');
+  const [objectPath, setObjectPath] = useState('');
+  */
+
+  
 
   const handleUploadModel = async () => {
     try {
@@ -54,40 +66,64 @@ const AiGenerationForm = () => {
         throw new Error('Non autorisé');
       }
 
-      // Récupérer les fichiers temporaires
-      const image = await fetchTempImage('image_1732176947173.png');
-      const glb = await fetchTempGlb('model_1732177099951.glb');
+      console.log('Access Token:', access_token);
+      console.log('Modèle Image Path:', imageTempUrl);
+      console.log('Modèle Model Path:', modelTempUrl);
 
-      // Effectuer les uploads simultanés avec `Promise.all`
-      const [imagePath, objectPath] = await Promise.all([
-        uploadFile(image, access_token, 'image'),
-        uploadFile(glb, access_token, 'objects')
-      ]);
+      // Vérification des URLs avant de les manipuler
+      if (!imageTempUrl || !modelTempUrl) {
+        throw new Error("URLs de modèle ou d'image manquantes");
+      }
 
-      // Préparer les données pour la création de l'objet 3D
-      const threeDObjectData = {
-        name: formData.name,
-        description: formData.description,
-        image: imagePath.replace('/', '-'),
-        object: objectPath.replace('/', '-'),
-        professor: { id: userId }
-      };
+      const ModelName = modelTempUrl.split('/').pop();
+      const ImageName = imageTempUrl.split('/').pop();
 
-      // Créer l'objet 3D sur le backend
-      const res = await createThreeDObject(threeDObjectData, access_token);
+      console.log('Model Name:', ModelName);
+      console.log('Image Name:', ImageName);
 
-      toast({
-        title: 'Succès',
-        description: res.message,
-        variant: 'success'
-      });
+      if (ImageName && ModelName) {
+        // Utilisation de Promise.all pour récupérer les fichiers simultanément
+        const [modelFile, imageFile] = await Promise.all([
+          fetchTempGlb(ModelName),
+          fetchTempImage(ImageName)
+        ]);
+
+        // Gestion des erreurs possibles lors de l'upload
+        if (!modelFile || !imageFile) {
+          throw new Error('Échec du téléchargement des fichiers');
+        }
+
+        // Upload des fichiers avec les bons paramètres
+        const [imagePath, objectPath] = await Promise.all([
+          uploadFilesSpring(imageFile, access_token, 'image'),
+          uploadFilesSpring(modelFile, access_token, 'objects')
+        ]);
+
+        console.log("ImagePath",imagePath);
+        console.log("ImagePath",objectPath);
+
+        const threeDObjectData = {
+          name: formData.name,
+          description: formData.description,
+          image: imagePath.replace('/', '-'),
+          object: objectPath.replace('/', '-'),
+          professor: {
+            id: userId
+          }
+        };
+
+        createThreeDObject(threeDObjectData, access_token)
+          .then((response) => {
+            console.log('3D object created successfully:', response);
+          })
+          .catch((error) => {
+            console.error('Error creating 3D object:', error);
+          });
+      } else {
+        console.error('ImageName ou ModelName est indéfini.');
+      }
     } catch (error) {
-      toast({
-        title: 'Erreur',
-        description:
-          (error as Error)?.message || "Échec de la création de l'objet 3D.",
-        variant: 'destructive'
-      });
+      console.error("Erreur lors de l'upload du modèle :", error);
     }
   };
 
@@ -130,10 +166,13 @@ const AiGenerationForm = () => {
       setLoading(true);
       setError('');
       setModelUrl('');
-      setTempFileUrl('');
+      setModelTempUrl('');
 
       const tempImageUrl = await storeImageTemporarily(formData.imageUrl);
+
       console.log('Temporary Image URL:', tempImageUrl);
+      setImageTempUrl(tempImageUrl);
+      console.log('Image Temporaire apres set:', imageTempUrl);
 
       const response = await fetch(`${MESHY_API_URL}/image-to-3d`, {
         method: 'POST',
@@ -161,8 +200,9 @@ const AiGenerationForm = () => {
       const url = await pollModelStatus(data.result);
       setModelUrl(url);
 
-      const fileUrl = await storeFileTemporarily(url);
-      setTempFileUrl(fileUrl);
+      const modelUrl = await storeModelTemporarily(url);
+      setModelTempUrl(modelUrl);
+      console.log('Model Temporaire apres set:', modelTempUrl);
     } catch (error) {
       console.error('Erreur:', error);
       setError(error.message || 'Une erreur est survenue');
@@ -172,7 +212,7 @@ const AiGenerationForm = () => {
   };
 
   const handleViewModel = async () => {
-    console.log('Current File Path:', tempFileUrl);
+    console.log('Current File Path:', modelTempUrl);
     try {
       setShowViewer(true);
     } catch (error) {
@@ -181,7 +221,6 @@ const AiGenerationForm = () => {
     }
   };
 
-  //Create
 
   return (
     <>
@@ -240,9 +279,11 @@ const AiGenerationForm = () => {
                 </div>
 
                 <div className="flex gap-4">
+                {!modelUrl && (
                   <Button type="submit" className="flex-1" disabled={loading}>
                     {loading ? 'Génération...' : 'Générer'}
-                  </Button>
+                  </Button>)
+                  }
 
                   {modelUrl && (
                     <>
@@ -251,7 +292,7 @@ const AiGenerationForm = () => {
                         className="flex-1"
                         onClick={handleUploadModel}
                       >
-                        <CirclePlus className="h-4 w-4" /> {'Soumettre'}
+                        <CirclePlus className="h-4 w-4" /> {''}
                       </Button>
                       <Button
                         type="button"
@@ -284,7 +325,7 @@ const AiGenerationForm = () => {
               </DialogHeader>
               <div className="relative h-full w-full">
                 <ThreeDObjectView
-                  fileUrl={`${tempFileUrl}`}
+                  fileUrl={`${modelTempUrl}`}
                   scales={[1, 1, 1]}
                   positions={[0, 0, 0]}
                 />

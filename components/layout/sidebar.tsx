@@ -50,7 +50,7 @@ export default function Sidebar({ className }: SidebarProps) {
               height={24}
               className="mr-2 h-6 w-6"
             />
-            {!isMinimized && <span>AnatoLearn</span>}
+            {!isMinimized && <span>TerraViva</span>}
           </div>
         </Link>
       </div>

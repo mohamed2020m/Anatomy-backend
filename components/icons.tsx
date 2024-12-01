@@ -32,7 +32,13 @@ import {
   UserX2Icon,
   ShieldX,
   X,
-  Folder
+  Folder,
+  BookCheck,
+  BookmarkCheck,
+  SendToBack,
+  Rotate3d,
+  UserRoundCog,
+  Users
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -68,6 +74,12 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  bookCheck : BookCheck,
+  sendToBack :SendToBack,
+  bookmarkCheck :BookmarkCheck,
+  rotate3d :Rotate3d,
+  userRoundCog :UserRoundCog ,
+  users :Users ,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

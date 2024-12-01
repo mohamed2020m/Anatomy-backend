@@ -9,11 +9,29 @@ export type User = {
   status: string;
 };
 
+export type Question = {
+  questionText: string;
+  options: {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+  };
+  correctAnswer: string;
+  explanation: string;
+};
+
 
 export type Category = {
   id: number;
   image: string;
   name: string;
+  description: string;
+};
+
+export type Quiz = {
+  id: number;
+  title: string;
   description: string;
 };
 
@@ -62,7 +80,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Categories',
     href: '/admin/categories', 
-    icon: 'folder',
+    icon: 'sendToBack',
     label: 'Category',
     roles: ['ROLE_ADMIN'],  
   },
@@ -83,35 +101,42 @@ export const navItems: NavItem[] = [
   {
     title: 'Categories',
     href: '/prof/categories', 
-    icon: 'folder',
+    icon: 'sendToBack',
     label: 'Category',
     roles: ['ROLE_PROF'],  
   },
   {
     title: 'Assign',
     href: '/prof/assign', 
-    icon: 'folder',
+    icon: 'bookmarkCheck',
     label: 'Assign',
     roles: ['ROLE_PROF'],  
   },
   {
     title: '3D Objects',
     href: '/prof/threedobjects',
-    icon: 'product',
+    icon: 'rotate3d',
     label: '3D Objects',
+    roles: ['ROLE_PROF'],  
+  },
+  {
+    title: 'Quizzes',
+    href: '/prof/quiz',
+    icon: 'bookCheck',
+    label: 'Quizzes',
     roles: ['ROLE_PROF'],  
   },
   {
     title: 'Adminstrators',
     href: '/admin/administrators',
-    icon: 'user',
+    icon: 'userRoundCog',
     label: 'Adminstrator',
     roles: ['ROLE_ADMIN'], 
   },
   {
     title: 'Students',
     href: '/admin/students',
-    icon: 'product',
+    icon: 'users',
     label: 'Students',
     roles: ['ROLE_ADMIN'],  
   },
@@ -122,103 +147,24 @@ export const navItems: NavItem[] = [
     label: 'Students',
     roles: ['ROLE_PROF'],  
   },
-  // {
-  //   title: 'Product',
-  //   href: '/prof/product',
-  //   icon: 'product',
-  //   label: 'Product',
-  //   roles: ['ROLE_PROF'],  
-  // },
-    // {
-  //   title: 'Employee',
-  //   href: '/admin/employee',
-  //   icon: 'user',
-  //   label: 'Employee',
-  //   roles: ['ROLE_ADMIN'],  
-  // },
   {
-    title: 'Account',
-    icon: 'user',
-    label: 'Account',
-    roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
-    children: [
-      {
-        title: 'Profile',
-        href: '/prof/profile',
-        icon: 'userPen',
-        label: 'Profile',
-        roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
-      },
-      {
-        title: 'Login',
-        href: '/',
-        icon: 'login',
-        label: 'Login',
-        roles: ['ROLE_ADMIN', 'ROLE_PROF'],  
-      },
-    ],
+    title: 'Profile',
+    href: '/prof/profile',
+    icon: 'userPen',
+    label: 'Profile',
+    roles: ['ROLE_PROF'],  
   },
   {
-    title: 'Kanban',
-    href: '/prof/kanban', 
-    icon: 'kanban',
-    label: 'Kanban',
-    roles: ['ROLE_ADMIN','ROLE_PROF'],  
+    title: 'Profile',
+    href: '/admin/profile',
+    icon: 'userPen',
+    label: 'Profile',
+    roles: ['ROLE_ADMIN'],  
   },
+ 
+  
+ 
 ];
-
-
-// export const navItems: NavItem[] = [
-//   {
-//     title: 'Dashboard',
-//     href: '/dashboard',
-//     icon: 'dashboard',
-//     label: 'Dashboard'
-//   },
-//   {
-//     title: 'Categories',
-//     href: '/dashboard/categories',
-//     icon: 'folder',
-//     label: 'Categories'
-//   },
-//   {
-//     title: 'Employee',
-//     href: '/dashboard/employee',
-//     icon: 'user',
-//     label: 'employee'
-//   },
-//   {
-//     title: 'Product',
-//     href: '/dashboard/product',
-//     icon: 'product',
-//     label: 'product'
-//   },
-//   {
-//     title: 'Account',
-//     icon: 'user',
-//     label: 'account',
-//     children: [
-//       {
-//         title: 'Profile',
-//         href: '/dashboard/profile',
-//         icon: 'userPen',
-//         label: 'profile'
-//       },
-//       {
-//         title: 'Login',
-//         href: '/',
-//         icon: 'login',
-//         label: 'login'
-//       }
-//     ]
-//   },
-//   {
-//     title: 'Kanban',
-//     href: '/dashboard/kanban',
-//     icon: 'kanban',
-//     label: 'kanban'
-//   }
-// ];
 
 
 export const users: User[] = [

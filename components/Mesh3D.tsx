@@ -33,7 +33,7 @@ const objectFiles: {
     positions: [0, -0.5, 0]
   },
   {
-    path: './3d-allen-m-brain.glb',
+    path: './3d-allen-f-brain.glb',
     name: 'Male Brain',
     scales: [3.5, 3.5, 3.5],
     positions: [0, -2.8, 0]
