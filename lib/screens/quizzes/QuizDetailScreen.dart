@@ -3,6 +3,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../models/Question.dart';
 import '../../controller/quizController.dart';
+import 'dart:async';
 
 // List<Question> testQuestions = [
 //   Question(
@@ -55,6 +56,9 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
   bool isAnswered = false;
   late AnimationController _animationController;
 
+  late Timer _timer;
+  int remainingTime = 15; // Time in seconds for each question
+
   @override
   void initState() {
     super.initState();
@@ -63,10 +67,12 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    _startTimer(); // Start the timer when the screen loads
   }
 
   @override
   void dispose() {
+    _timer.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -88,6 +94,42 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
     }
   }
 
+    void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (remainingTime > 0) {
+          remainingTime--;
+        } else {
+          timer.cancel();
+          _submitAnswerAutomatically();
+        }
+      });
+    });
+  }
+
+    void _submitAnswerAutomatically() {
+    if (!isAnswered) {
+      setState(() {
+        explanation = questions![currentQuestionIndex].explanation;
+        isAnswered = true;
+      });
+    }
+
+    // if (currentQuestionIndex < questions!.length - 1) {
+    //   Future.delayed(const Duration(seconds: 2), _nextQuestion);
+    // } else {
+    //   Future.delayed(const Duration(seconds: 2), _submitQuiz);
+    // }
+  }
+
+  void _resetTimer() {
+    _timer.cancel();
+    setState(() {
+      remainingTime = 15; // Reset to timer for the next question
+    });
+    _startTimer();
+  }
+
   void _nextQuestion() {
     if (questions != null && currentQuestionIndex < questions!.length - 1) {
       setState(() {
@@ -95,6 +137,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
         selectedAnswer = null;
         explanation = null;
         isAnswered = false;
+        _resetTimer();
         _animationController.forward(from: 0);
       });
     }
@@ -111,6 +154,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
         explanation = questions![currentQuestionIndex].explanation;
         isAnswered = true;
       });
+      _timer.cancel(); // Stop the timer once the user submits an answer
     }
   }
 
@@ -253,6 +297,16 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+
+                Text(
+                  'Time Left: $remainingTime sec',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: remainingTime <= 8 ? Colors.red : Colors.green,
+                  ),
+                ),
+
                 const SizedBox(height: 64),
                 Text(
                   currentQuestion.questionText,
@@ -364,6 +418,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      backgroundColor: const Color(0xFFc5cdfa),
                     ),
                   )
                 else if (currentQuestionIndex < questions!.length - 1)
@@ -376,6 +431,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      backgroundColor: const Color(0xFFc5cdfa),
                     ),
                   )
                 else
@@ -388,6 +444,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      backgroundColor: const Color(0xFFc5cdfa),
                     ),
                   ),
               ],

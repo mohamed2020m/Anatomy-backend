@@ -5,7 +5,6 @@ import 'package:babylonjs_viewer/babylonjs_viewer.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:readmore/readmore.dart';
 import '../../../controller/noteController.dart';
 import '../../../models/note.dart';
 import '../../../network/Endpoints.dart';
@@ -137,9 +136,6 @@ void showSnackbar({
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF6D83F2),
-          elevation: 0,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
           actions: [
             IconButton(
               icon: Animate(
@@ -149,7 +145,7 @@ void showSnackbar({
                 ],
                 child: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite ? Colors.red : Colors.black,
+                  color: isFavorite ? Colors.red : Colors.white,
                 ),
               ),
               onPressed: () => toggleFavorite(
@@ -158,7 +154,10 @@ void showSnackbar({
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.info),
+              icon: const Icon(
+                Icons.info,
+                color: Colors.white,
+              ),
               onPressed: () {
                 showModalBottomSheet<void>(
                   constraints: BoxConstraints(
@@ -214,18 +213,19 @@ void showSnackbar({
           title: Text(
             object3dProvider.currentObject3d.name,
             style: const TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 20,
-                color: Color.fromARGB(255, 144, 127, 218)),
+                fontWeight: FontWeight.w900, fontSize: 20, color: Colors.white),
           ),
+          centerTitle: true,
           toolbarHeight: 50,
+          // backgroundColor: const Color.fromARGB(255, 246, 246, 246),
           shadowColor: Colors.transparent,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
+          automaticallyImplyLeading: false,
         ),
         body: Center(
         //   child: Flutter3DViewer(
