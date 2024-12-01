@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class FavouriteDTO {
 
     private Long id;
+    private Long studentId;
+    private Long threeDObjectId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

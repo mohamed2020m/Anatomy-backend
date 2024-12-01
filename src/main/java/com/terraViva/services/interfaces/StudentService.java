@@ -1,6 +1,7 @@
 package com.terraViva.services.interfaces;
 
 import com.terraViva.dto.StudentDTO;
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.exceptions.UserNotFoundException;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface StudentService {
     StudentDTO getStudentInfo(String username);
 
     Long getStudentsCount();
+
+    void updateStudentInfo(String username, UpdateUserInfoRequestDTO updateUserInfoRequest);
 }

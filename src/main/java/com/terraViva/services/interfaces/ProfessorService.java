@@ -3,6 +3,7 @@ package com.terraViva.services.interfaces;
 import com.terraViva.dto.CategoryDTO;
 import com.terraViva.dto.CategoryStudentCountDTO;
 import com.terraViva.dto.ProfessorDTO;
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.exceptions.UserNotFoundException;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface ProfessorService {
     Long getSubCategoriesCountByProfessorId(Long professorId);
 
     List<CategoryStudentCountDTO> getCategoryStudentCounts(Long professorId);
+
+    void updateProfessorInfo(String username, UpdateUserInfoRequestDTO updateUserInfoRequest);
 }

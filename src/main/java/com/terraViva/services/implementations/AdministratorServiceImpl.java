@@ -1,6 +1,7 @@
 package com.terraViva.services.implementations;
 
 import com.terraViva.dto.AdministratorDTO;
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.exceptions.UserNotFoundException;
 import com.terraViva.mapper.AdministratorDTOConverter;
 import com.terraViva.models.Administrator;
@@ -95,5 +96,21 @@ public class AdministratorServiceImpl implements AdministratorService {
     @Override
     public Long getAdminsCount() {
         return administratorRepository.count();
+    }
+
+    @Override
+    public void updateAdminInfo(String username, UpdateUserInfoRequestDTO updateUserInfoRequest) {
+        Administrator administrator = administratorRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("Administrator not found"));
+
+        if (updateUserInfoRequest.getFirstName() != null) {
+            administrator.setFirstName(updateUserInfoRequest.getFirstName());
+        }
+        if (updateUserInfoRequest.getLastName() != null) {
+            administrator.setLastName(updateUserInfoRequest.getLastName());
+        }
+
+        administrator.setUpdatedAt(LocalDateTime.now());
+        administratorRepository.save(administrator);
     }
 }

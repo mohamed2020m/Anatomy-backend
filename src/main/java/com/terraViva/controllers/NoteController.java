@@ -12,13 +12,11 @@ import java.util.List;
 @RequestMapping("/api/v1/notes")
 @CrossOrigin("*")
 public class NoteController {
-
     private NoteServiceImpl noteService;
 
     public  NoteController( NoteServiceImpl  noteService) {
         this. noteService =  noteService;
     }
-
 
     @PostMapping
     public ResponseEntity<NoteDTO> saveNote(@RequestBody NoteDTO noteDTO) {
@@ -30,6 +28,10 @@ public class NoteController {
         return ResponseEntity.ok(noteService.getNoteById(id));
     }
 
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<NoteDTO>> getNotesByStudent(@PathVariable Long studentId){
+        return ResponseEntity.ok(noteService.getNotesByStudent(studentId));
+    }
 
     @GetMapping
     public ResponseEntity<List<NoteDTO>> getAllNotes() {
@@ -43,8 +45,6 @@ public class NoteController {
         NoteDTO updatedNote = noteService.updateNote(noteDTO);
         return ResponseEntity.ok(updatedNote);
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteNote(@PathVariable Long id){

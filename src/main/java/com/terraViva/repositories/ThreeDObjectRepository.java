@@ -1,5 +1,6 @@
 package com.terraViva.repositories;
 
+import com.terraViva.models.Note;
 import com.terraViva.models.Professor;
 import com.terraViva.models.ThreeDObject;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,17 @@ public interface ThreeDObjectRepository extends JpaRepository<ThreeDObject, Long
             "ORDER BY COUNT(obj) DESC")
     List<Object[]> findThreeDObjectCountsByProfessorSubCategories(@Param("professorId") Long professorId);
 
+    @Query("SELECT COUNT(o) FROM ThreeDObject o WHERE o.category.id = :categoryId")
+    Long countByCategoryId(@Param("categoryId") Long categoryId);
+
+    @Query("SELECT o FROM ThreeDObject o WHERE o.category.id = :categoryId")
+    List<ThreeDObject> getThreeDObjectBySubCategory(Long categoryId);
+
+    List<ThreeDObject> findTop5ByOrderByCreatedAtDesc();
+
+    @Query("SELECT n FROM Note n WHERE n.threeDObject.id = :threeDObjectId AND n.student.id = :studentId")
+    List<Note> getNotesByThreeDObjects(
+        @Param("studentId") Long studentId,
+        @Param("threeDObjectId") Long threeDObjectId
+    );
 }

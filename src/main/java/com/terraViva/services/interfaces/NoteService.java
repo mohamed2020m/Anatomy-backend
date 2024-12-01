@@ -10,6 +10,7 @@ public interface NoteService {
     NoteDTO saveNote(NoteDTO noteDTO);
 
     NoteDTO getNoteById(Long noteId) throws NoteNotFoundException;
+    List<NoteDTO> getNotesByStudent(Long studentId);
 
     List<NoteDTO> getAllNotes();
 

@@ -1,9 +1,9 @@
 package com.terraViva.services.implementations;
 
-
 import com.terraViva.dto.ThreeDObjectDTO;
 import com.terraViva.exceptions.ThreeDObjectNotFoundException;
 import com.terraViva.mapper.ThreeDObjectDTOConverter;
+import com.terraViva.models.Note;
 import com.terraViva.models.Professor;
 import com.terraViva.models.ThreeDObject;
 import com.terraViva.repositories.ProfessorRepository;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-
 public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
 
@@ -43,7 +42,6 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         ThreeDObjectDTO resultDTO = threeDObjectDTOConverter.toDto(savedObject);
         return resultDTO;
     }
-
 
     @Override
     public ThreeDObjectDTO getThreeDObjectById(Long threeDObjectId) throws ThreeDObjectNotFoundException {
@@ -89,15 +87,13 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
         if (threeDObjectDTO.getImage() != null) {
             existingThreeDObject.setImage(threeDObjectDTO.getImage());
         }
-        if (threeDObjectDTO.getProfessor() != null) {
-            existingThreeDObject.setProfessor(threeDObjectDTO.getProfessor());
-        }
+        //if (threeDObjectDTO.getProfessor() != null) {
+        //    existingThreeDObject.setProfessor(threeDObjectDTO.getProfessor());
+        //}
         existingThreeDObject.setUpdatedAt(LocalDateTime.now());
         ThreeDObject updatedThreeDObject = threeDObjectRepository.save(existingThreeDObject);
         return threeDObjectDTOConverter.toDto(updatedThreeDObject);
     }
-
-
 
     @Override
     public void deleteThreeDObject(Long threeDObjectId) throws ThreeDObjectNotFoundException {
@@ -111,5 +107,22 @@ public class ThreeDObjectServiceImpl implements ThreeDObjectService {
 
     public List<Object[]> getThreeDObjectByProfessorSubCategories(Long professorId) {
         return threeDObjectRepository.findThreeDObjectCountsByProfessorSubCategories(professorId);
+    }
+
+    @Override
+    public List<ThreeDObject> getThreeDObjectByCategory(Long categoryId) {
+        return threeDObjectRepository.getThreeDObjectBySubCategory(categoryId);
+    }
+
+    @Override
+    public List<Note> getNotesByThreeDObjects(Long studentId, Long threeDObjectId) {
+        return threeDObjectRepository.getNotesByThreeDObjects(studentId, threeDObjectId);
+    }
+
+    public List<ThreeDObjectDTO> getLastFiveThreeDObjects() {
+        List<ThreeDObject> lastFiveThreeDObjects = threeDObjectRepository.findTop5ByOrderByCreatedAtDesc();
+        return lastFiveThreeDObjects.stream()
+                .map(threeDObject -> threeDObjectDTOConverter.toDto(threeDObject))
+                .collect(Collectors.toList());
     }
 }

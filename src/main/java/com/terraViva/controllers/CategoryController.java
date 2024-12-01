@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -70,5 +72,30 @@ public class CategoryController {
     public ResponseEntity<Long> getMainCategoryCount() {
         return ResponseEntity.ok(categoryService.getMainCategoriesCount());
     }
+//
+//    @GetMapping("/{id}/sub_categories/count")
+//    public ResponseEntity<Long> getSubCategoryCountByCategoryId(@PathVariable Long id) {
+//        Long count = categoryService.getSubCategoryCountByCategoryId(id);
+//        return ResponseEntity.ok(count);
+//    }
+
+    @GetMapping("/{id}/sub_categories/count")
+    public ResponseEntity<Map<String, Long>> getSubCategoryCountByCategoryId(@PathVariable Long id) {
+        Long count = categoryService.getSubCategoryCountByCategoryId(id);
+        Map<String, Long> response = new HashMap<>();
+        response.put("total", count);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/3d_objects/count")
+    public ResponseEntity<Map<String, Long>> getThreeDObjectCountByCategoryId(@PathVariable Long id) {
+        Long count = categoryService.getThreeDObjectCountByCategoryId(id);
+        Map<String, Long> response = new HashMap<>();
+        response.put("total", count);
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
 }

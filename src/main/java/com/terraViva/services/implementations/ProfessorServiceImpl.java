@@ -3,6 +3,7 @@ package com.terraViva.services.implementations;
 import com.terraViva.dto.CategoryDTO;
 import com.terraViva.dto.CategoryStudentCountDTO;
 import com.terraViva.dto.ProfessorDTO;
+import com.terraViva.dto.UpdateUserInfoRequestDTO;
 import com.terraViva.exceptions.CategoryNotFoundException;
 import com.terraViva.exceptions.UserNotFoundException;
 import com.terraViva.mapper.ProfessorDTOConverter;
@@ -200,5 +201,22 @@ public class ProfessorServiceImpl implements ProfessorService {
         }
 
         return result;
+    }
+
+
+    @Override
+    public void updateProfessorInfo(String username, UpdateUserInfoRequestDTO updateUserInfoRequest) {
+        Professor professor = professorRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("Professor not found"));
+
+        if (updateUserInfoRequest.getFirstName() != null) {
+            professor.setFirstName(updateUserInfoRequest.getFirstName());
+        }
+        if (updateUserInfoRequest.getLastName() != null) {
+            professor.setLastName(updateUserInfoRequest.getLastName());
+        }
+
+        professor.setUpdatedAt(LocalDateTime.now());
+        professorRepository.save(professor);
     }
 }

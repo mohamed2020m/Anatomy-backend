@@ -23,4 +23,8 @@ public interface CategoryService {
     List<CategoryDTO> getMainCategories();
 
     Long getMainCategoriesCount();
+
+    Long getSubCategoryCountByCategoryId(Long categoryId);
+
+    Long getThreeDObjectCountByCategoryId(Long categoryId);
 }

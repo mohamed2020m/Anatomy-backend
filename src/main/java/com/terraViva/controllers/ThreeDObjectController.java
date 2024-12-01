@@ -2,6 +2,8 @@ package com.terraViva.controllers;
 
 import com.terraViva.dto.ThreeDObjectDTO;
 import com.terraViva.exceptions.ThreeDObjectNotFoundException;
+import com.terraViva.models.Note;
+import com.terraViva.models.ThreeDObject;
 import com.terraViva.services.implementations.ThreeDObjectServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,6 @@ public class ThreeDObjectController {
     }
 
 
-
     @PostMapping
     public ResponseEntity<ThreeDObjectDTO> saveProfessor(@RequestBody ThreeDObjectDTO threeDObjectDTO) {
         return ResponseEntity.ok(threeDObjectService.saveThreeDObject(threeDObjectDTO));
@@ -32,7 +33,6 @@ public class ThreeDObjectController {
     public ResponseEntity<ThreeDObjectDTO> getThreeDObjectById(@PathVariable Long id){
         return ResponseEntity.ok(threeDObjectService.getThreeDObjectById(id));
     }
-
 
     @GetMapping
     public ResponseEntity<List<ThreeDObjectDTO>> getAllThreeDObjects() {
@@ -59,6 +59,16 @@ public class ThreeDObjectController {
         return threeDObjectService.getThreeDObjectByProfessorSubCategories(professorId);
     }
 
+    @GetMapping("/by-category/{categoryId}")
+    public List<ThreeDObject> getThreeDObjectByCategory(@PathVariable Long categoryId) {
+        return threeDObjectService.getThreeDObjectByCategory(categoryId);
+    }
+
+    @GetMapping("{threeDObjectId}/student/{studentId}/notes")
+    public List<Note> getNotesByThreeDObjects(@PathVariable Long studentId, @PathVariable Long threeDObjectId) {
+        return threeDObjectService.getNotesByThreeDObjects(studentId, threeDObjectId);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ThreeDObjectDTO> updateThreeDObject(@PathVariable Long id, @RequestBody ThreeDObjectDTO threeDObjectDTO) {
         threeDObjectDTO.setId(id);
@@ -66,12 +76,15 @@ public class ThreeDObjectController {
         return ResponseEntity.ok(updatedThreeDObject);
     }
 
-
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteThreeDObject(@PathVariable Long id){
         threeDObjectService.deleteThreeDObject(id);
         return new ResponseEntity("ThreeDObject deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/last-five")
+    public ResponseEntity<List<ThreeDObjectDTO>> getLastFiveThreeDObjects() {
+        List<ThreeDObjectDTO> lastFiveThreeDObjects = threeDObjectService.getLastFiveThreeDObjects();
+        return ResponseEntity.ok(lastFiveThreeDObjects);
     }
 }
