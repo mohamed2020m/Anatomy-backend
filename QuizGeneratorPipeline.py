@@ -1,3 +1,4 @@
+from langchain.schema import Document
 from langchain import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
@@ -6,6 +7,9 @@ from typing import Dict, List
 from pydantic import BaseModel
 import random
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Question(BaseModel):
     question: str
     options: Dict[str, str]
@@ -13,15 +17,18 @@ class Question(BaseModel):
     explanation: str
 
 class QuizGenerator:
-    def __init__(self):
+    def __init__(self, model_name: str = "llama3-8b-8192", temperature: float = 0.7, max_tokens: int = None):
         # Initialize LLM
-        self.llm = ChatGroq(
-            model="llama3-8b-8192",
-            temperature=0.7, 
-            max_tokens=None,
-            timeout=None,
-            max_retries=2,
-        )
+        # self.llm = ChatGroq(
+        #     model=model_name,
+        #     temperature=0.7, 
+        #     max_tokens=None,
+        #     timeout=None,
+        #     max_retries=2,
+        # )
+        
+        self._initialize_llm(model_name, temperature, max_tokens)
+
         
         # Define response schemas
         self.response_schemas = [
@@ -66,9 +73,26 @@ class QuizGenerator:
                 Explanation:
             """
         )
+        
+    def _initialize_llm(self, model_name: str, temperature: float, max_tokens: int):
+        logger.info(f"Initializing model: {model_name}")
+        self.llm = ChatGroq(
+            model=model_name,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            timeout=None,
+            max_retries=2,
+        )
 
+    def set_model(self, model_name: str, temperature: float = 0.7, max_tokens: int = None):
+        logger.info(f"Switching model to: {model_name}")
+        self._initialize_llm(model_name, temperature, max_tokens)
+        
     def generate_question(self, content: str, existing_questions: List[str] = None) -> Question:
         """Generate a single question from content"""
+        
+        logger.info(f"model name: {self.llm}")
+        
         try:
             # Generate question and options
             question_chain = LLMChain(prompt=self.question_prompt, llm=self.llm)
@@ -100,7 +124,45 @@ class QuizGenerator:
         except Exception as e:
             raise Exception(f"Failed to generate question: {str(e)}")
 
-    def generate_quiz(self, chunks: List[str], num_questions: int) -> List[Question]:
+    
+    # def generate_quiz(self, chunks: List[Document], num_questions: int) -> List[Question]:
+    #     """Generate requested number of questions, potentially using chunks multiple times"""
+    #     questions = []
+    #     existing_questions = []
+        
+    #     # If we have fewer chunks than requested questions, we'll reuse chunks
+    #     while len(questions) < num_questions:
+    #         # Randomly select a chunk if there are multiple
+    #         chunk = random.choice(chunks) if len(chunks) > 1 else chunks[0]
+            
+    #         # Extract page content from the selected chunk (Document object)
+    #         content = chunk.page_content
+            
+    #         # Generate a new question from this chunk
+    #         question = self.generate_question(content, existing_questions)
+    #         questions.append(question)
+    #         existing_questions.append(question.question)
+            
+    #     return questions
+    
+    # def generate_quiz(self, chunks: List[str], num_questions: int) -> List[Question]:
+    #     """Generate requested number of questions, potentially using chunks multiple times"""
+    #     questions = []
+    #     existing_questions = []
+        
+    #     # If we have fewer chunks than requested questions, we'll reuse chunks
+    #     while len(questions) < num_questions:
+    #         # Randomly select a chunk if there are multiple
+    #         chunk = random.choice(chunks) if len(chunks) > 1 else chunks[0]
+            
+    #         # Generate a new question from this chunk
+    #         question = self.generate_question(chunk, existing_questions)
+    #         questions.append(question)
+    #         existing_questions.append(question.question)
+            
+    #     return questions
+    
+    def generate_quiz(self, chunks: List[Document], num_questions: int) -> List[Question]:
         """Generate requested number of questions, potentially using chunks multiple times"""
         questions = []
         existing_questions = []
@@ -109,8 +171,11 @@ class QuizGenerator:
         while len(questions) < num_questions:
             # Randomly select a chunk if there are multiple
             chunk = random.choice(chunks) if len(chunks) > 1 else chunks[0]
+
+            # Concatenate all the chunks to a single string
+            # all_content = " ".join(chunk.page_content for chunk in chunks)
             
-            # Generate a new question from this chunk
+            # Generate a new question from this chunk's content
             question = self.generate_question(chunk, existing_questions)
             questions.append(question)
             existing_questions.append(question.question)

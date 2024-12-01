@@ -11,6 +11,9 @@ class Obj3dTextGenerator:
         self.model_name = model_name
         self.temperature = temperature
 
+    def set_model(self, model_name: str):
+        self.model_name = model_name
+        
     def _encode_image(self, file_path: str) -> str:
         try:
             with open(file_path, 'rb') as image_file:
@@ -36,15 +39,15 @@ class Obj3dTextGenerator:
             image_data_url = self._encode_image(file_path)
             
             prompt = """
-                You are a precise visual descriptor. Provide direct, concise descriptions without any introductory phrases or meta-references to the image itself.
-                Provide a direct, concise description of image. 
-                Focus only on the essential visual elements and characteristics.
-                Do not start with phrases like 'The image shows', 'This is', 'I can see', or 'The image presents'.
-                Start directly with the object's description.
+                You are an expert scientific visual descriptor. Your task is to describe objects in images with a precise focus on their scientific characteristics, avoiding any commentary on colors, shapes, or the background unless scientifically relevant.
+                Provide detailed, domain-specific descriptions, incorporating terminology and knowledge from fields such as anatomy, geology, chemistry, or other applicable sciences.
+                Avoid using phrases like 'The image shows', 'This is', or 'I can see'. Instead, start directly with the object's name and scientifically relevant features.
+                Do not describe non-essential visual elements like general colors or aesthetic details. Instead, emphasize structural, compositional, or functional attributes that would be important to a scientist or researcher.
                 
-                Format: [material/color] [object name] with [key characteristics].
-                Example: 'Red plastic chair with curved backrest and metal legs.'
+                Format: [Object scientific/technical name] characterized by [specific properties, functions, or scientific details]. 
+                Maximum length: 1024 characters or less.
             """
+            logger.info("model_name: ", self.model_name)
             
             completion = await self.client.chat.completions.create(
                 model=self.model_name,
@@ -80,42 +83,3 @@ class Obj3dTextGenerator:
     async def close(self):
         """Clean up resources."""
         await self.client.close()
-
-
-# class Obj3dTextGenerator:
-#     def __init__(self, model_name="llama-3.2-11b-vision-preview", temperature=0.7):
-#         self.model = ChatGroq(
-#             model=model_name,
-#             temperature=temperature,
-#             max_tokens=None,
-#             timeout=None,
-#             max_retries=1
-#         )
-#         # self.system_prompt = """
-#         # Act as a professional anatomist and provide a detailed, analytical description 
-#         # of the 3D anatomy object. Focus strictly on structural and functional aspects, 
-#         # identifying the type and category of the anatomical part represented, including 
-#         # its species origin (e.g., human, animal) and relevant substructures or regions. 
-#         # Explain the biological roles and notable features of each component within the object, 
-#         # such as specific regions or anatomical systems. Avoid any descriptions related 
-#         # to surface details, texture, or color.
-#         # """
-        
-#         self.system_prompt = """
-#             Describe the following image in 200 words.
-#         """
-        
-#     async def describe_object(self, file_path):
-        
-#         print("file_path: ", file_path)
-#         # Construct the messages with file path
-#         messages = [
-#             {
-#                 "role": "user",
-#                 "content": self.system_prompt,
-#                 "images": [str(file_path)]
-#             }
-#         ]
-#         # Invoke the model
-#         response = await self.model.ainvoke(messages)
-#         return response
