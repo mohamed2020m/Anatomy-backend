@@ -34,14 +34,17 @@ import '../../controller/quizController.dart';
 
 class QuizDetailScreen extends StatefulWidget {
   final String quizId;
+  final String quizTitle;
 
-  const QuizDetailScreen({super.key, required this.quizId});
+  const QuizDetailScreen(
+      {super.key, required this.quizId, required this.quizTitle});
 
   @override
   State<QuizDetailScreen> createState() => _QuizDetailScreenState();
 }
 
-class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerProviderStateMixin {
+class _QuizDetailScreenState extends State<QuizDetailScreen>
+    with SingleTickerProviderStateMixin {
   final QuizController quizController = QuizController();
   List<Question>? questions;
   String? errorMessage;
@@ -70,7 +73,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerPr
 
   Future<void> _fetchQuestions() async {
     try {
-      final fetchQuestions = await quizController.getQuestionsOfQuiz(widget.quizId);
+      final fetchQuestions =
+          await quizController.getQuestionsOfQuiz(widget.quizId);
       setState(() {
         questions = fetchQuestions;
       });
@@ -121,12 +125,11 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerPr
           title: Row(
             children: [
               Icon(
-                score > questions!.length / 2 
-                  ? Icons.sentiment_very_satisfied 
-                  : Icons.sentiment_dissatisfied,
-                color: score > questions!.length / 2 
-                  ? Colors.green 
-                  : Colors.red,
+                score > questions!.length / 2
+                    ? Icons.sentiment_very_satisfied
+                    : Icons.sentiment_dissatisfied,
+                color:
+                    score > questions!.length / 2 ? Colors.green : Colors.red,
               ),
               const SizedBox(width: 10),
               Text('Quiz Completed'),
@@ -140,9 +143,9 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerPr
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: score > questions!.length / 2 
-                    ? Colors.green.shade700 
-                    : Colors.red.shade700,
+                  color: score > questions!.length / 2
+                      ? Colors.green.shade700
+                      : Colors.red.shade700,
                 ),
               ),
               const SizedBox(height: 10),
@@ -150,9 +153,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerPr
                 value: score / questions!.length,
                 backgroundColor: Colors.grey.shade300,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  score > questions!.length / 2 
-                    ? Colors.green 
-                    : Colors.red,
+                  score > questions!.length / 2 ? Colors.green : Colors.red,
                 ),
               ),
             ],
@@ -187,193 +188,213 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     if (questions == null || questions!.isEmpty) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Quiz Challenge")),
-      body: Center(child: Text(errorMessage ?? "No questions available")),
-    );
-  }
+      return Scaffold(
+        appBar: AppBar(title: Text(widget.quizTitle)),
+        body: Center(child: Text(errorMessage ?? "No questions available")),
+      );
+    }
     final currentQuestion = questions![currentQuestionIndex];
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Quiz Challenge',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onPrimaryContainer,
-          ),
+          widget.quizTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.w900, 
+            fontSize: 20,
+            color: Color.fromARGB(255, 255, 255, 255)),
+            softWrap: true, // Allows the text to wrap if space is insufficient
+          overflow: TextOverflow.visible,
         ),
-        backgroundColor: colorScheme.primaryContainer,
+        backgroundColor: const Color(0xFF6D83F2),
+        
         elevation: 0,
+         leading: IconButton(
+          icon: const Icon(Icons.arrow_back,
+              color: Colors.white), // Custom back icon
+          onPressed: () {
+            // Custom back button action
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SafeArea(
-  child: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: SingleChildScrollView( // Added to make the content scrollable
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Progress Indicator
-          TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0, end: (currentQuestionIndex + 1) / questions!.length),
-            duration: const Duration(milliseconds: 500),
-            builder: (context, value, child) {
-              return LinearProgressIndicator(
-                value: value,
-                backgroundColor: Colors.grey.shade300,
-                valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-
-          // Question Text
-          Text(
-            'Question ${currentQuestionIndex + 1}/${questions!.length}',
-            style: TextStyle(
-              fontSize: 16,
-              color: colorScheme.secondary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            currentQuestion.questionText,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onBackground,
-            ),
-          ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
-
-          const SizedBox(height: 16),
-
-          // Answer Options
-          ...currentQuestion.options.entries.map(
-            (entry) {
-              Color? cardColor;
-              IconData? iconData;
-              if (isAnswered) {
-                if (entry.key == currentQuestion.correctAnswer) {
-                  cardColor = Colors.green.shade100;
-                  iconData = Icons.check_circle_outline;
-                } else if (entry.key == selectedAnswer && entry.key != currentQuestion.correctAnswer) {
-                  cardColor = Colors.red.shade100;
-                  iconData = Icons.cancel_outlined;
-                }
-              }
-
-              return Card(
-                color: cardColor ?? colorScheme.surfaceVariant,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            // Added to make the content scrollable
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Progress Indicator
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(
+                      begin: 0,
+                      end: (currentQuestionIndex + 1) / questions!.length),
+                  duration: const Duration(milliseconds: 500),
+                  builder: (context, value, child) {
+                    return LinearProgressIndicator(
+                      value: value,
+                      backgroundColor: Colors.grey.shade300,
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(Colors.orange),
+                    );
+                  },
                 ),
-                margin: const EdgeInsets.only(bottom: 12),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  title: Text(
-                    entry.value,
-                    style: TextStyle(
-                      color: colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
+                const SizedBox(height: 16),
+
+                // Question Text
+                Text(
+                  'Question ${currentQuestionIndex + 1}/${questions!.length}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: colorScheme.secondary,
+                    fontWeight: FontWeight.w600,
                   ),
-                  leading: iconData != null
-                      ? Icon(
-                          iconData,
-                          color: cardColor == Colors.green.shade100
-                              ? Colors.green
-                              : Colors.red,
-                        )
-                      : Radio<String>(
-                          value: entry.key,
-                          groupValue: selectedAnswer,
-                          onChanged: isAnswered
-                              ? null
-                              : (value) {
-                                  setState(() {
-                                    selectedAnswer = value;
-                                    explanation = null;
-                                  });
-                                },
-                        ),
                 ),
-              ).animate().fadeIn(duration: 300.ms).slideX(begin: 0.1, end: 0);
-            },
-          ),
+                const SizedBox(height: 64),
+                Text(
+                  currentQuestion.questionText,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onBackground,
+                  ),
+                ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
 
-          // Explanation
-          if (explanation != null)
-            Card(
-              color: Colors.yellow.shade100,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    const Icon(Icons.lightbulb_outline, color: Colors.orange),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        explanation!,
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
+                const SizedBox(height: 16),
+
+                // Answer Options
+                ...currentQuestion.options.entries.map(
+                  (entry) {
+                    Color? cardColor;
+                    IconData? iconData;
+                    if (isAnswered) {
+                      if (entry.key == currentQuestion.correctAnswer) {
+                        cardColor = Colors.green.shade100;
+                        iconData = Icons.check_circle_outline;
+                      } else if (entry.key == selectedAnswer &&
+                          entry.key != currentQuestion.correctAnswer) {
+                        cardColor = Colors.red.shade100;
+                        iconData = Icons.cancel_outlined;
+                      }
+                    }
+
+                    return Card(
+                      color: cardColor ?? Colors.white,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        title: Text(
+                          entry.value,
+                          style: TextStyle(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
+                        leading: iconData != null
+                            ? Icon(
+                                iconData,
+                                color: cardColor == Colors.green.shade100
+                                    ? Colors.green
+                                    : Colors.red,
+                              )
+                            : Radio<String>(
+                                value: entry.key,
+                                groupValue: selectedAnswer,
+                                onChanged: isAnswered
+                                    ? null
+                                    : (value) {
+                                        setState(() {
+                                          selectedAnswer = value;
+                                          explanation = null;
+                                        });
+                                      },
+                              ),
+                      ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 300.ms)
+                        .slideX(begin: 0.1, end: 0);
+                  },
+                ),
+
+                // Explanation
+                if (explanation != null)
+                  Card(
+                    color: Colors.yellow.shade100,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.lightbulb_outline,
+                              color: Colors.orange),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              explanation!,
+                              style: TextStyle(
+                                color: Colors.grey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ).animate().fadeIn(),
+                  ).animate().fadeIn(),
 
-          // Action Buttons
-          const SizedBox(height: 16), // Ensures spacing above the buttons
-          if (!isAnswered)
-            ElevatedButton.icon(
-              onPressed: selectedAnswer != null ? _submitAnswer : null,
-              icon: const Icon(Icons.send),
-              label: const Text('Submit Answer'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-            )
-          else if (currentQuestionIndex < questions!.length - 1)
-            ElevatedButton.icon(
-              onPressed: _nextQuestion,
-              icon: const Icon(Icons.arrow_forward),
-              label: const Text('Next Question'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-            )
-          else
-            ElevatedButton.icon(
-              onPressed: _submitQuiz,
-              icon: const Icon(Icons.done_all),
-              label: const Text('Submit Quiz'),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
+                // Action Buttons
+                const SizedBox(height: 16), // Ensures spacing above the buttons
+                if (!isAnswered)
+                  ElevatedButton.icon(
+                    onPressed: selectedAnswer != null ? _submitAnswer : null,
+                    icon: const Icon(Icons.send),
+                    label: const Text('Submit Answer'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  )
+                else if (currentQuestionIndex < questions!.length - 1)
+                  ElevatedButton.icon(
+                    onPressed: _nextQuestion,
+                    icon: const Icon(Icons.arrow_forward),
+                    label: const Text('Next Question'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  )
+                else
+                  ElevatedButton.icon(
+                    onPressed: _submitQuiz,
+                    icon: const Icon(Icons.done_all),
+                    label: const Text('Submit Quiz'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-        ],
+          ),
+        ),
       ),
-    ),
-  ),
-),
-
     );
   }
 }

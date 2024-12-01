@@ -61,11 +61,11 @@ class _SplashScreenState extends State<SplashScreen>
           // Pulsating background animation
           AnimatedContainer(
             duration: const Duration(seconds: 3),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: RadialGradient(
                 colors: [
-                  Colors.blue.shade200,
-                  Colors.blue.shade500,
+                  Color.fromARGB(255, 159, 171, 233),
+                  Color(0xFF6D83F2),
                 ],
                 stops: [0.3, 1.0],
                 center: Alignment.center,
@@ -87,9 +87,9 @@ class _SplashScreenState extends State<SplashScreen>
                       child: child,
                     );
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 60,
-                    backgroundImage: const AssetImage("assets/images/logo.png"),
+                    backgroundImage: AssetImage("assets/images/img_forground.png"),
                   ),
                 ),
                 const SizedBox(height: 20),

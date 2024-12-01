@@ -3,6 +3,7 @@ import 'package:TerraViva/controller/objectsParCategoryController.dart';
 import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:TerraViva/screens/home/LatestObjectsComponent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../models/Category.dart';
 import '../../app_skoleton/appSkoleton.dart';
@@ -37,12 +38,19 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
+
     var size = MediaQuery.of(context).size;
     return Scaffold(
         body: RefreshIndicator(
             onRefresh: () => getCollection(),
             child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(children: [
                   CustomAppBar(
                     size: size,
@@ -74,7 +82,7 @@ class HomeState extends State<Home> {
                   ),
                   Container(
                     margin:
-                        const EdgeInsets.only(top: 20, bottom: 10, left: 10),
+                        const EdgeInsets.only(top: 10, bottom: 10, left: 10),
                   ),
 
                   const Padding(
@@ -282,13 +290,13 @@ class HomeState extends State<Home> {
                       } else if (snapshot.hasError) {
                         final error = snapshot.error;
                         return SingleChildScrollView(
-                          child: Container(
-                            margin: EdgeInsets.only(top: size.height / 6),
-                            child: ErrorDialog(
-                              onRetry: () {
-                                setState(() {});
-                              },
-                            ),
+                            child: Container(
+                          margin: EdgeInsets.only(top: size.height / 6),
+                          child: ErrorDialog(
+                            onRetry: () {
+                              setState(() {});
+                            },
+                          ),
                         ));
                       } else if (snapshot.hasData) {
                         if (snapshot.data!.isEmpty) {
@@ -310,7 +318,7 @@ class HomeState extends State<Home> {
                               const SizedBox(
                                 width: 250,
                                 child: Text(
-                                  'Y\'a aucun chapitre disponible pour ce cours',
+                                  'Nothing to show here',
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 0, 0, 0),
                                       fontSize: 18,
@@ -325,7 +333,6 @@ class HomeState extends State<Home> {
                             width: size.width,
                             child: SingleChildScrollView(
                                 physics: const ScrollPhysics(),
-                                // physics: const BouncingScrollPhysics(),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -333,7 +340,7 @@ class HomeState extends State<Home> {
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(
-                                            top: 20, bottom: 10, left: 10),
+                                            top: 5, bottom: 10, left: 10),
                                       ),
                                       ListView.builder(
                                         physics:

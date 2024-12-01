@@ -40,7 +40,7 @@ class SubCategoryComponent extends StatelessWidget {
       },
       child: Card(
         elevation: 4,
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -96,12 +96,12 @@ class SubCategoryComponent extends StatelessWidget {
                       moreStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Color(0xFF6D83F2),
                       ),
                       lessStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Color(0xFF6D83F2),
                       ),
                       style: const TextStyle(
                         fontSize: 14,

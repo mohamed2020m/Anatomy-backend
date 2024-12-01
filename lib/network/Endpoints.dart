@@ -4,7 +4,7 @@ class Endpoints {
   Endpoints._();
   final storage = const FlutterSecureStorage();
   // static const String baseUrl = "http://10.0.2.2:8080/api/v1";
-  static const String baseUrl = "http://192.168.43.91:8080/api/v1";
+  static const String baseUrl = "http://192.168.238.170:8080/api/v1";
   static const Duration receiveTimeout = Duration(seconds: 60);
   static const Duration connectionTimeout = Duration(seconds: 60);
   static const String category = '/categories';

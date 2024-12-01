@@ -3,7 +3,6 @@ import 'package:TerraViva/screens/quizzes/QuizScreen.dart';
 import 'package:TerraViva/screens/search/searchScreen.dart';
 import 'package:flutter/material.dart';
 import '../screens/home/Home.dart';
-import '../screens/profil/Profil.dart';
 import '../screens/saved/savedScreen.dart';
 import 'tab_item.dart';
 

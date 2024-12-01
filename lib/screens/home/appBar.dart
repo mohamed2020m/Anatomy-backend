@@ -32,25 +32,48 @@ class CustomAppBar extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 letterSpacing: 1.5,
-                // fontFamily: 'Lora', 
+                // fontFamily: 'Lora',
                 fontFamily: 'Anton',
               ),
             ),
           ),
           // Profile Icon Button
-          IconButton(
-            icon: const Icon(
-              Icons.person_outline_rounded,
-              color: Color(0xFF6D83F2),
-              size: 30,
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.person_outline_rounded,
+          //     color: Color(0xFF6D83F2),
+          //     size: 30,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const Profil()),
+          //     );
+          //   },
+          // ),
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                // color: Colors.grey[200],
+                color: const Color(0xFF6D83F2),
+                border: Border.all(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                )),
+            child: IconButton(
+              icon: const Icon(
+                Icons.person_outline_rounded,
+                // color: Color(0xFF6D83F2),
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Profil()),
+                );
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Profil()),
-              );
-            },
-          ),
+          )
         ],
       ),
     );

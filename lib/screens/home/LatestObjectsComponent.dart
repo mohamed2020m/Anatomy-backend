@@ -17,27 +17,31 @@ class LatestObjectsComponent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Latest 3D Objects',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  // Handle see all action
-                },
-                child: const Text('See All'),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     // Handle see all action
+              //   },
+              //   child: const Text('See All'),
+              // ),
+
+             
             ],
           ),
         ),
+
+        
         SizedBox(
           height: 200,
           child: ListView.builder(
@@ -55,7 +59,7 @@ class LatestObjectsComponent extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.grey.shade200,
+                      color: const Color.fromARGB(255, 146, 146, 146),
                     ),
                   ),
                   child: Column(
@@ -69,7 +73,7 @@ class LatestObjectsComponent extends StatelessWidget {
                           ),
                           image: DecorationImage(
                             // image: NetworkImage(object.image),
-                            image: NetworkImage( 
+                            image: NetworkImage(
                               "${Endpoints.baseUrl}/files/download/${object.image}",
                             ),
                             fit: BoxFit.cover,

@@ -29,85 +29,82 @@ class _LoginScreenState extends State<LoginScreen> {
           barrierColor: const Color.fromARGB(0, 0, 0, 0),
           context: context,
           builder: (BuildContext context) => WillPopScope(
-            onWillPop: () async => false,
-            child: Center(
-                child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(90),
-                  color: const Color.fromARGB(36, 81, 86, 90)),
-              child: const Center(
-                  child: CupertinoActivityIndicator(
-                radius: 20,
-              )),
-            )
-          ),
-        )
-      ); // showDialog
-      
+                onWillPop: () async => false,
+                child: Center(
+                    child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90),
+                      color: const Color.fromARGB(36, 81, 86, 90)),
+                  child: const Center(
+                      child: CupertinoActivityIndicator(
+                    radius: 20,
+                  )),
+                )),
+              )); // showDialog
+
       try {
-        await loginController.login(emailController.text, passwordController.text);
+        await loginController.login(
+            emailController.text, passwordController.text);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const EntryPoint()),
-          (route) => false
-        );
+            MaterialPageRoute(builder: (context) => const EntryPoint()),
+            (route) => false);
       } catch (e) {
         Navigator.pop(context);
         showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            buttonPadding: EdgeInsets.zero,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            contentPadding:
-                const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 0.0),
-            title: const Text(
-              'La connexion a échoué',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(
-                      left: 8, right: 8, bottom: 24),
-                  child: Text(
-                    e.toString(),
+            context: context,
+            builder: (context) => AlertDialog(
+                  buttonPadding: EdgeInsets.zero,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  contentPadding:
+                      const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 0.0),
+                  title: const Text(
+                    'La connexion a échoué',
                     textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: InkWell(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                      ),
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            border: Border(
-                          top: BorderSide(color: Colors.grey),
-                        )),
-                        height: 50,
-                        child: const Center(
-                          child: Text("OK",
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.w600)),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(
+                            left: 8, right: 8, bottom: 24),
+                        child: Text(
+                          e.toString(),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    ))
-                  ],
-                )
-              ],
-            ),
-          )
-        );
+                      Row(
+                        children: [
+                          Expanded(
+                              child: InkWell(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                            ),
+                            onTap: () => Navigator.pop(context),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                top: BorderSide(color: Colors.grey),
+                              )),
+                              height: 50,
+                              child: const Center(
+                                child: Text("OK",
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                            ),
+                          ))
+                        ],
+                      )
+                    ],
+                  ),
+                ));
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         //   content: Text('Error: ${e.toString()}'),
         //   backgroundColor: Colors.red.shade300,
@@ -127,15 +124,14 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 60),
-              // Logo
               const Center(
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage("assets/images/logo.png"),
+                  backgroundImage:
+                      AssetImage("assets/images/img_forground.png"),
                 ),
               ),
-
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
               const Text(
                 "Welcome Back!",
                 style: TextStyle(
@@ -237,53 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 30),
-              const Text(
-                "Or connect using",
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 20),
-              // Social Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // Google Button
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // Google Login logic
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.red,
-                      minimumSize: const Size(140, 50),
-                      side: const BorderSide(color: Colors.grey),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    icon: const Icon(FontAwesomeIcons.google),
-                    label: const Text("Google"),
-                  ),
-                  // Microsoft Button
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // Microsoft Login logic
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue,
-                      minimumSize: const Size(140, 50),
-                      side: const BorderSide(color: Colors.grey),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    icon: const Icon(FontAwesomeIcons.microsoft),
-                    label: const Text("Microsoft"),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: size.height * 0.07),
+              SizedBox(height: size.height * 0.18),
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(

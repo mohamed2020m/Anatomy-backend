@@ -100,13 +100,10 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                     height: 80,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        //TODO: category image
                                         image: DecorationImage(
                                             //image: AssetImage("assets/img01.png"),
-                                            image: NetworkImage(headers: {
-                                              "Authorization":
-                                                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW16YUBlemguY29tIiwiaWF0IjoxNzAwNTA3Mjg0LCJleHAiOjE3MDA1OTM2ODR9.SgdHWmv-RUQz_G9avMdZm2omhRgmeYat97vF46StWJE"
-                                            }, "${Endpoints.baseUrl}/files/download/${categoryProvider.currentSubCategory.image}"),
+                                            image: NetworkImage(
+                                              "${Endpoints.baseUrl}/files/download/${categoryProvider.currentSubCategory.image}"),
                                             fit: BoxFit.scaleDown)),
                                   ),
                                   // Container(
@@ -148,7 +145,8 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                             ),
                                             Container(
                                               child: ReadMoreText(
-                                                categoryProvider.currentSubCategory
+                                                categoryProvider
+                                                    .currentSubCategory
                                                     .description,
                                                 trimLines: 3,
                                                 trimMode: TrimMode.Line,
@@ -165,7 +163,11 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                               ),
                                             ),
                                             FutureBuilder<int>(
-                                              future: categoryController.getObject3dCountByCategory(categoryProvider.currentSubCategory.id),
+                                              future: categoryController
+                                                  .getObject3dCountByCategory(
+                                                      categoryProvider
+                                                          .currentSubCategory
+                                                          .id),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
@@ -188,18 +190,28 @@ class _CategoryScreenState extends State<SubCategoryScreen>
                                                   );
                                                 } else if (snapshot.hasData) {
                                                   return Container(
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xFF6D83F2),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
                                                     margin:
                                                         const EdgeInsets.only(
                                                             top: 8),
-                                                    //TODO: objetc count
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
                                                     child: Text(
                                                       '${snapshot.data} objects',
                                                       textAlign: TextAlign.left,
                                                       style: const TextStyle(
-                                                        color: Colors.blue,
+                                                        color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize: 15,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                   );
@@ -250,7 +262,8 @@ class _CoursViewRoutState extends State<CoursViewRout> {
         // padding: EdgeInsets.only(top: 8),
         margin: const EdgeInsets.only(left: 15, right: 15),
         child: FutureBuilder(
-          future: objectsController.getAllobjectsParCategory(categoryProvider.currentSubCategory.id),
+          future: objectsController
+              .getAllobjectsParCategory(categoryProvider.currentSubCategory.id),
           builder: (context, snapshot) {
             print("snapshot2: ${snapshot.data}");
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -396,7 +409,8 @@ class _CoursViewRoutState extends State<CoursViewRout> {
                   snapshot.data!.length,
                   (int index) {
                     final int count = snapshot.data!.length;
-                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                    final Animation<double> animation =
+                        Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                         parent: widget.animationController!,
                         curve: Interval((1 / count) * index, 1.0,
@@ -490,7 +504,6 @@ class ObjectsView extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                 top: 8, left: 16, right: 16, bottom: 8),
                             child: Text(
-                              //TODO:object name
                               object3d!.name,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
@@ -518,11 +531,10 @@ class ObjectsView extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(
                               top: 8, right: 4, left: 4, bottom: 8),
-                          //TODO:object image
                           child: Hero(
                             tag: object3d!.image,
                             child: Container(
-                              margin: const EdgeInsets.all(8),
+                              // margin: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(

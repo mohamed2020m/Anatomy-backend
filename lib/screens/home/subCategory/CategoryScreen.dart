@@ -192,18 +192,28 @@ class _CategoryScreenState extends State<CategoryScreen>
                                                   );
                                                 } else if (snapshot.hasData) {
                                                   return Container(
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xFF6D83F2),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
                                                     margin:
                                                         const EdgeInsets.only(
                                                             top: 8),
-                                                    //TODO: objetc count
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
                                                     child: Text(
                                                       '${snapshot.data} categories',
                                                       textAlign: TextAlign.left,
                                                       style: const TextStyle(
-                                                        color: Colors.blue,
+                                                        color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w400,
-                                                        fontSize: 15,
+                                                        fontSize: 12,
                                                       ),
                                                     ),
                                                   );
@@ -366,7 +376,6 @@ class _CoursViewRoutState extends State<CoursViewRout> {
   }
 }
 
-
 class SkoletonView extends StatelessWidget {
   const SkoletonView({
     Key? key,
@@ -400,7 +409,6 @@ class SkoletonView extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              //TODO:
                               decoration: const BoxDecoration(
                                 color: Color.fromARGB(0, 56, 55, 55),
                                 borderRadius:
@@ -424,8 +432,6 @@ class SkoletonView extends StatelessWidget {
                                                       bottom: 5),
                                                   radius:
                                                       BorderRadius.circular(5))
-                                              //TODO:
-
                                               ),
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -468,7 +474,6 @@ class SkoletonView extends StatelessWidget {
                       child: Padding(
                         padding:
                             const EdgeInsets.only(top: 20, right: 16, left: 16),
-                        //TODO:
                         child: Container(
                           child: ClipRRect(
                             child: AspectRatio(

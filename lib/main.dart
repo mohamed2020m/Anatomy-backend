@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           titleTextStyle: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         ),
         primaryColor: const Color.fromARGB(255, 255, 255, 255),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 247, 247, 247),
       ),
       initialRoute: '/',
       routes: {
@@ -88,16 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
             : logmode == LogMode.loggedOut
                 ? const LoginScreen()
                 : const EntryPoint()
-        // {
-        //   if (logmode == LogMode.loggedOut) {
-        //     return const LoginScreen();
-        //   } else {
-        //     return const MyHomePage();
-        //   }
-        // }
-
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        //'/second': (context) => const SecondScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

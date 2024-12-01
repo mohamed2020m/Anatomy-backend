@@ -135,14 +135,17 @@ void showSnackbar({
 
     return ScaffoldMessenger(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 37, 71, 146),
         appBar: AppBar(
+          backgroundColor: const Color(0xFF6D83F2),
+          elevation: 0,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
           actions: [
             IconButton(
               icon: Animate(
-                effects: [
-                  ScaleEffect(duration: const Duration(milliseconds: 25)),
-                  FadeEffect(duration: const Duration(milliseconds: 25))
+                effects: const [
+                  ScaleEffect(duration: Duration(milliseconds: 25)),
+                  FadeEffect(duration: Duration(milliseconds: 25))
                 ],
                 child: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -215,9 +218,7 @@ void showSnackbar({
                 fontSize: 20,
                 color: Color.fromARGB(255, 144, 127, 218)),
           ),
-          centerTitle: true,
           toolbarHeight: 50,
-          backgroundColor: const Color.fromARGB(255, 246, 246, 246),
           shadowColor: Colors.transparent,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
@@ -225,7 +226,6 @@ void showSnackbar({
               Navigator.pop(context);
             },
           ),
-          automaticallyImplyLeading: false,
         ),
         body: Center(
         //   child: Flutter3DViewer(
@@ -248,7 +248,7 @@ void showSnackbar({
         child: BabylonJSViewer(
           src: '${Endpoints.baseUrl}/files/download/${widget.object3d.object}')),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xFF6D83F2),
             shape: const CircleBorder(),
             onPressed: () {
               // Directly show the notes modal without the save button.
@@ -327,323 +327,561 @@ void showSnackbar({
     );
   }
 
-  void showNotesModal(BuildContext context) {
-    showModalBottomSheet<void>(
-        constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
-            minWidth: MediaQuery.of(context).size.width,
-            maxHeight: MediaQuery.of(context).size.height - 100,
-            minHeight: MediaQuery.of(context).size.height - 100),
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24.0),
-                topRight: Radius.circular(24.0))),
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                      height: MediaQuery.of(context).size.height - 170,
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: SingleChildScrollView(
-                          child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  bottom: 10, left: 10, top: 10),
-                              height: 50,
-                              child: const Text('My Notes',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold)),
+
+
+    void showNotesModal(BuildContext context) {
+  showModalBottomSheet<void>(
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+    ),
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            ),
+            decoration: const BoxDecoration(
+              color: Color(0xFFF7F9FC),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24.0)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Modal Header
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const Text(
+                  'My Notes',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3A3A3A),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Notes List
+                userNotes.isEmpty
+                    ? const Expanded(
+                        child: Center(
+                          child: Text(
+                            'No notes available. Add your first note!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
                             ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height - 140,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: userNotes.length,
-                                  scrollDirection: Axis.vertical,
-                                  itemBuilder: (ctx, index) {
-                                    return Dismissible(
-                                      background: Container(
-                                        height: 100,
-                                        margin: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Colors.blue,
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.favorite,
-                                                  color: Colors.red),
-                                              SizedBox(
-                                                width: 8.0,
-                                              ),
-                                              Text('Move to favorites',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      secondaryBackground: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Colors.red,
-                                        ),
-                                        height: 100,
-                                        margin: const EdgeInsets.all(10),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Icon(Icons.delete,
-                                                  color: Colors.white),
-                                              SizedBox(
-                                                width: 8.0,
-                                              ),
-                                              Text('Move to trash',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      confirmDismiss:
-                                          (DismissDirection direction) async {
-                                        if (direction ==
-                                            DismissDirection.startToEnd) {
-                                          return await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: const Text(
-                                                    "Add Gift to Cart"),
-                                                content: const Text(
-                                                    "Are you sure you want to add this gift in your cart"),
-                                                actions: <Widget>[
-                                                  ElevatedButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(true),
-                                                      child: const Text("Yes")),
-                                                  ElevatedButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(false),
-                                                    child: const Text("No"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return await showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title:
-                                                    const Text("Remove Note"),
-                                                content: const Text(
-                                                    "Are you sure you want to remove this note ?"),
-                                                actions: <Widget>[
-                                                  ElevatedButton(
-                                                      onPressed: () async {
-                                                        await noteControllerApi
-                                                            .deleteNote(
-                                                                userNotes[index]
-                                                                    .id);
-                                                        await getNotes();
-
-                                                        setState(() {});
-                                                        Navigator.of(context)
-                                                            .pop(true);
-                                                      },
-                                                      
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Colors.red,
-                                                      ),
-
-                                                      child: const Text(
-                                                        "Yes",
-                                                        style: TextStyle(
-                                                          color:Colors.white,
-                                                        ),
-                                                      )),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(false);
-                                                    },
-                                                    child: const Text("No"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
-                                      },
-                                      key: Key(userNotes[index].id.toString()),
-                                      // Provide a function that tells the app
-                                      // what to do after an item has been swiped away.
-
-                                      child: Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: const Color.fromARGB(
-                                                85, 57, 170, 245),
-                                          ),
-                                          margin: const EdgeInsets.only(
-                                              top: 5,
-                                              bottom: 5,
-                                              left: 10,
-                                              right: 10),
-                                          child: Container(
-                                              constraints: BoxConstraints(
-                                                  minHeight: 50,
-                                                  minWidth:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height -
-                                                          100 -
-                                                          20),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    ReadMoreText(
-                                                      userNotes[index].content,
-                                                      trimLines: 3,
-                                                      trimMode: TrimMode.Line,
-                                                      trimCollapsedText:
-                                                          'Show more',
-                                                      trimExpandedText:
-                                                          'Show less',
-                                                      moreStyle:
-                                                          const TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.blue),
-                                                      lessStyle:
-                                                          const TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.blue),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ))),
-                                    );
-                                  }),
-                            )
-                          ]))),
-                  Container(
-                    height: 70,
-                    // You can set the height as needed
-                    color: const Color.fromARGB(255, 240, 242, 245),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextField(
-                          onChanged: (s) => {setState(() => {})},
-                          controller: noteController,
-                          minLines: 3,
-                          maxLines: 8,
-                          readOnly: false,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                    width:
-                                        1.0), // Change color and width for enabled (non-focused) state
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width - 100,
-                                  minWidth:
-                                      MediaQuery.of(context).size.width - 100),
-                              filled: true,
-                              fillColor:
-                                  const Color.fromARGB(255, 255, 255, 255),
-                              contentPadding: const EdgeInsets.all(5),
-                              hintText: "Add new note",
-                              hintStyle: const TextStyle(
-                                  letterSpacing: .5,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300,
-                                  color: Color.fromARGB(255, 144, 144, 144))),
+                          ),
                         ),
-                        InkWell(
-                          onTap: () async {
-                            print("******* ${noteController.text} *****");
-                            userNotes.add(await noteControllerApi.addNewNote(
-                                noteController.text, widget.object3d.id));
-                            noteController.clear();
-                            setState(() {});
-                            _refreshNotes();
-                            
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Note created successfully!'),
-                                backgroundColor: Colors.green,
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: userNotes.length,
+                          itemBuilder: (ctx, index) {
+                            return Dismissible(
+                              key: Key(userNotes[index].id.toString()),
+                              background: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                alignment: Alignment.centerLeft,
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.favorite, color: Colors.white),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Add to Favorites',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              secondaryBackground: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                alignment: Alignment.centerRight,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Icon(Icons.delete, color: Colors.white),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              confirmDismiss: (direction) async {
+                                if (direction == DismissDirection.startToEnd) {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Add to Favorites"),
+                                        content: const Text(
+                                          "Do you want to add this note to favorites?",
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(false),
+                                            child: const Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(true),
+                                            child: const Text("Yes"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Delete Note"),
+                                        content: const Text(
+                                          "Are you sure you want to delete this note?",
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.of(context).pop(false),
+                                            child: const Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await noteControllerApi.deleteNote(userNotes[index].id);
+                                              setState(() {
+                                                userNotes.removeAt(index);
+                                              });
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: const Text("Delete"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    userNotes[index].content,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xFF3A3A3A),
+                                    ),
+                                  ),
+                                ),
                               ),
                             );
-
                           },
-                          child: SizedBox(
-                              width: 50,
-                              child: Text(
-                                "save",
-                                style: noteController.text.isEmpty
-                                    ? const TextStyle(
-                                        fontSize: 20, color: Colors.grey)
-                                    : const TextStyle(
-                                        fontSize: 20, color: Colors.blue),
-                              )),
-                        )
-                      ],
+                        ),
+                      ),
+
+                const SizedBox(height: 16),
+
+                // Add Note Input Field
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: noteController,
+                        decoration: InputDecoration(
+                          hintText: "Type your note here...",
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 16,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-                ],
-              ),
-            );
-          });
-        });
-    // callback
-  }
+                    const SizedBox(width: 8),
+                    FloatingActionButton(
+                      onPressed: () async {
+                        if (noteController.text.isNotEmpty) {
+                          userNotes.add(await noteControllerApi.addNewNote(
+                            noteController.text,
+                            widget.object3d.id,
+                          ));
+                          noteController.clear();
+                          setState(() {});
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Note added successfully!'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        }
+                      },
+                      mini: true,
+                      child: const Icon(Icons.add, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+
+
+  // void showNotesModal(BuildContext context) {
+  //   showModalBottomSheet<void>(
+  //       constraints: BoxConstraints(
+  //           maxWidth: MediaQuery.of(context).size.width,
+  //           minWidth: MediaQuery.of(context).size.width,
+  //           maxHeight: MediaQuery.of(context).size.height - 100,
+  //           minHeight: MediaQuery.of(context).size.height - 100),
+  //       isScrollControlled: true,
+  //       shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(24.0),
+  //               topRight: Radius.circular(24.0))),
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return StatefulBuilder(
+  //             builder: (BuildContext context, StateSetter setState) {
+  //           return SingleChildScrollView(
+  //             child: Column(
+  //               children: [
+  //                 Container(
+  //                     height: MediaQuery.of(context).size.height - 170,
+  //                     padding: EdgeInsets.only(
+  //                         bottom: MediaQuery.of(context).viewInsets.bottom),
+  //                     child: SingleChildScrollView(
+  //                         child: Column(
+  //                             mainAxisSize: MainAxisSize.min,
+  //                             mainAxisAlignment: MainAxisAlignment.start,
+  //                             crossAxisAlignment: CrossAxisAlignment.start,
+  //                             children: <Widget>[
+  //                           Container(
+  //                             margin: const EdgeInsets.only(
+  //                                 bottom: 10, left: 10, top: 10),
+  //                             height: 50,
+  //                             child: const Text('My Notes',
+  //                                 textAlign: TextAlign.center,
+  //                                 style: TextStyle(
+  //                                     color: Color.fromARGB(255, 0, 0, 0),
+  //                                     fontSize: 30,
+  //                                     fontWeight: FontWeight.bold)),
+  //                           ),
+  //                           SizedBox(
+  //                             height: MediaQuery.of(context).size.height - 140,
+  //                             child: ListView.builder(
+  //                                 shrinkWrap: true,
+  //                                 physics: const BouncingScrollPhysics(),
+  //                                 itemCount: userNotes.length,
+  //                                 scrollDirection: Axis.vertical,
+  //                                 itemBuilder: (ctx, index) {
+  //                                   return Dismissible(
+  //                                     background: Container(
+  //                                       height: 100,
+  //                                       margin: const EdgeInsets.all(10),
+  //                                       decoration: BoxDecoration(
+  //                                         borderRadius:
+  //                                             BorderRadius.circular(8),
+  //                                         color: Colors.blue,
+  //                                       ),
+  //                                       child: const Padding(
+  //                                         padding: EdgeInsets.all(10),
+  //                                         child: Row(
+  //                                           children: [
+  //                                             Icon(Icons.favorite,
+  //                                                 color: Colors.red),
+  //                                             SizedBox(
+  //                                               width: 8.0,
+  //                                             ),
+  //                                             Text('Move to favorites',
+  //                                                 style: TextStyle(
+  //                                                     color: Colors.white)),
+  //                                           ],
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                     secondaryBackground: Container(
+  //                                       decoration: BoxDecoration(
+  //                                         borderRadius:
+  //                                             BorderRadius.circular(8),
+  //                                         color: Colors.red,
+  //                                       ),
+  //                                       height: 100,
+  //                                       margin: const EdgeInsets.all(10),
+  //                                       child: const Padding(
+  //                                         padding: EdgeInsets.all(10),
+  //                                         child: Row(
+  //                                           mainAxisAlignment:
+  //                                               MainAxisAlignment.end,
+  //                                           children: [
+  //                                             Icon(Icons.delete,
+  //                                                 color: Colors.white),
+  //                                             SizedBox(
+  //                                               width: 8.0,
+  //                                             ),
+  //                                             Text('Move to trash',
+  //                                                 style: TextStyle(
+  //                                                     color: Colors.white)),
+  //                                           ],
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                     confirmDismiss:
+  //                                         (DismissDirection direction) async {
+  //                                       if (direction ==
+  //                                           DismissDirection.startToEnd) {
+  //                                         return await showDialog(
+  //                                           context: context,
+  //                                           builder: (BuildContext context) {
+  //                                             return AlertDialog(
+  //                                               title: const Text(
+  //                                                   "Add Gift to Cart"),
+  //                                               content: const Text(
+  //                                                   "Are you sure you want to add this gift in your cart"),
+  //                                               actions: <Widget>[
+  //                                                 ElevatedButton(
+  //                                                     onPressed: () =>
+  //                                                         Navigator.of(context)
+  //                                                             .pop(true),
+  //                                                     child: const Text("Yes")),
+  //                                                 ElevatedButton(
+  //                                                   onPressed: () =>
+  //                                                       Navigator.of(context)
+  //                                                           .pop(false),
+  //                                                   child: const Text("No"),
+  //                                                 ),
+  //                                               ],
+  //                                             );
+  //                                           },
+  //                                         );
+  //                                       } else {
+  //                                         return await showDialog(
+  //                                           context: context,
+  //                                           builder: (BuildContext context) {
+  //                                             return AlertDialog(
+  //                                               title:
+  //                                                   const Text("Remove Note"),
+  //                                               content: const Text(
+  //                                                   "Are you sure you want to remove this note ?"),
+  //                                               actions: <Widget>[
+  //                                                 ElevatedButton(
+  //                                                     onPressed: () async {
+  //                                                       await noteControllerApi
+  //                                                           .deleteNote(
+  //                                                               userNotes[index]
+  //                                                                   .id);
+  //                                                       await getNotes();
+
+  //                                                       setState(() {});
+  //                                                       Navigator.of(context)
+  //                                                           .pop(true);
+  //                                                     },
+                                                      
+  //                                                     style: ElevatedButton.styleFrom(
+  //                                                       backgroundColor: Colors.red,
+  //                                                     ),
+
+  //                                                     child: const Text(
+  //                                                       "Yes",
+  //                                                       style: TextStyle(
+  //                                                         color:Colors.white,
+  //                                                       ),
+  //                                                     )),
+  //                                                 ElevatedButton(
+  //                                                   onPressed: () {
+  //                                                     Navigator.of(context)
+  //                                                         .pop(false);
+  //                                                   },
+  //                                                   child: const Text("No"),
+  //                                                 ),
+  //                                               ],
+  //                                             );
+  //                                           },
+  //                                         );
+  //                                       }
+  //                                     },
+  //                                     key: Key(userNotes[index].id.toString()),
+  //                                     // Provide a function that tells the app
+  //                                     // what to do after an item has been swiped away.
+
+  //                                     child: Container(
+  //                                         padding: const EdgeInsets.all(10),
+  //                                         decoration: BoxDecoration(
+  //                                           borderRadius:
+  //                                               BorderRadius.circular(8),
+  //                                           color: const Color.fromARGB(
+  //                                               85, 57, 170, 245),
+  //                                         ),
+  //                                         margin: const EdgeInsets.only(
+  //                                             top: 5,
+  //                                             bottom: 5,
+  //                                             left: 10,
+  //                                             right: 10),
+  //                                         child: Container(
+  //                                             constraints: BoxConstraints(
+  //                                                 minHeight: 50,
+  //                                                 minWidth:
+  //                                                     MediaQuery.of(context)
+  //                                                             .size
+  //                                                             .height -
+  //                                                         100 -
+  //                                                         20),
+  //                                             child: SingleChildScrollView(
+  //                                               child: Column(
+  //                                                 mainAxisSize:
+  //                                                     MainAxisSize.min,
+  //                                                 crossAxisAlignment:
+  //                                                     CrossAxisAlignment.start,
+  //                                                 children: [
+  //                                                   ReadMoreText(
+  //                                                     userNotes[index].content,
+  //                                                     trimLines: 3,
+  //                                                     trimMode: TrimMode.Line,
+  //                                                     trimCollapsedText:
+  //                                                         'Show more',
+  //                                                     trimExpandedText:
+  //                                                         'Show less',
+  //                                                     moreStyle:
+  //                                                         const TextStyle(
+  //                                                             fontSize: 15,
+  //                                                             fontWeight:
+  //                                                                 FontWeight
+  //                                                                     .bold,
+  //                                                             color:
+  //                                                                 Colors.blue),
+  //                                                     lessStyle:
+  //                                                         const TextStyle(
+  //                                                             fontSize: 15,
+  //                                                             fontWeight:
+  //                                                                 FontWeight
+  //                                                                     .bold,
+  //                                                             color:
+  //                                                                 Colors.blue),
+  //                                                   ),
+  //                                                 ],
+  //                                               ),
+  //                                             ))),
+  //                                   );
+  //                                 }),
+  //                           )
+  //                         ]))),
+  //                 Container(
+  //                   height: 70,
+  //                   // You can set the height as needed
+  //                   color: const Color.fromARGB(255, 240, 242, 245),
+  //                   padding: const EdgeInsets.only(top: 10, bottom: 10),
+  //                   child: Row(
+  //                     crossAxisAlignment: CrossAxisAlignment.center,
+  //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                     children: [
+  //                       TextField(
+  //                         onChanged: (s) => {setState(() => {})},
+  //                         controller: noteController,
+  //                         minLines: 3,
+  //                         maxLines: 8,
+  //                         readOnly: false,
+  //                         decoration: InputDecoration(
+  //                             border: InputBorder.none,
+  //                             enabledBorder: OutlineInputBorder(
+  //                               borderSide: const BorderSide(
+  //                                   color: Color.fromARGB(255, 255, 255, 255),
+  //                                   width:
+  //                                       1.0), // Change color and width for enabled (non-focused) state
+  //                               borderRadius: BorderRadius.circular(10.0),
+  //                             ),
+  //                             constraints: BoxConstraints(
+  //                                 maxWidth:
+  //                                     MediaQuery.of(context).size.width - 100,
+  //                                 minWidth:
+  //                                     MediaQuery.of(context).size.width - 100),
+  //                             filled: true,
+  //                             fillColor:
+  //                                 const Color.fromARGB(255, 255, 255, 255),
+  //                             contentPadding: const EdgeInsets.all(5),
+  //                             hintText: "Add new note",
+  //                             hintStyle: const TextStyle(
+  //                                 letterSpacing: .5,
+  //                                 fontSize: 16,
+  //                                 fontWeight: FontWeight.w300,
+  //                                 color: Color.fromARGB(255, 144, 144, 144))),
+  //                       ),
+  //                       InkWell(
+  //                         onTap: () async {
+  //                           print("******* ${noteController.text} *****");
+  //                           userNotes.add(await noteControllerApi.addNewNote(
+  //                               noteController.text, widget.object3d.id));
+  //                           noteController.clear();
+  //                           setState(() {});
+  //                           _refreshNotes();
+                            
+  //                           ScaffoldMessenger.of(context).showSnackBar(
+  //                             const SnackBar(
+  //                               content: Text('Note created successfully!'),
+  //                               backgroundColor: Colors.green,
+  //                             ),
+  //                           );
+
+  //                         },
+  //                         child: SizedBox(
+  //                             width: 50,
+  //                             child: Text(
+  //                               "save",
+  //                               style: noteController.text.isEmpty
+  //                                   ? const TextStyle(
+  //                                       fontSize: 20, color: Colors.grey)
+  //                                   : const TextStyle(
+  //                                       fontSize: 20, color: Colors.blue),
+  //                             )),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+  //               ],
+  //             ),
+  //           );
+  //         });
+  //       });
+  //   // callback
+  // }
+
+
+
+  
 
   //   return ScaffoldMessenger(
   //     child: Scaffold(
