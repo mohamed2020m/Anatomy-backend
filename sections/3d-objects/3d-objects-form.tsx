@@ -7,7 +7,13 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import {
   Form,
   FormControl,
@@ -22,7 +28,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { FileUploader } from '@/components/file-uploader';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
-import { EyeIcon,Edit2Icon} from 'lucide-react';
+import { EyeIcon, Edit2Icon } from 'lucide-react';
+import { descriptionModels } from '@/constants/data';
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
@@ -83,6 +90,8 @@ const ThreeDObjectsForm = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id; // Récupération de l'ID de l'utilisateur
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>('llama3-8b-8192'); 
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -211,10 +220,10 @@ const ThreeDObjectsForm = () => {
     }
 
     const formData = new FormData();
-    const imageFile = form.getValues('image')[0]; 
+    const imageFile = form.getValues('image')[0];
     formData.append('obj', imageFile);
 
-    console.log(formData); 
+    console.log(formData);
 
     try {
       const response = await fetch(`http://localhost:8000/object_3d-to-text`, {
@@ -232,11 +241,11 @@ const ThreeDObjectsForm = () => {
       }
 
       const data = await response.json();
-      console.log("Reponse de l api:", data);
+      console.log('Reponse de l api:', data);
       setGeneratedDescription(data.description);
-      console.log("Genereted Desc:", generatedDescription);
+      console.log('Genereted Desc:', generatedDescription);
       form.setValue('description', generatedDescription);
-      console.log("debug:",form.getFieldState)
+      console.log('debug:', form.getFieldState);
     } catch (error) {
       console.error('Erreur lors de la génération de la description', error);
       toast({
@@ -251,7 +260,7 @@ const ThreeDObjectsForm = () => {
     <Card className="mx-auto w-full">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">
-        3D Object Information
+          3D Object Information
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -264,7 +273,10 @@ const ThreeDObjectsForm = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Give your object a name ..." {...field} />
+                    <Input
+                      placeholder="Give your object a name ..."
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -311,13 +323,35 @@ const ThreeDObjectsForm = () => {
             />
 
             <div className="w-full max-w-4xl space-y-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium">
+                Choose the model to generate a description
+                </label>
+                <Select
+                  value={selectedModel}
+                  onValueChange={(value) => setSelectedModel(value)}
+                >
+                  <SelectTrigger className="w-[240px]">
+                    <SelectValue>
+                      {selectedModel || 'Select a model'}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {descriptionModels.map((model) => (
+                      <SelectItem key={model.value} value={model.value}>
+                        {model.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div><br/>
               <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
                     <div className="mb-2 flex items-center justify-between">
-                      <FormLabel className="text-lg font-medium">
+                      <FormLabel className="text-sm font-medium">
                         3D Model Description
                       </FormLabel>
                       <div className="flex gap-2">

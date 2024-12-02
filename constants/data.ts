@@ -279,3 +279,18 @@ export type Product = {
   category: string;
   updated_at: string;
 };
+
+
+export  const quizModels = [
+  { value: 'mixtral-8x7b-32768', label: 'Mixtral 8x7b 32768' },
+  { value: 'llama-3.1-70b-versatile', label: 'Llama 3.1 70b Versatile' },
+  { value: 'llama-3.1-8b-instant', label: 'Llama 3.1 8b Instant' },
+]; 
+
+export  const descriptionModels = [
+  { value: 'llava-v1.5-7b-4096-preview', label: 'Llava-v1.5-7b-4096-preview' },
+  { value: 'llama-3.2-11b-vision-preview', label: 'Llama-3.2-11b-vision-preview' },
+  { value: 'llama-3.2-90b-vision-preview', label: 'Llama-3.2-90b-vision-preview' },
+]; 
+
+

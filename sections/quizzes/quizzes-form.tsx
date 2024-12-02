@@ -23,7 +23,13 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter
+} from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
@@ -35,19 +41,19 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { Progress } from '@/components/ui/progress';
-import { Question } from '@/constants/data';
+import { Question, quizModels } from '@/constants/data';
 
 // Extend the question schema to include editable fields
 const questionSchema = z.object({
-  questionText: z.string().min(1, "Question text is required"),
+  questionText: z.string().min(1, 'Question text is required'),
   options: z.object({
-    A: z.string().min(1, "Option A is required"),
-    B: z.string().min(1, "Option B is required"),
-    C: z.string().min(1, "Option C is required"),
-    D: z.string().min(1, "Option D is required")
+    A: z.string().min(1, 'Option A is required'),
+    B: z.string().min(1, 'Option B is required'),
+    C: z.string().min(1, 'Option C is required'),
+    D: z.string().min(1, 'Option D is required')
   }),
   correctAnswer: z.enum(['option_a', 'option_b', 'option_c', 'option_d'], {
-    required_error: "Correct answer must be selected"
+    required_error: 'Correct answer must be selected'
   }),
   explanation: z.string().optional()
 });
@@ -69,16 +75,22 @@ const formSchema = z.object({
 export default function QuizCreationWorkflow() {
   const { data: session } = useSession();
   const router = useRouter();
-  
+
   // State for multi-step workflow
   const [currentStep, setCurrentStep] = useState(1);
   const [progress, setProgress] = useState(33);
 
   // State for Step 1: File and Quiz Generation
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<{ id: number; name: string } | null>(null);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [selectedNumber, setSelectedNumber] = useState<number | string>('5');
+  const [selectedModel, setSelectedModel] = useState<string>('llama3-8b-8192'); 
 
   // State for Step 2: Generated Questions
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -121,7 +133,7 @@ export default function QuizCreationWorkflow() {
   }, [session]);
 
   // Step 1: File Upload and Quiz Generation
-  async function generateQuiz(data: { file: File; num_questions: number }) {
+  async function generateQuiz(data: { file: File; num_questions: number,model:string }) {
     if (!data.file) {
       toast({
         title: 'Error',
@@ -168,7 +180,6 @@ export default function QuizCreationWorkflow() {
     }
   }
 
-
   // Handle Generate Quiz Click
   const handleGenerateQuizClick = async () => {
     if (!file) {
@@ -189,21 +200,34 @@ export default function QuizCreationWorkflow() {
       return;
     }
 
+    if (!selectedModel) {
+      toast({
+        title: 'Error',
+        description: 'Please select the model you wish to use.',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     try {
       const responseQuiz = await generateQuiz({
         file: file,
-        num_questions: Number(selectedNumber)
+        num_questions: Number(selectedNumber),
+        model:selectedModel
       });
 
       setQuestions(responseQuiz);
-      
+
       // Populate form with generated questions
-      form.setValue('questions', responseQuiz.map(q => ({
-        questionText: q.questionText,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation || ''
-      })));
+      form.setValue(
+        'questions',
+        responseQuiz.map((q) => ({
+          questionText: q.questionText,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          explanation: q.explanation || ''
+        }))
+      );
 
       // Move to next step
       setCurrentStep(2);
@@ -232,14 +256,17 @@ export default function QuizCreationWorkflow() {
         questions: values.questions
       };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/quizzes`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(quizData)
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/quizzes`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(quizData)
+        }
+      );
 
       if (!res.ok) {
         throw new Error('Failed to create quiz');
@@ -261,7 +288,6 @@ export default function QuizCreationWorkflow() {
       setTimeout(() => {
         router.back();
       }, 1500);
-
     } catch (error) {
       toast({
         title: 'Error',
@@ -293,8 +319,8 @@ export default function QuizCreationWorkflow() {
               <label className="text-sm font-medium">
                 Select number of questions
               </label>
-              <Select 
-                value={String(selectedNumber)} 
+              <Select
+                value={String(selectedNumber)}
                 onValueChange={(value) => setSelectedNumber(value)}
               >
                 <SelectTrigger className="w-[120px]">
@@ -310,12 +336,31 @@ export default function QuizCreationWorkflow() {
               </Select>
             </div>
 
-            <Button onClick={handleGenerateQuizClick}>
-              Generate Quiz
-            </Button>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium">
+              Choose the model you wish to use
+              </label>
+              <Select
+                value={selectedModel}
+                onValueChange={(value) => setSelectedModel(value)}
+              >
+                <SelectTrigger className="w-[240px]">
+                  <SelectValue>{selectedModel || 'Select a model'}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {quizModels.map((model) => (
+                    <SelectItem key={model.value} value={model.value}>
+                      {model.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button onClick={handleGenerateQuizClick}>Generate Quiz</Button>
           </div>
         );
-      
+
       case 2:
         return (
           <Form {...form}>
@@ -333,10 +378,10 @@ export default function QuizCreationWorkflow() {
                             <FormItem>
                               <FormLabel>Question Text</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  {...field} 
+                                <Textarea
+                                  {...field}
                                   placeholder="Enter question text"
-                                  className="resize-y" 
+                                  className="resize-y"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -354,9 +399,9 @@ export default function QuizCreationWorkflow() {
                                 <FormItem>
                                   <FormLabel>Option {option}</FormLabel>
                                   <FormControl>
-                                    <Input 
-                                      {...field} 
-                                      placeholder={`Enter option ${option}`} 
+                                    <Input
+                                      {...field}
+                                      placeholder={`Enter option ${option}`}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -372,7 +417,7 @@ export default function QuizCreationWorkflow() {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Correct Answer</FormLabel>
-                              <Select 
+                              <Select
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
                               >
@@ -382,10 +427,18 @@ export default function QuizCreationWorkflow() {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="option_a">Option A</SelectItem>
-                                  <SelectItem value="option_b">Option B</SelectItem>
-                                  <SelectItem value="option_c">Option C</SelectItem>
-                                  <SelectItem value="option_d">Option D</SelectItem>
+                                  <SelectItem value="option_a">
+                                    Option A
+                                  </SelectItem>
+                                  <SelectItem value="option_b">
+                                    Option B
+                                  </SelectItem>
+                                  <SelectItem value="option_c">
+                                    Option C
+                                  </SelectItem>
+                                  <SelectItem value="option_d">
+                                    Option D
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -400,10 +453,10 @@ export default function QuizCreationWorkflow() {
                             <FormItem>
                               <FormLabel>Explanation</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  {...field} 
+                                <Textarea
+                                  {...field}
                                   placeholder="Enter explanation"
-                                  className="resize-y" 
+                                  className="resize-y"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -416,8 +469,8 @@ export default function QuizCreationWorkflow() {
                 ))}
               </Accordion>
               <div className="mt-4 flex justify-between">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => {
                     setCurrentStep(1);
                     setProgress(33);
@@ -425,7 +478,7 @@ export default function QuizCreationWorkflow() {
                 >
                   Back
                 </Button>
-                <Button 
+                <Button
                   onClick={() => {
                     setCurrentStep(3);
                     setProgress(100);
@@ -437,7 +490,7 @@ export default function QuizCreationWorkflow() {
             </form>
           </Form>
         );
-      
+
       case 3:
         // ... (keep the existing Step 3 implementation)
         return (
@@ -498,9 +551,9 @@ export default function QuizCreationWorkflow() {
                 </Select>
               </div>
               <div className="flex justify-between">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => {
                     setCurrentStep(2);
                     setProgress(66);
@@ -526,9 +579,7 @@ export default function QuizCreationWorkflow() {
         </CardTitle>
         <Progress value={progress} className="w-full" />
       </CardHeader>
-      <CardContent>
-        {renderStep()}
-      </CardContent>
+      <CardContent>{renderStep()}</CardContent>
     </Card>
   );
 }
