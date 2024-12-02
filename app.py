@@ -1,8 +1,8 @@
 import os
 from fastapi import FastAPI, Form, UploadFile, File, HTTPException
 from typing import List
-from obj3dTextGenerator import Obj3dTextGenerator
-from quizGeneratorPipeline import QuizGenerator, Question
+from Obj3dTextGenerator import Obj3dTextGenerator
+from QuizGeneratorPipeline import QuizGenerator, Question
 # from helpers import extract_text_from_pdf, preprocess, save_to_tmp, split_text_into_chunks
 from helpers import preprocess, save_to_tmp
 from fastapi import FastAPI, UploadFile, File, HTTPException
@@ -11,6 +11,7 @@ import logging
 from fastapi_utils.tasks import repeat_every
 import shutil
 from dotenv import load_dotenv, find_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 _ = load_dotenv(find_dotenv()) 
 
@@ -21,6 +22,15 @@ logger = logging.getLogger(__name__)
 TMP_PATH = r"./tmp"
 
 app = FastAPI()
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 quiz_generator = QuizGenerator()
 obj3d_text_generator = Obj3dTextGenerator()
 

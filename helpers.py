@@ -1,7 +1,7 @@
 from langchain.schema import Document
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from sentence_transformers import SentenceTransformer
+#from sentence_transformers import SentenceTransformer
 import base64
 import time
 import faiss

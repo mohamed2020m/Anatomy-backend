@@ -5,7 +5,7 @@ from langchain.schema import HumanMessage, SystemMessage
 import base64
 import asyncio
 
-from obj3dTextGenerator import Obj3dTextGenerator
+from Obj3dTextGenerator import Obj3dTextGenerator
 
 
 # def encode_file_to_base64(file_content: bytes) -> str:

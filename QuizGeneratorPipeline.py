@@ -11,10 +11,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Question(BaseModel):
-    question: str
+    questionText: str
     options: Dict[str, str]
-    correct_answer: str
-    explanation: str
+    correctAnswer: str
+    explanation: str  # Added the explanation attribute
 
 class QuizGenerator:
     def __init__(self, model_name: str = "llama3-8b-8192", temperature: float = 0.7, max_tokens: int = None):
@@ -111,14 +111,14 @@ class QuizGenerator:
             })
             
             return Question(
-                question=parsed_result["question"],
+                questionText=parsed_result["question"],
                 options={
                     "A": parsed_result["option_a"],
                     "B": parsed_result["option_b"],
                     "C": parsed_result["option_c"],
                     "D": parsed_result["option_d"],
                 },
-                correct_answer=parsed_result["correct_answer"],
+                correctAnswer=parsed_result["correct_answer"],
                 explanation=explanation.strip()
             )
         except Exception as e:
@@ -178,6 +178,6 @@ class QuizGenerator:
             # Generate a new question from this chunk's content
             question = self.generate_question(chunk, existing_questions)
             questions.append(question)
-            existing_questions.append(question.question)
+            existing_questions.append(question.questionText)
             
         return questions

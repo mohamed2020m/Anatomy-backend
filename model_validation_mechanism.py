@@ -2,12 +2,12 @@ from pydantic import BaseModel, ValidationError, constr
 
 # Define the pydantic schema for output validation
 class QuestionAnswerSchema(BaseModel):
-    question: str
+    questionText: str
     option_a: str
     option_b: str
     option_c: str
     option_d: str
-    correct_answer: constr(min_length=1) # type: ignore
+    correctAnswer: constr(min_length=1) # type: ignore
 
 def validate_output(result):
     """
@@ -21,7 +21,7 @@ def validate_output(result):
         # print("validated: ", validated_result.dict().keys())
         
         # Check if correct_answer is one of the keys in the validated result
-        if validated_result.correct_answer not in validated_result.dict().keys():
+        if validated_result.correctAnswer not in validated_result.dict().keys():
             return None 
         
         # print("validated_result: ", validated_result)
