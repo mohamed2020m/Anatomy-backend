@@ -1,10 +1,10 @@
-import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../controller/categoryController.dart';
 import '../controller/threeDObjectController.dart';
 import '../controller/quizController.dart';
+import '../controller/favouriteController.dart';
 import '../controller/logOutController.dart';
 import '../controller/loginController.dart';
 import '../controller/noteController.dart';
@@ -14,6 +14,7 @@ import '../controller/userDetailController.dart';
 import '../network/api/SearchApi.dart';
 import '../network/api/categoryApi.dart';
 import '../network/api/quizApi.dart';
+import '../network/api/favouriteApi.dart';
 import '../network/api/threeDObjectApi.dart';
 import '../network/api/logOutApi.dart';
 import '../network/api/loginApi.dart';
@@ -22,6 +23,7 @@ import '../network/api/objectsParCategoryApi.dart';
 import '../network/api/userDetailApi.dart';
 import '../network/repository/categoryRepository.dart';
 import '../network/repository/quizRepository.dart';
+import '../network/repository/favouriteRepository.dart';
 import '../network/dioClient.dart';
 import '../network/repository/loginRepository.dart';
 import '../network/repository/logoutRepository.dart';
@@ -36,7 +38,7 @@ Future<void> setup() async {
   getIt.registerSingleton(Dio());
   getIt.registerSingleton(DioClient(getIt<Dio>()));
 
-    // login
+  // login
   getIt.registerSingleton(LogInApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(LogInRepository(getIt.get<LogInApi>()));
   getIt.registerSingleton(LoginController());
@@ -61,6 +63,11 @@ Future<void> setup() async {
   getIt.registerSingleton(QuizApi(dioClient: getIt<DioClient>()));
   getIt.registerSingleton(QuizRepository(getIt.get<QuizApi>()));
   getIt.registerSingleton(QuizController());
+
+  // Favourites
+  getIt.registerSingleton(FavouriteApi(dioClient: getIt<DioClient>()));
+  getIt.registerSingleton(FavouriteRepository(getIt.get<FavouriteApi>()));
+  getIt.registerSingleton(FavouriteController());
 
   //objects3d
   getIt.registerSingleton(ObjectsParCategoryApi(dioClient: getIt<DioClient>()));

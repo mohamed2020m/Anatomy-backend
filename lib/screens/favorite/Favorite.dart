@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../provider/dataCenter.dart';
-import 'ObjectViewScreen.dart';
+import 'package:TerraViva/screens/home/objects/ObjectViewScreen.dart';
 import 'package:TerraViva/network/Endpoints.dart';
 
 class Favorite extends StatefulWidget {

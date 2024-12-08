@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:TerraViva/controller/FavouriteController.dart';
 import 'package:TerraViva/controller/threeDObjectController.dart';
 import 'package:TerraViva/models/ThreeDObject.dart';
 import 'package:babylonjs_viewer/babylonjs_viewer.dart';
@@ -32,6 +33,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
   final NoteController noteControllerApi = getIt<NoteController>();
   final ThreeDObjectController threeDObjectController =
       getIt<ThreeDObjectController>();
+  final FavouriteController favouriteController = FavouriteController();
   DatabaseService dbService = DatabaseService.instance;
 
   // Flutter3DController controller = Flutter3DController();
@@ -41,6 +43,7 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
     //You can download a single file
 
     getNotes();
+    checkIfFavorite();
     super.initState();
     // controller.onModelLoaded.addListener(() {
     //   debugPrint('model is loaded : ${controller.onModelLoaded.value}');
@@ -54,6 +57,20 @@ class _ObjectViewScreenState extends State<ObjectViewScreen> {
   Future<void> getNotes() async {
     userNotes =
         await noteControllerApi.getNotesByThreeDObjects(widget.object3d.id);
+  }
+
+  Future<void> checkIfFavorite() async {
+    try {
+      // Fetch the list of all favourites
+      final favourites = await favouriteController.getAllFavourites();
+
+      // Check if the current object's ID is in the list of favorites.
+      setState(() {
+        isFavorite = favourites.any((favourite) => favourite.threeDObjectId == widget.object3d.id);
+      });
+    } catch (e) {
+      print("Error fetching favourites: $e");
+    }
   }
 
   void toggleFavorite(String objectId, String objectName) async {
