@@ -22,5 +22,5 @@ public class StudentScores {
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
-    private Integer score;
+    private double score;
 }

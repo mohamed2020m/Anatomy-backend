@@ -51,7 +51,6 @@ public class FavouriteController {
     }
 
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteFavourite(@PathVariable Long id){
         favouriteService.deleteFavourite(id);
