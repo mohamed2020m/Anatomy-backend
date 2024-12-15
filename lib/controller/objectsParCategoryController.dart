@@ -1,5 +1,3 @@
-
-import 'package:TerraViva/models/Object3d.dart';
 import 'package:TerraViva/models/ThreeDObject.dart';
 import '../network/repository/objectsParCategoryRepository.dart';
 import '../service/serviceLocator.dart';

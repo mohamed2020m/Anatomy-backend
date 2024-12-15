@@ -1,4 +1,5 @@
 import 'package:TerraViva/models/Question.dart';
+import 'package:TerraViva/models/StudentScores.dart';
 
 import '../models/Quiz.dart';
 import '../network/repository/quizRepository.dart';
@@ -10,7 +11,7 @@ class QuizController {
 
   Future<List<Quiz>> getAllQuizes() async {
     final allquizes = await quizRepository.getAllQuizzes();
-    print("allquizes: $allquizes");
+    // print("allquizes: $allquizes");
     return allquizes;
   }
 
@@ -22,6 +23,16 @@ class QuizController {
 
   Future<void> saveScoreOfQuiz(String quizId, double score) async {
     await quizRepository.saveScoreOfQuiz(quizId, score);
+  }
+
+  Future<void> resetQuiz(String quizId) async {
+    await quizRepository.resetQuiz(quizId);
+  }
+
+  Future<List<StudentScores>> getScoresOfAllQuizzes() async {
+    final allScoresOfStudent= await quizRepository.getScoresOfAllQuizzes();
+    print("getScoresOfAllQuizzes: $allScoresOfStudent");
+    return allScoresOfStudent;
   }
 
 }

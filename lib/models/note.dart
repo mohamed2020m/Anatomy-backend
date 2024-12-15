@@ -22,7 +22,6 @@
 
 
 import 'package:TerraViva/models/ThreeDObject.dart';
-import 'package:TerraViva/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'note.g.dart';

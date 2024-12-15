@@ -1,4 +1,5 @@
 import 'package:TerraViva/models/Question.dart';
+import 'package:TerraViva/models/StudentScores.dart';
 import 'package:dio/dio.dart';
 
 import '../../models/Quiz.dart';
@@ -14,7 +15,7 @@ class QuizRepository {
   Future<List<Quiz>> getAllQuizzes() async {
     try {
       final response = await quizApi.getQuizApi();
-      print("response: $response.data");
+      //print("response: $response.data");
 
       List<Quiz> allQuizzes =
           (response.data as List).map((e) => Quiz.fromJson(e)).toList();
@@ -61,6 +62,37 @@ class QuizRepository {
       // ignore: deprecated_member_use
     } on DioError catch (e) {
       print("Error in getQuestionsOfQuiz: $e");
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
+    }
+  }
+
+  Future<void> resetQuiz(String quizId) async {
+    try {
+      
+      await quizApi.resetQuiz(quizId);
+          
+      // ignore: deprecated_member_use
+    } on DioError catch (e) {
+      print("Error in resetQuiz: $e");
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
+    }
+  }
+
+    Future<List<StudentScores>> getScoresOfAllQuizzes() async {
+    try {
+      final response = await quizApi.getScoresOfAllQuizzes();
+      
+      print("response: $response.data");
+
+      List<StudentScores> allScoresOfStudent =
+          (response.data as List).map((e) => StudentScores.fromJson(e)).toList();
+
+      return allScoresOfStudent;
+      // ignore: deprecated_member_use
+    } on DioError catch (e) {
+      print("Error in getScoresOfAllQuizzes: $e");
       final errorMessage = DioExceptions.fromDioError(e).toString();
       throw errorMessage;
     }

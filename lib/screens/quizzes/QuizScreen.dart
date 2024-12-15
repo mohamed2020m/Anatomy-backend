@@ -1,3 +1,4 @@
+import 'package:TerraViva/models/StudentScores.dart';
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,7 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateMixin {
   final QuizController quizController = QuizController();
   List<Quiz>? quizzes;
+  List<StudentScores>? scores;
   String? errorMessage;
   late AnimationController _animationController;
 
@@ -28,6 +30,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       duration: const Duration(milliseconds: 500),
     );
     _fetchQuizzes();
+    _fetchScores();
   }
 
   @override
@@ -37,15 +40,55 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   }
 
   Future<void> _fetchQuizzes() async {
+    print("Fetching quizzes...");
     try {
       final fetchedQuizzes = await quizController.getAllQuizes();
       setState(() {
         quizzes = fetchedQuizzes;
       });
+      _fetchScores();
     } catch (e) {
       setState(() {
         errorMessage = e.toString();
       });
+    }
+  }
+
+
+  Future<void> _fetchScores() async {
+    // print("Fetching scores...");
+    try {
+      final fetchedScores = await quizController.getScoresOfAllQuizzes();
+      setState(() {
+        scores = fetchedScores;
+       });
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+      });
+    }
+  }
+
+  bool shouldShowRetryButton(String quizId) {
+    final parsedQuizId = int.tryParse(quizId);
+    if (parsedQuizId == null) return false;
+    return scores?.any((score) => score.quizId == parsedQuizId) ?? false;
+  }
+
+
+  // Reset Quiz Function
+  Future<void> _resetQuiz(String quizId) async {
+    try {
+      await quizController.resetQuiz(quizId);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Quiz has been reset!')),
+      );
+      // refresh quizzes
+      _fetchQuizzes();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
     }
   }
 
@@ -116,7 +159,10 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                 child: ListView.builder(
                 itemCount: quizzes!.length,
                 itemBuilder: (context, index) {
+                 
                   final quiz = quizzes![index];
+                  final showRetry = shouldShowRetryButton(quiz.id);
+                  
                   return OpenContainer(
                     closedElevation: 0,
                     closedColor: Colors.transparent,
@@ -130,38 +176,51 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                       ),
                       color: Colors.white,
                       child: ListTile(
-                        contentPadding: const EdgeInsets.all(12),
-                        leading: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 73, 104, 255),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.quiz_outlined,
-                            color:  Colors.white,
-                          ),
+                      contentPadding: const EdgeInsets.all(12),
+                      leading: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 73, 104, 255),
+                          shape: BoxShape.circle,
                         ),
-                        title: Text(
-                          quiz.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: colorScheme.onSurfaceVariant,
-
-                          ),
-                        ),
-                        subtitle: Text(
-                          quiz.description,
-                          style: TextStyle(
-                            color: colorScheme.onSurfaceVariant.withOpacity(0.7),
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: colorScheme.secondary,
-                          size: 18,
+                        child: const Icon(
+                          Icons.quiz_outlined,
+                          color: Colors.white,
                         ),
                       ),
+                      title: Text(
+                        quiz.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      // subtitle: Text(
+                      //   quiz.description,
+                      //   style: TextStyle(
+                      //     color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+                      //   ),
+                      // ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (showRetry)
+                            IconButton(
+                              icon: const Icon(Icons.refresh),
+                              onPressed: () {
+                                // Call _resetQuiz when the button is pressed
+                                _resetQuiz(quiz.id);
+                              },
+                            ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: colorScheme.secondary,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+
                     ),
                     openBuilder: (context, action) => QuizDetailScreen(
                       quizId: quiz.id,

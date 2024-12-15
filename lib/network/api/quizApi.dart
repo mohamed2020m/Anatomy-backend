@@ -26,7 +26,7 @@ class QuizApi {
         ),
       );
 
-      print("getQuizApi Response: ${response.data}");
+      // print("getQuizApi Response: ${response.data}");
       return response;
     } catch (e) {
       print("Error in getQuizApi: $e");
@@ -70,15 +70,10 @@ class QuizApi {
         print("Using token: $token");
         print("Using userId: $userId");
 
-        final body = {
-          "student": {
-          // "id": int.parse(userId)
-          "id": 11
-          },
-          "quiz": {
-            "id": int.parse(quizId)
-          },
-          "score": score
+        final body = {                  
+          "studentId": int.parse(userId),
+          "quizId": quizId, //int.parse(quizId),
+          "score": score        
         };
 
         final Response response = await dioClient.post(
@@ -98,5 +93,68 @@ class QuizApi {
         rethrow;
       }
   }
+
+    Future<void> resetQuiz(String quizId) async { 
+      try {
+        
+        final token = await storage.read(key: "token");
+        final userId = await storage.read(key: "user_id");
+        
+        if (token == null || userId == null) {
+          throw Exception("Token or User ID is missing");
+        }
+        //print("Using token: $token");
+        //print("Using userId: $userId");
+
+        await dioClient.delete(
+          '${Endpoints.baseUrl}${Endpoints.score}/quiz/$quizId/student/$userId', //endpoint called
+          options: Options(
+            headers: {
+              "Authorization": 'Bearer $token'
+            },
+          ),
+        );
+        
+        // if (response.statusCode == 204) {
+        //   print("Quiz successfully reset for quizId: $quizId.");
+        // }
+
+      } catch (e) {
+        print("Error in resetQuiz: $e");
+        rethrow;
+      }
+  }
+
+
+  Future<Response> getScoresOfAllQuizzes() async {
+    try {
+      final token = await storage.read(key: "token");
+      final userId = await storage.read(key: "user_id");
+
+      if (token == null || userId == null) {
+          throw Exception("Token or User ID is missing");
+      }
+      
+      // print("Using token: $token");
+      // print("Using userId: $userId");
+
+      final Response response = await dioClient.get(
+        '${Endpoints.baseUrl}${Endpoints.score}', //endpoint called
+        options: Options(
+          headers: {
+            "Authorization": 'Bearer $token'
+          },
+        ),
+      );
+
+      print("getScoresOfAllQuizzes Response: ${response.data}");
+      return response;
+    
+    } catch (e) {
+      print("Error in getScoresOfAllQuizzes: $e");
+      rethrow;
+    }
+  }
+
 
 }
