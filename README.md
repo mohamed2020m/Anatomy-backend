@@ -1,3 +1,0 @@
-# Terraviva Mobile
- 
-## TODO:
