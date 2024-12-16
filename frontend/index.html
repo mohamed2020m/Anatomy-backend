@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Image </h1>
+    <script>
+
+        async function downloadImage(path) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/files/download/${path}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to download image');
+                }
+        
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                console.log(url)
+                // Display the image (for example, in an <img> element)
+                const imgElement = document.createElement('img');
+                imgElement.src = url;
+                document.body.appendChild(imgElement); // Or insert into a specific element
+            } catch (error) {
+                console.error('Error downloading image:', error);
+            }
+        }
+        
+        // Call downloadImage with the image path you received from upload
+        downloadImage('images-back.jpg'); 
+        
+    </script>
+</body>
+</html>
