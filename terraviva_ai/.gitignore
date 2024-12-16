@@ -1,0 +1,8 @@
+__pycache__
+.env
+.venv
+.gradio
+requirements2.txt
+local-*
+test*
+files
