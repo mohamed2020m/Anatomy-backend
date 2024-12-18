@@ -19,7 +19,11 @@ import java.util.Optional;
 public class FileStore {
     private static final Logger logger = LoggerFactory.getLogger(FileStore.class);
 
-    private final String storageFolder = "storage_3d_objs";
+    //private final String storageFolder = "storage_3d_objs";
+    private final String storageFolder = System.getenv("STORAGE_PATH") != null
+    ? System.getenv("STORAGE_PATH")
+    : "storage_3d_objs";
+
 
     public FileStore() {
         // Create the main storage directory if it does not exist
