@@ -1,0 +1,59 @@
+services:
+  backend:
+    image: abdeod/terraviva-backend:latest
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/TerraVivaDB
+      - SPRING_DATASOURCE_USERNAME=terraviva
+      - SPRING_DATASOURCE_PASSWORD=terraviva
+      - STORAGE_PATH=/app/storage_3d_objs
+    volumes:
+      - ./backend/storage_3d_objs:/app/storage_3d_objs
+    depends_on:
+      - db
+
+  frontend:
+    image: abdeod/terraviva-frontend:latest
+    # build:
+    #   context: ./frontend
+    #   dockerfile: Dockerfile
+    environment:
+    - NEXTAUTH_URL=http://localhost:3000
+    - BACKEND_API=http://localhost:8080
+    - NEXT_PUBLIC_BACKEND_API=http://localhost:8080
+    - BACKEND_HOST=localhost
+    - BACKEND_PORT=8080
+    - NEXT_PUBLIC_MESHY_API_TOKEN=your-meshy-api-token
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:17.2-alpine3.21
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: terraviva
+      POSTGRES_PASSWORD: terraviva
+      POSTGRES_DB: TerraVivaDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Web UI for Postgres (optional)
+  pgadmin4:
+    image: dpage/pgadmin4:8.14.0
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@mail.com
+      PGADMIN_DEFAULT_PASSWORD: user
+    ports:
+      - "8081:80"
+
+volumes:
+  postgres_data:
