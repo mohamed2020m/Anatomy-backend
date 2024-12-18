@@ -5,8 +5,8 @@ const nextConfig = {
      remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'localhost',
-        port: '8080',
+        hostname: process.env.BACKEND_HOST || 'localhost',
+        port: process.env.BACKEND_PORT || '8080',  
         pathname: '/api/v1/files/download/**',
       },
     ],
