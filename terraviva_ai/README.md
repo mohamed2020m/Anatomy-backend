@@ -29,11 +29,6 @@ The project offers a gardio demo for quiz generation too. However, for `obj-to-t
 
 Note: Swagger documentation is accessible in `/docs`.
 
-## TODO
-- Working on `text-to-3d`
-- Adding `image-to-3d`
-- Adding authentication to the apis
-
 ## Author
 2024 - @Terraviva Team
 
