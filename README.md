@@ -56,13 +56,13 @@ The TerraViva project is organized into four main branches:
 ```
 TerraViva-Project/
 │
-├── frontend/           # Next.js Web Application
+├── terraviva_frontend/           # Next.js Web Application
 │   ├── app/
 │   ├── components/
 │   ├── sections/
 │   └── services/
 │
-├── backend/            # Spring Boot Backend
+├── terraviva_backend/            # Spring Boot Backend
 │   ├── src/
 │   │   ├── main/
 │   │   │   ├── java/
@@ -70,7 +70,7 @@ TerraViva-Project/
 │   │   └── test/
 │   └── pom.xml
 │
-├── mobile/             # Flutter Mobile Application
+├── terraviva_mobile/             # Flutter Mobile Application
 │   ├── lib/
 │   ├── test/
 │   └── pubspec.yaml
