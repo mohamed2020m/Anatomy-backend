@@ -219,13 +219,7 @@ flutter run
 
 ### Mobile Demo
 
-<p align="center">
-   <video width="320" height="440" controls>
-      <source src="https://youtu.be/Uo_EKDMx88w" type="video/mp4">
-      Your browser does not support the video tag.
-   </video>
-</p>
-
+[![Watch this video](https://img.youtube.com/vi/Uo_EKDMx88w/maxresdefault.jpg)](https://www.youtube.com/watch?v=Uo_EKDMx88w)
 
 ### Web Demo
 
