@@ -197,22 +197,6 @@ flutter pub get
 flutter run
 ```
 
-## Docker Deployment
-
-### Prerequisites
-- Docker
-- Docker Compose
-- Minimum system requirements:
-  - 8GB RAM
-  - 4 CPU cores
-  - 20GB free disk space
-
-### Docker Compose Configuration
-
-```yaml
-
-```
-
 ## Illustrative Examples
 
 ## Video Demonstration
@@ -229,11 +213,11 @@ flutter run
 
 | Links\Names      | Mohammed Belkarradi                                                         | Mohamed Essabir                                                                                   | Abderrahmane Ouaday                                                         |
 |------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| GitHub     | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       |
-| LinkedIn   | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) |
-| Website    | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)         | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://leeuw.vercel.app/)       | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)         |
+| GitHub     | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/AbderrahmaneOd)      |
+| LinkedIn   | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/abderrahmane-ouaday/) |
+| Website    | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)         | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://leeuw.vercel.app/)       | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://aouaday.me/)         |
 
 
   
 ## License
-MIT License (See LICENSE file in repository)
+This project is licensed under the MIT License - see the LICENSE file for details.
