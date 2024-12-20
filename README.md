@@ -220,7 +220,7 @@ flutter run
 ### Mobile Demo
 
 <p align="center">
-   <video width="320" height="440" controls poster="assets/images/play.gif">
+   <video width="320" height="440" controls poster="./assets/images/play.gif">
       <source src="https://youtu.be/Uo_EKDMx88w" type="video/mp4">
       Your browser does not support the video tag.
    </video>
@@ -232,11 +232,14 @@ TODO:
 
 ## Contributors
 
-| Mohammed Belkarradi       | Abderrahmane Ouaday     | Mohamed Essabir        |
-|---------------------------|-------------------------|------------------------|
-| ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](#)  | ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](#)  | ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](https://github.com/mohamed2020m)  |
-| ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) |
-| ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](#) | ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](#) | ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](https://leeuw.vercel.app/) |
+
+| Name                     | GitHub                                                                                         | LinkedIn                                                                                       | Website                                                                                       |
+|--------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Mohammed Belkarradi      | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)                         | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#)           | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)                          |
+| Abderrahmane Ouaday      | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)                         | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#)           | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)                          |
+| Mohamed Essabir          | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://leeuw.vercel.app/) |
+
+
 
   
 ## License
