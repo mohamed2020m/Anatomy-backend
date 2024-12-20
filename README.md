@@ -223,7 +223,7 @@ flutter run
 
 ### Web Demo
 
-[![Watch this video](https://www.youtube.com/watch?v=wWqD3V1E6wE)
+[![Watch this video](https://github.com/user-attachments/assets/4464fda4-29d6-49c9-9469-32c6de98efae)](https://www.youtube.com/watch?v=wWqD3V1E6wE)
 
 ## Contributors
 
