@@ -1,7 +1,27 @@
 # TerraViva: AI-Enhanced 3D Learning Platform for Medical Education
 
+![Git](https://img.shields.io/badge/Git-000000?style=flat&logo=git&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17.0-336791?style=flat&logo=postgresql&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20.10.0-339933?style=flat&logo=node.js&logoColor=white)
+![JDK 17](https://img.shields.io/badge/JDK-17-007396?style=flat&logo=openjdk&logoColor=white)
+![Flutter](https://img.shields.io/badge/Flutter-SDK-02569B?style=flat&logo=flutter&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat&logo=next.js&logoColor=white)
+![NextAuth.js](https://img.shields.io/badge/NextAuth.js-5.0.0--beta.18-000000?style=flat&logo=next.js&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.0-38B2AC?style=flat&logo=tailwindcss&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-6DB33F?style=flat&logo=springboot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-5.0.0-6DB33F?style=flat&logo=springsecurity&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115.5-009688?style=flat&logo=fastapi&logoColor=white)
+
+
 ### Overview
 TerraViva is a revolutionary educational technology platform designed to transform medical education through immersive, AI-powered learning experiences. By leveraging cutting-edge technologies, the platform bridges the gap between traditional learning methods and modern, interactive educational approaches.
+
+
+
+![terraviva_arch_v2](assets/images/terraviva_arch_v2.png)
+
 
 ### Global Description
 In the rapidly evolving landscape of medical education, TerraViva emerges as a comprehensive solution that addresses critical challenges:
@@ -57,6 +77,9 @@ TerraViva-Project/
 │
 └── terraviva_ai/       # FastAPI AI Services
     ├── app.py
+    |── Obj3dTextGenerator.py
+    |── helpers.py
+    |── QuizGeneratorPipeline.py
     └── requirements.txt
 ```
 ### System Architecture
@@ -84,9 +107,11 @@ TerraViva-Project/
 
 4. **TerraViva AI (FastAPI)**
    - AI model integration
-   - Image-to-3D conversion
    - Quiz generation
    - Descriptive content creation
+
+5. **Meshy.ai**
+   - Image-to-3D generation
 
 ## Installation and Setup
 
@@ -192,12 +217,26 @@ flutter run
 
 ## Video Demonstration
 
+### Mobile Demo
+
+<p align="center">
+   <video width="320" height="440" controls poster="assets/images/play.gif">
+      <source src="https://youtu.be/Uo_EKDMx88w" type="video/mp4">
+      Your browser does not support the video tag.
+   </video>
+</p>
+
+### Web Demo
+
+TODO:
 
 ## Contributors
-- Mohammed Belkarradi ([GitHub](https://github.com/BELKARRADI))
-- Abderrahmane Ouaday ([GitHub](https://github.com/AbderrahmaneOd))
-- Mohamed Essabir ([GitHub](https://github.com/mohamed2020m))
-- Mohamed Lachgar ([Researchgate](https://www.researchgate.net/profile/Mohamed-Lachgar))
+
+| Mohammed Belkarradi       | Abderrahmane Ouaday     | Mohamed Essabir        |
+|---------------------------|-------------------------|------------------------|
+| ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](#)  | ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](#)  | ![GitHub](https://img.icons8.com/ios/30/000000/github.png) [GitHub](https://github.com/mohamed2020m)  |
+| ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/ios/30/000000/linkedin.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) |
+| ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](#) | ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](#) | ![Website](https://img.icons8.com/ios/30/000000/internet.png) [Website](https://leeuw.vercel.app/) |
 
   
 ## License
