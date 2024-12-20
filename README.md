@@ -220,11 +220,12 @@ flutter run
 ### Mobile Demo
 
 <p align="center">
-   <video width="320" height="440" controls poster="./assets/images/play.gif">
+   <video width="320" height="440" controls>
       <source src="https://youtu.be/Uo_EKDMx88w" type="video/mp4">
       Your browser does not support the video tag.
    </video>
 </p>
+
 
 ### Web Demo
 
@@ -232,7 +233,7 @@ TODO:
 
 ## Contributors
 
-| Field      | Mohammed Belkarradi                                                         | Mohamed Essabir                                                                                   | Abderrahmane Ouaday                                                         |
+| Links\Names      | Mohammed Belkarradi                                                         | Mohamed Essabir                                                                                   | Abderrahmane Ouaday                                                         |
 |------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | GitHub     | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       |
 | LinkedIn   | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) |
