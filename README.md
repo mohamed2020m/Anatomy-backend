@@ -232,13 +232,11 @@ TODO:
 
 ## Contributors
 
-
-| Name                     | GitHub                                                                                         | LinkedIn                                                                                       | Website                                                                                       |
-|--------------------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| Mohammed Belkarradi      | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)                         | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#)           | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)                          |
-| Abderrahmane Ouaday      | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)                         | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#)           | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)                          |
-| Mohamed Essabir          | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://leeuw.vercel.app/) |
-
+| Field      | Mohammed Belkarradi                                                         | Mohamed Essabir                                                                                   | Abderrahmane Ouaday                                                         |
+|------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| GitHub     | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](https://github.com/mohamed2020m) | ![GitHub](https://img.icons8.com/color/30/github--v1.png) [GitHub](#)       |
+| LinkedIn   | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](https://www.linkedin.com/in/mohamed-essabir) | ![LinkedIn](https://img.icons8.com/color/30/linkedin-circled--v1.png) [LinkedIn](#) |
+| Website    | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)         | ![Website](https://img.icons8.com/color/30/domain.png) [Website](https://leeuw.vercel.app/)       | ![Website](https://img.icons8.com/color/30/domain.png) [Website](#)         |
 
 
   
