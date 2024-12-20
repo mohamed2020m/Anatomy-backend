@@ -33,6 +33,17 @@ services:
     depends_on:
       - backend
 
+  backend_ai:
+    image: abdeod/terraviva-ai:latest
+    # build:
+    #   context: ./terraviva_ai
+    #   dockerfile: Dockerfile
+    environment:
+    - GROQ_API_KEY=your-api-key
+    ports:
+      - "8000:8000"
+
+  
   db:
     image: postgres:17.2-alpine3.21
     container_name: postgres-db
