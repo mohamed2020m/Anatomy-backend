@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm i
 # Build Next.js app
+COPY .env.example .env
 COPY . .
 # Expose port
 EXPOSE 3000
