@@ -94,7 +94,7 @@ export const pollModelStatus = async (resultId: string) => {
 
 export const storeModelTemporarily = async (modelUrl) => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/filestorage`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/filestorage`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ export const storeModelTemporarily = async (modelUrl) => {
 
 export const storeImageTemporarily = async (imageUrl) => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/imagestorage`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/imagestorage`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -147,7 +147,7 @@ export const storeImageTemporarily = async (imageUrl) => {
 export async function fetchTempImage(imageName: string): Promise<File> {
   try {
     const response = await fetch(
-      `${process.env.NEXTAUTH_URL}/api/imagestorage?fileName=${imageName}`
+      `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/imagestorage?fileName=${imageName}`
     );
 
     if (!response.ok) {
@@ -200,7 +200,7 @@ export const testPost = async (token) => {
     object: 'images-benzene.jpg'
   };
 
-  const apiUrl = `${process.env.BACKEND_API}/api/v1/threeDObjects`;
+  const apiUrl = `${API_URL}/api/v1/threeDObjects`;
 
   fetch(apiUrl, {
     method: 'POST',
