@@ -1,7 +1,7 @@
 
 
-const MESHY_API_TOKEN = process.env.MESHY_API_TOKEN;
-const MESHY_API_URL = process.env.MESHY_API_URL;
+const MESHY_API_TOKEN = process.env.NEXT_PUBLIC_MESHY_API_TOKEN;
+const MESHY_API_URL = process.env.NEXT_PUBLIC_MESHY_API_URL;
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 

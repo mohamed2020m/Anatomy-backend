@@ -43,7 +43,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { Question, quizModels } from '@/constants/data';
 
-const MODEL_API = process.env.MODEL_API;
+const MODEL_API = process.env.NEXT_PUBLIC_MODEL_API;
 
 // Extend the question schema to include editable fields
 const questionSchema = z.object({

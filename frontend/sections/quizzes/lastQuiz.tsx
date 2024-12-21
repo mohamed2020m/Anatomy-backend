@@ -38,7 +38,7 @@ import { Progress } from '@/components/ui/progress';
 import { Question } from '@/constants/data';
 
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
-const MODEL_API = `${process.env.MODEL_API}`;
+const MODEL_API = `${process.env.NEXT_PUBLIC_MODEL_API}`;
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -129,7 +129,7 @@ export default function QuizCreationWorkflow() {
     formData.append('num_questions', String(data.num_questions));
 
     try {
-      const response = await fetch(`${process.env.MODEL_API}/generate-quiz`, {
+      const response = await fetch(`${MODEL_API}/generate-quiz`, {
         method: 'POST',
         body: formData
       });

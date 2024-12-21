@@ -226,7 +226,7 @@ const ThreeDObjectsForm = () => {
     console.log(formData);
 
     try {
-      const response = await fetch(`${process.env.MODEL_API}/object_3d-to-text`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_MODEL_API}/object_3d-to-text`, {
         method: 'POST',
         headers: {},
         body: formData

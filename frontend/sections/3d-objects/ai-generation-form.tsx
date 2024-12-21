@@ -33,8 +33,8 @@ import {
 } from '@/components/ui/dialog';
 import ThreeDObjectView from './Load3DFile';
 
-const MESHY_API_TOKEN = process.env.MESHY_API_TOKEN;
-const MESHY_API_URL = process.env.MESHY_API_URL;
+const MESHY_API_TOKEN = process.env.NEXT_PUBLIC_MESHY_API_TOKEN;
+const MESHY_API_URL = process.env.NEXT_PUBLIC_MESHY_API_URL;
 
 
 const AiGenerationForm = () => {
