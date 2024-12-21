@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from '@/components/ui/use-toast';
 
-const APP_URL = 'http://localhost:8080/api/v1/threeDObjects';
+const APP_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/threeDObjects`;
 
 interface CellActionProps {
   data: { id: string; image: string };

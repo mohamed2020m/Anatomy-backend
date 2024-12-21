@@ -1,5 +1,8 @@
-const MESHY_API_TOKEN = 'msy_ll3cT4DEdm9QxtfoinlxmDNd9xCFIRKzcawf';
-const MESHY_API_URL = 'https://api.meshy.ai/v1';
+
+
+const MESHY_API_TOKEN = process.env.MESHY_API_TOKEN;
+const MESHY_API_URL = process.env.MESHY_API_URL;
+
 const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`;
 
 export const uploadFile = async (
@@ -11,7 +14,7 @@ export const uploadFile = async (
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`http://localhost:8080/api/v1/files/upload`, {
+    const response = await fetch(`${API_URL}/files/upload`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`
@@ -33,7 +36,7 @@ export const uploadFile = async (
 
 export const createThreeDObject = async (data, token: string) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/threeDObjects`, {
+    const response = await fetch(`${API_URL}/threeDObjects`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -91,7 +94,7 @@ export const pollModelStatus = async (resultId: string) => {
 
 export const storeModelTemporarily = async (modelUrl) => {
   try {
-    const response = await fetch('http://localhost:3000/api/filestorage', {
+    const response = await fetch(`${API_URL}/api/filestorage`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

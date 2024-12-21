@@ -43,6 +43,8 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { Question, quizModels } from '@/constants/data';
 
+const MODEL_API = process.env.MODEL_API;
+
 // Extend the question schema to include editable fields
 const questionSchema = z.object({
   questionText: z.string().min(1, 'Question text is required'),
@@ -148,7 +150,7 @@ export default function QuizCreationWorkflow() {
     formData.append('num_questions', String(data.num_questions));
 
     try {
-      const response = await fetch('http://localhost:8000/generate-quiz', {
+      const response = await fetch(`${MODEL_API}/generate-quiz`, {
         method: 'POST',
         body: formData
       });

@@ -33,8 +33,9 @@ import {
 } from '@/components/ui/dialog';
 import ThreeDObjectView from './Load3DFile';
 
-const MESHY_API_TOKEN = 'msy_ll3cT4DEdm9QxtfoinlxmDNd9xCFIRKzcawf';
-const MESHY_API_URL = 'https://api.meshy.ai/v1';
+const MESHY_API_TOKEN = process.env.MESHY_API_TOKEN;
+const MESHY_API_URL = process.env.MESHY_API_URL;
+
 
 const AiGenerationForm = () => {
   const { data: session } = useSession();

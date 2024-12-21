@@ -9,6 +9,8 @@ import { OrbitControls, Html, PerspectiveCamera } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { X, Maximize2, RotateCcw, ZoomIn, ZoomOut, ArrowLeft, ArrowBigLeftDash, Eye } from 'lucide-react';
 
+const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1`
+
 export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: number }) {
   const { data: session, status } = useSession();
   const [objectDetails, setObjectDetails] = useState<any>(null);
@@ -59,7 +61,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/threeDObjects/${threeDObjectId}`, {
+        const response = await fetch(`${API_URL}/threeDObjects/${threeDObjectId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -69,7 +71,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
         if (!response.ok) throw new Error('Failed to fetch object details');
         const data = await response.json();
         setObjectDetails(data);
-        setGlbUrl(`http://localhost:8080/api/v1/files/download/${data.object}`);
+        setGlbUrl(`${API_URL}/files/download/${data.object}`);
       
         setIsLoading(false);
       } catch (error) {
@@ -121,7 +123,7 @@ export default function ThreeDObjectView({ threeDObjectId }: { threeDObjectId: n
                 </div>
                 <div className="flex justify-center items-start">
                   <img
-                    src={`http://localhost:8080/api/v1/files/download/${objectDetails.image}`}
+                    src={`${API_URL}/files/download/${objectDetails.image}`}
                     alt="3D Object"
                     className="w-full max-w-xs rounded-lg shadow-md hover:shadow-xl transition-shadow"
                   />
