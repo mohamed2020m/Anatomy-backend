@@ -23,11 +23,14 @@ services:
     #   dockerfile: Dockerfile
     environment:
     - NEXTAUTH_URL=http://localhost:3000
+    - NEXT_PUBLIC_NEXTAUTH_URL=localhost:3000
     - BACKEND_API=http://localhost:8080
     - NEXT_PUBLIC_BACKEND_API=http://localhost:8080
     - BACKEND_HOST=localhost
     - BACKEND_PORT=8080
-    - NEXT_PUBLIC_MESHY_API_TOKEN=your-meshy-api-token
+    - NEXT_PUBLIC_MESHY_API_TOKEN=your-token
+    - NEXT_PUBLIC_MESHY_API_URL=https://api.meshy.ai/v1
+    - NEXT_PUBLIC_MODEL_API=http://localhost:8000
     ports:
       - "3000:3000"
     depends_on:
@@ -39,7 +42,7 @@ services:
     #   context: ./terraviva_ai
     #   dockerfile: Dockerfile
     environment:
-    - GROQ_API_KEY=your-api-key
+    - GROQ_API_KEY=your-token
     ports:
       - "8000:8000"
 
@@ -57,14 +60,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   # Web UI for Postgres (optional)
-  pgadmin4:
-    image: dpage/pgadmin4:8.14.0
-    container_name: pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user@mail.com
-      PGADMIN_DEFAULT_PASSWORD: user
-    ports:
-      - "8081:80"
+  # pgadmin4:
+  #   image: dpage/pgadmin4:8.14.0
+  #   container_name: pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: user@mail.com
+  #     PGADMIN_DEFAULT_PASSWORD: user
+  #   ports:
+  #     - "8081:80"
 
 volumes:
   postgres_data:
