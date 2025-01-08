@@ -125,33 +125,23 @@ TerraViva-Project/
 
 ### Comprehensive Setup Guide
 
-1. **Clone the Project Using Git Worktree**
+1. **Clone the Project**
 ```bash
-# Create a main project directory
-mkdir terraviva
-cd terraviva
-
 # Clone the main repository
-git clone https://github.com/mohamed2020m/TerraViva-Project.git
-cd TerraViva-Project
-
-# Create separate worktrees for each branch
-git worktree add ../frontend frontend
-git worktree add ../backend backend
-git worktree add ../mobile mobile
-git worktree add ../terraviva_ai terraviva_ai
+git clone https://github.com/mohamed2020m/TerraViva.git
+cd TerraViva
 ```
 
 2. **Backend Setup**
 ```bash
 # Navigate to backend directory
-cd ../backend
+cd ./backend
 
 # Configure PostgreSQL connection in application.properties
 # Ensure database 'terraviva' is created
 
 # Install dependencies and build
-mvn clean install
+mvn clean install -DskipTests
 
 # Run Spring Boot application
 mvn spring-boot:run
@@ -160,7 +150,7 @@ mvn spring-boot:run
 3. **Frontend Setup**
 ```bash
 # Navigate to frontend directory
-cd ../frontend
+cd ./frontend
 
 # Install dependencies
 npm install
@@ -172,7 +162,7 @@ npm run dev
 4. **AI Services Setup**
 ```bash
 # Navigate to AI services directory
-cd ../terraviva_ai
+cd ./terraviva_ai
 
 # Create virtual environment (optional but recommended)
 python3 -m venv venv
@@ -188,7 +178,7 @@ python app.py
 5. **Mobile Application**
 ```bash
 # Navigate to mobile directory
-cd ../mobile
+cd ./mobile
 
 # Get Flutter dependencies
 flutter pub get
@@ -196,6 +186,28 @@ flutter pub get
 # Run on connected device or emulator
 flutter run
 ```
+
+## Default User Accounts
+
+### Administrator
+- Email: `admin@admin.com`
+- Password: `123456`
+
+### Professors
+1. Ahmad Khalil
+   - Email: `ahmad.khalil@example.com`
+   - Password: `123456`
+2. Zainab Malik
+   - Email: `zainab.malik@example.com`
+   - Password: `123456`
+
+### Students
+1. Mahmoud Ali
+   - Email: `mahmoud.ali@student.com`
+   - Password: `123456`
+2. Noor Kareem
+   - Email: `noor.kareem@student.com`
+   - Password: `123456`
 
 ## Illustrative Examples
 
