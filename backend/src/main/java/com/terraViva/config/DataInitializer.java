@@ -96,13 +96,13 @@ public class DataInitializer {
 
             // Geology subcategories
             Category minerals = createSubCategory(categoryRepository, "Minerals",
-                    "3D models of various mineral structures and crystals", null, geologyCategory);
+                    "3D models of various mineral structures and crystals", "minerals-sub-category.jpg", geologyCategory);
             Category tectonics = createSubCategory(categoryRepository, "Plate Tectonics",
-                    "Models of tectonic plates and their movements", null, geologyCategory);
+                    "Models of tectonic plates and their movements", "tectonics.jpg", geologyCategory);
             Category volcanology = createSubCategory(categoryRepository, "Volcanology",
-                    "Models of volcanic structures and formations", null ,geologyCategory);
+                    "Models of volcanic structures and formations", "volcanology-sub-category.jpg" ,geologyCategory);
             Category earthScience = createSubCategory(categoryRepository, "Earth Science",
-                    "Models of earth structures and formations", null ,geologyCategory);
+                    "Models of earth structures and formations", "earth-science-sub-category.jpg" ,geologyCategory);
 
             // 3. Chemistry Category
             Category chemistryCategory = categoryRepository.findByName("Chemistry")
@@ -117,11 +117,11 @@ public class DataInitializer {
 
             // Chemistry subcategories
             Category organicChemistry = createSubCategory(categoryRepository, "Organic Chemistry",
-                    "Models of organic compounds and molecules", null, chemistryCategory);
+                    "Models of organic compounds and molecules", "organic-chemistry-sub-category.jpg", chemistryCategory);
             Category inorganicChemistry = createSubCategory(categoryRepository, "Inorganic Chemistry",
-                    "Models of inorganic compounds and crystal structures", null ,chemistryCategory);
+                    "Models of inorganic compounds and crystal structures", "inorganic-chemistry-sub-category.jpg" ,chemistryCategory);
             Category biochemistry = createSubCategory(categoryRepository, "Biochemistry",
-                    "Models of biochemistry compounds and  structures", null ,chemistryCategory);
+                    "Models of biochemistry compounds and  structures", "biochemistry-sub-category.jpg" ,chemistryCategory);
 
             // Create Professors
             // Anatomy Professors
